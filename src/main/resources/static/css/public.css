@@ -1,0 +1,42 @@
+body {
+    height: calc(100vh);
+    background-color: #FFFFFF;
+}
+.kssd-btn {
+    display: block;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    background-color: #1b9afb;
+    color: #fff;
+    font-size: 18px;
+    margin-left: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0px 40px
+}
+.justify {
+    justify-content: space-between;
+}
+.flex {
+    display: flex;
+}
+.align {
+    align-items: center;
+}
+.layui-form {
+    padding: 20px;
+}
+.layui-btn-1 {
+    background-color: #63C84E;
+}
+.hidden {
+    display: none;
+}
+.red-color{
+    color: #ff3b3b;
+    font-size: 27px;
+    padding-top: 7px;
+    margin-left: -14px;
+    position: absolute;
+}

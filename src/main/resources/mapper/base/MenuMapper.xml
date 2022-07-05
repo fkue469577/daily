@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bc.finance.modular.system.mapper.MenuMapper">
+
+
+    <select id="listByRoleId" resultType="java.util.Map">
+        select sm.*, r.role_id roleId
+        from sys_menu sm
+        left join (select * from sys_role_menu where role_id=#{roleId}) r on sm.id = r.menu_id
+        where sm.user_enabled=1
+        order by sm.num
+    </select>
+
+    <select id="listByRoleList" resultType="com.bc.finance.modular.base.entity.SysMenu">
+        select distinct sm.*
+        from sys_menu sm
+        inner join sys_role_menu srm on sm.id=srm.menu_id
+        inner join sys_role sr on srm.role_id=sr.id
+        where sr.code in
+        <foreach item="item" index="index" collection="role"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by sm.num
+    </select>
+
+    <select id="listSysMenuExpendRole" resultType="java.util.Map">
+        select sm.*, r.role_id roleId
+        from sys_menu sm
+         left join (select * from sys_role_menu where role_id=#{roleId}) r on sm.id = r.menu_id
+        where sm.sys_enabled=1
+        order by sm.num
+    </select>
+</mapper>

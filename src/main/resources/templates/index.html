@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>主页</title>
+<head th:include="common/common :: common_common">
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div class="i-l">
+        <div class="i-l-h">
+            <img src=""/>
+        </div>
+        <div class="i-l-b">
+        </div>
+    </div>
+    <div class="i-r">
+        <div class="i-r-h">
+            <div class="r-h-c">
+                <div class="h-c-name">
+                    <i class="layui-icon layui-icon-friends"></i>
+                </div>
+                <div class="h-c-logout">
+                    <i class="layui-icon layui-icon-logout"></i>退出
+                </div>
+            </div>
+        </div>
+        <div class="i-r-b">
+            <iframe src=""> </iframe>
+        </div>
+    </div>
+</body>
+<script type="text/html" id="menuTPL">
+    {{each list l}}
+    <div class="l-b-i" src="{{l.url}}">
+        <i class="layui-icon {{l.layuiIcon}}"></i>{{l.name}}
+    </div>
+    {{/each}}
+</script>
+
+<link href="/static/modular/index/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/index/index.js" ></script>
+</html>

@@ -1,0 +1,69 @@
+server:
+  port: 8668
+
+spring:
+  main:
+    allow-circular-references: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      spring.devtools.restart.exclude: WEB-INF/**
+  mvc:
+    static-path-pattern: /static/**
+  datasource:
+    url: jdbc:mysql://112.74.62.96:3306/daily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
+    username: 469577278@qq.com
+    password: fkue469577278
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    debug: false
+    #Druid#
+    name: dm_ding_application
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  profiles:
+    active:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    # 逻辑删除配置
+    db-config:
+      # 删除前
+      logic-not-delete-value: 1
+      # 删除后
+      logic-delete-value: 0
+
+
+jwt:
+  token-header: Authorization
+  expire: 604800
+  rsa-secret: xx1WET12^%3^(WE45
+  # 超级管理员的关键字
+  administrator: administrator

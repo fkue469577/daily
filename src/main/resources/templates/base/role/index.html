@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>权限设置</title>
+<head th:include="common/common :: common_common">
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="body">
+    <div class="p-t justify">
+        <div class="p-t-l">
+            <h2>权限设置</h2>
+        </div>
+        <div class="p-t-r">
+
+        </div>
+    </div>
+    <div class="conter-rightcon flex ">
+        <div class="jspz-left">
+            <div class="jslb-tit"><span>角色列表</span></div>
+            <div class="jslb-wrap">
+                <div class="role-contain">
+
+                    <div th:each="role: ${roleList}" class="jslb" th:data-id="${role.id}" >
+                        <div class="jslb-listwrap" th:data-tips="${role.tips}" th:data-id="${role.id}"><span th:text="${role.name}"></span></div>
+                        <div class="jslb-list" >
+                            <form class="flex gm-wrap hidden" >
+                                <input type="text" name="name" th:value="${role.name}">
+                                <input type="hidden" name="id" th:value="${role.id}">
+                                <i class="edit-button"></i>
+                            </form>
+                            <div class="flex fz-scwrap">
+<!--                                <span class="copy">复制</span>-->
+                                <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/del')}">
+                                    <span class="del">删除</span>
+                                </th:block>
+                                <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/xgmc')}">
+                                    <span class="xgmc">修改名称</span>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/xzjs-wrap')}">
+                    <div class="xzjs-wrap">+新增角色</div>
+                </th:block>
+            </div>
+        </div>
+        <div class="jspz-right">
+            <div class="jslb-tit"><span>权限查看-超级管理员</span></div>
+            <div class="tips-wrap">
+                <p>提示：</p>
+                <pre id="tips"></pre>
+                <!--<p>1．系统权限不可修改</p>-->
+                <!--<p>2．数据权限是指该角色员工可以看到哪些人的数据。比如功能权限添加了“客户管理”，数据权限选择了为“”全公司,则该角色下员工可以看到全公司的客户数据。</p>-->
+            </div>
+            <div class="qxsz-left">
+                <div class="gnqx-tit">功能权限</div>
+                <div class="qxsz-leftwrap">
+                    <div class="tree-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<link href="/static/modular/base/role/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/base/role/index.js" ></script>
+<script type="text/html" id="treeTPL">
+    {{each list l}}
+    <div class="m-c">
+        <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/qxxz-con')}">
+            <div class="flex align qxyj-wrap permission-1  {{l.roleId? 'qx-per': ''}}" data-id="{{l.id}}"><i class="qxxz-icon"></i>{{l.name}}</div>
+        </th:block>
+        <th:block th:unless="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/qxxz-con')}">
+            <div class="flex align qxyj-wrap {{l.roleId? 'qx-per': ''}}" data-id="{{l.id}}"><i class="qxxz-icon"></i>{{l.name}}</div>
+        </th:block>
+        <div class="khgl-con  flex-wrap">
+            {{each l.permission p}}
+                <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/qxxz-con')}">
+                    <div class="flex align qxxz-con permission-3 {{p.roleId? 'qx-per': ''}}" data-id="{{p.id}}">
+                        <i class="qxxz-icon"></i>
+                        <span class="qxxz-con-text">{{p.name}}</span>
+                    </div>
+                </th:block>
+                <th:block th:unless="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/role/qxxz-con')}">
+                    <div class="flex align qxxz-con {{p.roleId? 'qx-per': ''}}" data-id="{{p.id}}">
+                        <i class="qxxz-icon"></i>
+                        <span class="qxxz-con-text">{{p.name}}</span>
+                    </div>
+                </th:block>
+            {{/each}}
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<script type="text/html" id="addTPL">
+    <form id="addForm" class="xjxxxx-tcwrap">
+        <input type="hidden" name="id" value="{{role.id}}">
+        <div class="flex align xjxxxx-tc">
+            <span class="xjxxxx-tcleft"><span class="xh">*</span>角色名称</span>
+            <input type="text" required name="name" value="{{role.name}}" class="xjxxxx-tcsr">
+        </div>
+        <div class="flex align xjxxxx-tc">
+            <span class="xjxxxx-tcleft"><span class="xh">*</span>角色编号</span>
+            <input type="text" required name="code" value="{{role.name}}" class="xjxxxx-tcsr">
+        </div>
+        <div class="flex align xjxxxx-tc">
+            <span class="xjxxxx-tcleft"><span class="xh">*</span>提示</span>
+            <textarea class="xmgs-tcsr " required name="tips" value="" >{{role.tips}}</textarea>
+        </div>
+    </form>
+</script>
+</html>

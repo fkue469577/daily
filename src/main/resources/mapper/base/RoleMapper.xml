@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bc.finance.modular.system.mapper.RoleMapper">
+
+
+    <select id="listBySclId" resultType="com.bc.finance.modular.base.entity.SysRole">
+        select *
+        from sys_role sr
+        where isadmin=0 and (code &lt;&gt; 'administrator' or code is null)
+        <choose>
+            <when test="sclId!=null and sclId!=''">
+                and scl_id=#{sclId}
+            </when>
+            <otherwise>
+                and (scl_id is null or code='admin')
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+    <select id="listSystem" resultType="com.bc.finance.modular.base.entity.SysRole">
+        select *
+        from sys_role sr
+        where isadmin = 1
+    </select>
+</mapper>

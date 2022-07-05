@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>责任主体管理</title>
+<head th:include="common/common :: common_common">
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="body">
+    <div class="p-t justify">
+        <div class="p-t-l">
+            <h2>责任主体管理</h2>
+        </div>
+        <div class="p-t-r">
+
+        </div>
+    </div>
+    <div class="p-b">
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+</div>
+</body>
+
+
+
+<link href="/static/modular/base/company/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/base/company/index.js" ></script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/company/create')}">
+            <button class="layui-btn" lay-event="create">创建</button>
+        </th:block>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <div class="flex item-content">
+        <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/company/edit')}">
+            <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>
+        </th:block>
+        <th:block th:if="${T(com.bc.finance.common.share.PermissionShare).hasPermission('/system/company/edit')}">
+            <i class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</i>
+        </th:block>
+    </div>
+</script>
+<script type="text/html" id="tpl">
+    <form class="layui-form" id="form">
+        <input name="id" type="hidden" value="{{model.id}}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input name="name" class="layui-input" required value="{{model.name}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+                <input name="contacts" class="layui-input" required value="{{model.contacts}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人电话</label>
+            <div class="layui-input-block">
+                <input name="phone" class="layui-input" required value="{{model.phone}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+                <input name="address" class="layui-input" required value="{{model.address}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="descrition" class="layui-textarea">{{model.descrition}}</textarea>
+            </div>
+        </div>
+    </form>
+</script>
+</html>
