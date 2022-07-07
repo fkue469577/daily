@@ -18,12 +18,5 @@ public interface IMenuService extends IService<SysMenu> {
 
     List listMenuListExpendRole(Integer roleId);
 
-    List<SysMenu> listByRoleList(List<String> role);
-
-    /**
-     * 管理员的菜单与角色
-     * @param roleId
-     * @return
-     */
-    List<Map> listSystemMenuListExpendRole(Integer roleId);
+    List<SysMenu> listByUserId(String userId);
 }

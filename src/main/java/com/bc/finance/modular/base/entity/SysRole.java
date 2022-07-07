@@ -30,6 +30,4 @@ public class SysRole {
 
     private String tips;
 
-    private String sclId;
-
 }

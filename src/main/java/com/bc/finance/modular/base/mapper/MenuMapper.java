@@ -4,6 +4,7 @@ import com.bc.finance.modular.base.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,6 @@ public interface MenuMapper extends BaseMapper<SysMenu> {
     List<SysMenu> listByRoleList(@Param("role") List<String> role);
 
     List<Map> listSysMenuExpendRole(@Param("roleId") Integer roleId);
+
+    List<SysMenu> listByUserId(String userId);
 }

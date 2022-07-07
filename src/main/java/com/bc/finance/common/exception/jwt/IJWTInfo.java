@@ -30,11 +30,9 @@ public interface IJWTInfo {
 
     List<String> getPermission();
 
-    String getSclId();
-
     /**
      * 获取用户ID
      * @return
      */
-    Long getUserId();
+    String getUserId();
 }

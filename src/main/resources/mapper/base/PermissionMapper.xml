@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bc.finance.modular.system.mapper.PermissionMapper">
+<mapper namespace="com.bc.finance.modular.base.mapper.PermissionMapper">
 
 
     <select id="getPermissionByRoldid" resultType="java.util.Map">
         select p.*, rp.role_id roleId
-        from sys_permission p
-        left join (select * from sys_role_permission where role_id = #{roleId}) rp on p.id = rp.permission_id
+        from base_permission p
+        left join (select * from base_role_permission where role_id = #{roleId}) rp on p.id = rp.permission_id
         where user_enabled=1
         order by p.num
     </select>
 
     <select id="listByAdminId" resultType="com.bc.finance.modular.base.entity.SysPermission">
-        select sp.* from usm_admin_role uad
-         inner join sys_role_permission srp on uad.role_id=srp.role_id
-         inner join sys_permission sp on srp.permission_id=sp.id
+        select sp.* from base_user_role uad
+         inner join base_role_permission srp on uad.role_id=srp.role_id
+         inner join base_permission sp on srp.permission_id=sp.id
         where uad.admin_id=#{sclAdminId}
     </select>
 

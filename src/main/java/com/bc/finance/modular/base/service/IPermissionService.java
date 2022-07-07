@@ -25,10 +25,6 @@ public interface IPermissionService extends IService<SysPermission> {
 
     List<SysPermission> listByMenuId(Integer menuId);
 
-    List<SysPermission> listSys();
-
-    List<SysPermission> listByAdminId(Long sclAdminId);
-
     List<Map> listSysPermissionExpendRole(Integer roleId);
 
     List<SysPermission> listByUserId(String userId);

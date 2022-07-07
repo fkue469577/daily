@@ -41,12 +41,6 @@ public class SysMenu {
 
     private String layuiIcon;
 
-    @TableField("sys_enabled")
-    private Boolean sysEnabled;
-
-    @TableField("use_enabled")
-    private Boolean userEnabled;
-
     @TableField(exist = false)
     private List<SysMenu> children;
 

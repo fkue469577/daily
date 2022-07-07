@@ -20,16 +20,14 @@ public interface PermissionMapper extends BaseMapper<SysPermission> {
 
     List<Map> getPermissionByRoldid(@Param("roleId") Integer roleId);
 
-    @Select("select * from sys_permission where menu_id=#{menuId} and user_enabled=1")
+    @Select("select * from base_permission where menu_id=#{menuId} and user_enabled=1")
     List<SysPermission> listByMenuId(Integer menuId);
 
-    @Select("select * from sys_permission where sys_enabled=1")
+    @Select("select * from base_permission where sys_enabled=1")
     List<SysPermission> listSys();
-
-    List<SysPermission> listByAdminId(@Param("sclAdminId") Long sclAdminId);
 
     List<Map> listSysPermissionExpendRole(Integer roleId);
 
-    @Select("select * from base_permission bp where exists (select 1 from base_user_role bur inner join base_role_permission brp on bur.role_id=brp.role_id where bp.id=brp.permission_id and user_id=#(userId))")
+    @Select("select * from base_permission bp where exists (select 1 from base_user_role bur inner join base_role_permission brp on bur.role_id=brp.role_id where bp.id=brp.permission_id and user_id=#{userId})")
     List<SysPermission> listByUserId(String userId);
 }

@@ -46,22 +46,12 @@ public class TokenUserHelper {
         return infoFromToken.getRole().stream().anyMatch(e->administrator.equals(e));
     }
 
-    public boolean isSchool() {
-        IJWTInfo infoFromToken = getTokenUser();
-        return StringUtils.isNotBlank(infoFromToken.getSclId());
-    }
-
     public boolean isLogin() {
         IJWTInfo user = this.getTokenUser();
         return user!=null;
     }
 
-    public String getSclId() {
-        IJWTInfo user = this.getTokenUser();
-        return user.getSclId();
-    }
-
-    public Long getUserId() {
+    public String getUserId() {
         IJWTInfo user = this.getTokenUser();
         return user.getUserId();
     }

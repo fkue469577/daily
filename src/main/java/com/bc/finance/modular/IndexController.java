@@ -35,7 +35,7 @@ public class IndexController {
     public ObjectResponse menu() {
         IJWTInfo user = userHelper.getTokenUser();
 
-        List<SysMenu> menuList = menuService.listByRoleList(user.getRole());
+        List<SysMenu> menuList = menuService.listByUserId(user.getUserId());
 
         Map map = new HashMap();
         map.put("menuList", menuList);

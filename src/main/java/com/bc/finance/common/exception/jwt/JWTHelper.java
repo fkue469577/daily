@@ -97,7 +97,9 @@ public class JWTHelper {
     public static IJWTInfo getInfoFromToken(String token, String pubKeyPath) throws Exception {
         Jws<Claims> claimsJws = parserToken(token, pubKeyPath);
         Claims body = claimsJws.getBody();
-        return new JWTInfo(body.getSubject(), LongUtils.parseLong(body.get(CommonConstants.JWT_KEY_USER_ID)), StringUtils.getObjectValue(body.get(CommonConstants.JWT_KEY_NAME)));
+        return new JWTInfo(body.getSubject()
+                , StringUtils.getObjectValue(body.get(CommonConstants.JWT_KEY_USER_ID))
+                , StringUtils.getObjectValue(body.get(CommonConstants.JWT_KEY_NAME)));
     }
     /**
      * 获取token中的用户信息

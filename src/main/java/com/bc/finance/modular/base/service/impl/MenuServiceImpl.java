@@ -76,51 +76,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, SysMenu> implements
     }
 
     @Override
-    public List<SysMenu> listByRoleList(List<String> role) {
-        if(role==null || role.size()==0) return new ArrayList<>();
+    public List<SysMenu> listByUserId(String userId) {
 
-        List<SysMenu> menuList = mapper.listByRoleList(role);
-
-        List<SysMenu> rootList = menuList.stream().filter(e -> StringUtils.isBlank(e.getPcode())).collect(Collectors.toList());
-        Map<String, SysMenu> code2Object = menuList.stream().collect(Collectors.toMap(e -> e.getCode(), e -> e, (a, b)->a=b));
-        menuList.stream()
-                .filter(e -> StringUtils.isNotBlank(e.getPcode()) && code2Object.containsKey(e.getPcode()))
-                .forEach(e->code2Object.get(e.getPcode()).addChildren(e));
-        return rootList;
+        return mapper.listByUserId(userId);
     }
 
-    @Override
-    public List<Map> listSystemMenuListExpendRole(Integer roleId) {
-        List<Map> menuList = mapper.listSysMenuExpendRole(roleId);
-        List<Map> permissionList = permissionService.listSysPermissionExpendRole(roleId);
-
-        List<Map> root = menuList.stream().filter(e -> StringUtils.isBlank(e.get("pcode"))).collect(Collectors.toList());
-        Map<String, Map> code2Menu = menuList.stream().collect(Collectors.toMap(e -> String.valueOf(e.get("code")), e -> e));
-        Map<Integer, Map> id2Menu = menuList.stream().collect(Collectors.toMap(e -> StringUtils.parseInt(e.get("id")), e -> e));
-
-        menuList.stream().filter(e->!StringUtils.isBlank(e.get("pcode"))).forEach(e->{
-            Map menu = code2Menu.get(e.get("pcode"));
-            if(menu!=null) {
-                List node = (List)menu.get("node");
-                if(node==null) {
-                    node = new ArrayList();
-                    menu.put("node", node);
-                }
-                node.add(e);
-            }
-        });
-
-        permissionList.forEach(e->{
-            Map menu = id2Menu.get(e.get("menu_id"));
-            if(menu!=null) {
-                List node = (List)menu.get("permission");
-                if(node==null) {
-                    node = new ArrayList();
-                    menu.put("permission", node);
-                }
-                node.add(e);
-            }
-        });
-        return root;
-    }
 }

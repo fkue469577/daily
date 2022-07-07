@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/system/role")
@@ -34,8 +33,7 @@ public class RoleController {
 
     @GetMapping("")
     public String index(Model model) {
-        List<SysRole> roleList = roleService.listBySclId(userHelper.getSclId());
-        roleList = roleList.stream().filter(e->!"admin".equals(e.getCode())).collect(Collectors.toList());
+        List<SysRole> roleList = roleService.listSystem();
 
         model.addAttribute("roleList", roleList);
 
@@ -54,7 +52,6 @@ public class RoleController {
     @PostMapping("/insert")
     @ResponseBody
     public BaseResponse insert(@RequestBody SysRole role) {
-        role.setSclId(userHelper.getSclId());
         roleService.save(role);
 
         return BaseResponse.success();

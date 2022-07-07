@@ -17,19 +17,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, SysRole> implements
     RoleMapper mapper;
 
     @Override
-    public List<SysRole> listByAdminId(Long sclAdminId) {
-        List<SysRole> roleList = mapper.listByAdminId(sclAdminId);
-
-        return roleList;
-    }
-
-    @Override
-    public List<SysRole> listBySclId(String sclId) {
-
-        return mapper.listBySclId(sclId);
-    }
-
-    @Override
     public boolean removeById(Integer id) {
         SysRole role = this.getById(id);
         if("administrator".equals(role.getCode())) {

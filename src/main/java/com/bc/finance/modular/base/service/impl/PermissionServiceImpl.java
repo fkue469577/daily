@@ -36,22 +36,6 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, SysPerm
     }
 
     @Override
-    public List<SysPermission> listSys() {
-
-        List<SysPermission> permissionList = mapper.listSys();
-
-        return permissionList;
-    }
-
-    @Override
-    public List<SysPermission> listByAdminId(Long sclAdminId) {
-
-        List<SysPermission> permissionList = mapper.listByAdminId(sclAdminId);
-
-        return permissionList;
-    }
-
-    @Override
     public List<Map> listSysPermissionExpendRole(Integer roleId) {
 
         return mapper.listSysPermissionExpendRole(roleId);

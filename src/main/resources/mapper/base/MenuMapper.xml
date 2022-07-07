@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bc.finance.modular.system.mapper.MenuMapper">
+<mapper namespace="com.bc.finance.modular.base.mapper.MenuMapper">
 
 
     <select id="listByRoleId" resultType="java.util.Map">
@@ -29,5 +29,14 @@
          left join (select * from sys_role_menu where role_id=#{roleId}) r on sm.id = r.menu_id
         where sm.sys_enabled=1
         order by sm.num
+    </select>
+
+
+    <select id="listByUserId" resultType="com.bc.finance.modular.base.entity.SysMenu">
+        select * from base_menu bm
+        where exists(select 1 from (select * from base_user_role where user_id=#{userId}) bur
+            inner join base_role_menu brm on bur.role_id=brm.role_id
+            where bm.id=brm.menu_id)
+
     </select>
 </mapper>

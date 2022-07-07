@@ -8,10 +8,6 @@ import java.util.List;
 
 public interface IRoleService extends IService<SysRole> {
 
-    List<SysRole> listByAdminId(Long sclAdminId);
-
-    List<SysRole> listBySclId(String sclId);
-
     boolean removeById(Integer id);
 
     /**
