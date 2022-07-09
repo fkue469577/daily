@@ -10,12 +10,9 @@ import java.util.Scanner;
 // 代码生成器
 public class CodeGenerator {
     public static void main(String[] args) {
-        String modular;
-        Scanner scan = new Scanner(System.in);
-        System.out.println("请输入模块: ");
-        modular = scan.next();
+        String modular = "daily";
         String projectPath = System.getProperty("user.dir");
-        FastAutoGenerator.create("jdbc:mysql://192.168.1.211:3306/bc_finance?useUnicode=true&useSSL=false&characterEncoding=utf8", "root", "123456")
+        FastAutoGenerator.create("jdbc:mysql://112.74.62.96:3306/daily?useUnicode=true&useSSL=false&characterEncoding=utf8", "469577278@qq.com", "fkue469577278")
                 .globalConfig(builder -> {
                     builder.author("pcc") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
