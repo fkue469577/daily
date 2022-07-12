@@ -1,7 +1,11 @@
 package com.bc.finance.modular.daily.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bc.finance.modular.daily.entity.DailyBookNotes;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface DailyBookNotesMapper extends BaseMapper<DailyBookNotes> {
 
+    List<Map> page(IPage page, Map param);
 }

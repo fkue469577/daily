@@ -9,17 +9,17 @@ $(function() {
 function page() {
 	table.render({
 		elem: '#test'
-		,url:'/daily/book/chapter/page'
+		,url:'/daily/notes/page'
 		,toolbar: '#toolbarDemo'
 		,title: '用户数据表'
+		, where: $("#searchForm").serializeObject()
 		,parseData: function(res) {
 			res.code = 0;
 			return res;
 		}
 		,cols: [[
-			{field:'bookName', title:'书本名称'}
-			,{field:'parentName', title:'父章节'}
-			,{field:'name', title:'章节名称'}
+			{type:'checkbox'}
+			,{field:'title', title:'标题'}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
@@ -28,7 +28,7 @@ function page() {
 
 table.on('tool(test)', function (obj) {
 	if (obj.event === 'edit') { //编辑
-		$.get("/daily/book/chapter/get/"+obj.data.id, function(result) {
+		$.get("/daily/notes/get/"+obj.data.id, function(result) {
 			openWin(result.data)
 		});
 	}
@@ -46,8 +46,8 @@ table.on('toolbar(test)', function(obj){
 function openWin(model) {
 	layer.open({
 		type: 1,
-		area: ['550px', 'auto'],
-		title: model.id? "编辑":"创建" + '责任主体',
+		area: ['700px', '470px'],
+		title: model.id? "编辑":"创建" + '笔记',
 		shadeClose: true, //点击遮罩关闭
 		content: template("tpl", {model: model})
 		,btn: ['提交','取消']
@@ -55,22 +55,14 @@ function openWin(model) {
 		,skin: 'layer-ext-myskin'
 		,yes:function () {
 			$("#form").checkCommit({
-				url: "/daily/book/chapter/save",
+				url: "/daily/notes/save",
 			})
 		}
 	});
-	$("select[name=classId]").val(model.classId);
-	form.render();
 
-	loadParent($("select[name=bookId]").val())
-	form.on("select(bookId)", function(obj) {
-		loadParent(obj.value)
-	});
+	UM.delEditor('context');
+	var ue = UM.getEditor('context');
+	ue.setContent(model.context??"")
+
 }
 
-function loadParent(bookId) {
-	$.get("/daily/book/chapter/listByBookId", {bookId: bookId}, function(res) {
-		$("select[name=parentId]").html(`<option value="">无</option>`+res.data.map(e=>`<option value="${e.id}">${e.seq} ${e.name}</option>`));
-		form.render();
-	});
-}

@@ -2,4 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyBookChapterMapper">
 
+    <select id="page" resultType="java.util.Map">
+        select id, name, seq
+        ,(select name from daily_book_chapter where id=dbc.parent_id) parentName
+        ,(select name from daily_book where id=dbc.book_id) bookName
+        from daily_book_chapter dbc
+        <where>
+            <if test="param.bookId!=null and param.bookId!=''">and dbc.book_id=#{param.bookId}</if>
+        </where>
+
+    </select>
 </mapper>

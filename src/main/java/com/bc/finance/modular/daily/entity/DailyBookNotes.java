@@ -1,5 +1,6 @@
 package com.bc.finance.modular.daily.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -39,4 +40,6 @@ public class DailyBookNotes implements Serializable {
     private LocalDateTime crtTime;
 
 
+    @TableField(exist = false)
+    private String chapterName;
 }

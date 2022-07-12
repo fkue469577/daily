@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>章节管理</title>
+<head th:include="common/common :: common_common">
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="body">
+    <div class="p-t justify">
+        <div class="p-t-l">
+            <h2>章节管理</h2>
+        </div>
+        <div class="p-t-r">
+
+        </div>
+    </div>
+    <div class="p-b">
+        <form class="layui-form flex demoTable" id="searchForm">
+            <select name="bookId" lay-filter="bookId">
+                <option value>--书本--</option>
+                <option th:each="book: ${bookList}" th:value="${book.id}" th:text="${book.name}"></option>
+            </select>
+            <button type="button"  class="layui-btn" onclick="page()">搜索</button>
+        </form>
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+</div>
+</body>
+
+
+
+<link href="/static/modular/daily/book/chapter/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/daily/book/chapter/index.js" ></script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="create">创建</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <div class="flex item-content">
+        <!--        <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>-->
+    </div>
+</script>
+<script type="text/html" id="tpl">
+    <form class="layui-form" id="form">
+        <input name="id" type="hidden" value="{{model.id}}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">书本</label>
+            <div class="layui-input-block">
+                <select name="bookId" lay-filter="bookId">
+                    <option th:each="book: ${bookList}" th:value="${book.id}" th:text="${book.name}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">父章节</label>
+            <div class="layui-input-block">
+                <div id="parentId" class="xm-select-demo"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input name="name" class="layui-input" required value="{{model.name}}" type="text"/>
+            </div>
+        </div>
+    </form>
+</script>
+</html>

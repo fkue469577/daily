@@ -40,3 +40,6 @@ body {
     margin-left: -14px;
     position: absolute;
 }
+body .layer-ext-myskin .layui-layer-content {
+    overflow: visible !important;
+}

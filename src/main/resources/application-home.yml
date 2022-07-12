@@ -1,5 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://112.74.62.96:3306/daily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
-    username: 469577278@qq.com
-    password: fkue469577278

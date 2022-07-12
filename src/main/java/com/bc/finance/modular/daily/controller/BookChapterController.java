@@ -1,8 +1,22 @@
 package com.bc.finance.modular.daily.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bc.finance.common.helper.PageHelper;
+import com.bc.finance.common.msg.BaseResponse;
+import com.bc.finance.common.msg.ObjectResponse;
+import com.bc.finance.common.msg.TableResponse;
+import com.bc.finance.common.utils.StringUtils;
+import com.bc.finance.modular.daily.entity.DailyBookChapter;
+import com.bc.finance.modular.daily.service.IDailyBookChapterService;
+import com.bc.finance.modular.daily.service.IDailyBookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,4 +30,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/daily/book/chapter")
 public class BookChapterController {
 
+    @Autowired
+    IDailyBookChapterService chapterService;
+
+    @Autowired
+    IDailyBookService bookService;
+
+    @GetMapping("")
+    public String index(Model model) {
+
+        model.addAttribute("bookList", bookService.list());
+
+        return "/daily/book/chapter/index";
+    }
+
+    @GetMapping("/page")
+    @ResponseBody
+    public TableResponse page(@RequestParam Map param) {
+
+        Page page = PageHelper.defaultPage();
+        List list = chapterService.page(page, param);
+
+        return new TableResponse(page.getTotal(), list);
+    }
+
+    @GetMapping("/get/{id}")
+    @ResponseBody
+    public ObjectResponse get(@PathVariable String id) {
+
+        return new ObjectResponse(chapterService.getById(id));
+    }
+
+    @GetMapping("/listByBookId/{bookId}")
+    @ResponseBody
+    public ObjectResponse listByBookId(@PathVariable("bookId") String bookId) {
+
+        List<DailyBookChapter> chapter = chapterService.listByBookIdDepend(bookId);
+
+        return new ObjectResponse(chapter);
+    }
+
+    @PostMapping("/save")
+    @ResponseBody
+    public BaseResponse save(@RequestBody DailyBookChapter chapter) {
+
+        if(StringUtils.isBlank(chapter.getId())) {
+            chapterService.insert(chapter);
+        } else {
+            chapterService.update(chapter);
+        }
+
+        return BaseResponse.success();
+    }
 }

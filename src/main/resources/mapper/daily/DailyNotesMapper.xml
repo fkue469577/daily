@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyNotesMapper">
 
+    <select id="page" resultType="java.util.Map">
+        select id, title
+        from daily_notes dn
+        <where>
+            <if test="param.name!=null and param.name!=''">and dn.title like concat('%', #{param.name}, '%')</if>
+        </where>
+    </select>
 </mapper>
