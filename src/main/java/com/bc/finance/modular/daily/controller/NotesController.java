@@ -35,7 +35,7 @@ public class NotesController {
     @GetMapping("")
     public String index() {
 
-        return "/daily/notes/index";
+        return "daily/notes/index";
     }
 
     @GetMapping("/page")

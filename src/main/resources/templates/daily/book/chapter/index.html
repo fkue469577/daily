@@ -38,7 +38,7 @@
 </script>
 <script type="text/html" id="barDemo">
     <div class="flex item-content">
-        <!--        <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>-->
+                <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>
     </div>
 </script>
 <script type="text/html" id="tpl">
@@ -47,7 +47,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">书本</label>
             <div class="layui-input-block">
-                <select name="bookId" lay-filter="bookId">
+                <select name="bookId" lay-filter="bookId" {{if model.id}}disabled{{/if}}>
                     <option th:each="book: ${bookList}" th:value="${book.id}" th:text="${book.name}"></option>
                 </select>
             </div>

@@ -67,7 +67,7 @@ function openWin(model) {
 	var ue = UM.getEditor('context');
 	ue.setContent(model.context??"")
 
-	var value = [{value: model.chapterId, name: model.chapterName}];
+	var value = [{value: model.chapterId, name: model.chapterName??""}];
 	var bookId = $("#form select[name=bookId]").val();
 	loadChapter(bookId, value);
 

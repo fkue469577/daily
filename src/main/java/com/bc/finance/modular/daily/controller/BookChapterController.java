@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * <p>
@@ -41,7 +42,7 @@ public class BookChapterController {
 
         model.addAttribute("bookList", bookService.list());
 
-        return "/daily/book/chapter/index";
+        return "daily/book/chapter/index";
     }
 
     @GetMapping("/page")
@@ -57,8 +58,11 @@ public class BookChapterController {
     @GetMapping("/get/{id}")
     @ResponseBody
     public ObjectResponse get(@PathVariable String id) {
+        DailyBookChapter chapter = chapterService.getById(id);
+        DailyBookChapter parent = Optional.ofNullable(chapterService.getById(chapter.getParentId())).orElse(new DailyBookChapter());
+        chapter.setParentName(parent.getName());
 
-        return new ObjectResponse(chapterService.getById(id));
+        return new ObjectResponse(chapter);
     }
 
     @GetMapping("/listByBookId/{bookId}")

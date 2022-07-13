@@ -49,6 +49,9 @@ public class DailyBookChapter implements Serializable {
 
 
     @TableField(exist = false)
+    private String parentName;
+
+    @TableField(exist = false)
     private String value;
 
     @TableField(exist = false)

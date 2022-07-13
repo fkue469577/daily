@@ -46,7 +46,7 @@ public class BookNotesController {
 
         model.addAttribute("bookList", bookService.list());
 
-        return "/daily/book/notes/index";
+        return "daily/book/notes/index";
     }
 
     @GetMapping("/page")

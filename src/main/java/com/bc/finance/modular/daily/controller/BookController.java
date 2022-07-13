@@ -34,7 +34,7 @@ public class BookController {
     @GetMapping("")
     public String index() {
 
-        return "/daily/book/index";
+        return "daily/book/index";
     }
 
     @GetMapping("/page")

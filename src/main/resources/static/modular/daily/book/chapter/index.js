@@ -64,17 +64,18 @@ function openWin(model) {
 	$("select[name=classId]").val(model.classId);
 	form.render();
 
+	var value = [{value: model.parentId, name: model.parentName??""}];
 	var bookId = $("#form select[name=bookId]").val();
-	loadChapter(bookId)
+	loadChapter(bookId, value)
+
+	form.on("select(bookId)", function(res) {
+		loadChapter(res, value);
+	});
 }
 
-form.on("select(bookId)", function(res) {
-	loadChapter(res.value);
-});
-
-function loadChapter(bookId) {
+function loadChapter(bookId, value) {
 	$.get(`/daily/book/chapter/listByBookId/${bookId}`, function(res) {
-		xmSelect.render({
+		var chapter = xmSelect.render({
 			el: '#parentId',
 			model: { label: { type: 'text' } },
 			tree: {
@@ -91,5 +92,6 @@ function loadChapter(bookId) {
 				}
 			},
 		})
+		chapter.setValue(value)
 	});
 }
