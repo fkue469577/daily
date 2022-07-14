@@ -60,7 +60,8 @@ function openWin(model) {
 			})
 		}
 	});
-	$("select[name=bookId]").val(model.bookId);
+	if(model.bookId) $("select[name=bookId]").val(model.bookId);
+	else $("select[name=bookId] option[isDefault=true]").attr("selected", "true");
 	form.render();
 
 	UM.delEditor('context');

@@ -31,6 +31,12 @@ table.on('tool(test)', function (obj) {
 			openWin(result.data)
 		});
 	}
+	if (obj.event === 'setDefault') { //编辑
+		$.get("/daily/book/setDefault/"+obj.data.id, function(result) {
+			refresh(result);
+		});
+	}
+
 });
 //头工具栏事件
 table.on('toolbar(test)', function(obj){
@@ -46,7 +52,7 @@ function openWin(model) {
 	layer.open({
 		type: 1,
 		area: ['550px', 'auto'],
-		title: model.id? "编辑":"创建" + '书本',
+		title: model.id? "编辑":"创建" + '责任主体',
 		shadeClose: true, //点击遮罩关闭
 		content: template("tpl", {model: model})
 		,btn: ['提交','取消']

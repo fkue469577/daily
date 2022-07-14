@@ -61,7 +61,8 @@ function openWin(model) {
 			})
 		}
 	});
-	$("select[name=classId]").val(model.classId);
+	if(model.bookId) $("select[name=bookId]").val(model.bookId);
+	else $("select[name=bookId] option[isDefault=true]").attr("selected", "true");
 	form.render();
 
 	var value = [{value: model.parentId, name: model.parentName??""}];
