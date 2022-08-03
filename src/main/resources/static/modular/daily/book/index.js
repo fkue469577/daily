@@ -17,7 +17,7 @@ function page() {
 			return res;
 		}
 		,cols: [[
-			{field:'name', title:'名称'}
+			{field:'name', title:'名称', templet: (data)=>`<a href="/daily/book/detail/${data.id}">${data.name}</a>`}
 			,{field:'publishedDate', title:'出版时间'}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]

@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<title>书本管理</title>
+<head th:include="common/common :: common_common">
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="body">
+    <div class="p-t justify">
+        <div class="p-t-l">
+            <h2>书本管理 >> <th:block th:text="${book.name}"></th:block></h2>
+        </div>
+        <div class="p-t-r">
+
+        </div>
+    </div>
+    <div class="p-b flex">
+        <div class="p-b-l">
+
+        </div>
+        <div class="p-b-r">
+            <table class="layui-hide" id="test" lay-filter="test"></table>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<link href="/static/modular/daily/book/detail.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/daily/book/detail.js" ></script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="create">创建</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <div class="flex item-content">
+        <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var id = "[[${id}]]";
+</script>
+</html>

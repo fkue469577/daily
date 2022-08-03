@@ -86,4 +86,14 @@ public class BookChapterController {
 
         return BaseResponse.success();
     }
+
+
+    @GetMapping("/tree")
+    @ResponseBody
+    public ObjectResponse tree(@RequestParam("bookId") String bookId ) {
+
+        List<DailyBookChapter> chapterList = chapterService.listByBookIdDepend(bookId);
+
+        return new ObjectResponse(chapterList);
+    }
 }

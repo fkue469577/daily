@@ -1,0 +1,19 @@
+.p-t {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.p-b-l {
+    overflow-x: scroll;
+    width: 300px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 20px;
+    height: calc(100vh - 61px);
+    border-right: 1px solid #eee;
+}
+.p-b-r {
+    height: calc(100vh - 61px)
+}

@@ -12,6 +12,7 @@ import com.bc.finance.modular.daily.entity.DailyBook;
 import com.bc.finance.modular.daily.service.IDailyBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -68,5 +69,15 @@ public class BookController {
         }
 
         return BaseResponse.success();
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(Model model, @PathVariable String id) {
+
+        DailyBook book = bookService.getById(id);
+        model.addAttribute("id", id);
+        model.addAttribute("book", book);
+
+        return "daily/book/detail";
     }
 }
