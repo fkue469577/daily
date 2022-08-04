@@ -74,9 +74,7 @@ public class BookController {
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable String id) {
 
-        DailyBook book = bookService.getById(id);
         model.addAttribute("id", id);
-        model.addAttribute("book", book);
 
         return "daily/book/detail";
     }

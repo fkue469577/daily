@@ -7,6 +7,7 @@ import com.bc.finance.common.msg.BaseResponse;
 import com.bc.finance.common.msg.ObjectResponse;
 import com.bc.finance.common.msg.TableResponse;
 import com.bc.finance.common.utils.StringUtils;
+import com.bc.finance.modular.daily.entity.DailyBook;
 import com.bc.finance.modular.daily.entity.DailyBookChapter;
 import com.bc.finance.modular.daily.service.IDailyBookChapterService;
 import com.bc.finance.modular.daily.service.IDailyBookService;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * <p>
@@ -94,6 +93,13 @@ public class BookChapterController {
 
         List<DailyBookChapter> chapterList = chapterService.listByBookIdDepend(bookId);
 
-        return new ObjectResponse(chapterList);
+        DailyBook book = bookService.getById(bookId);
+        Map map = new HashMap();
+        map.put("id", book.getId());
+        map.put("name", book.getName());
+        map.put("type", "book");
+        map.put("children", chapterList);
+
+        return new ObjectResponse(Arrays.asList(map));
     }
 }

@@ -8,9 +8,21 @@
         , (select concat(seq, ' ', name) name from daily_book_chapter dbc where dbc.id=dbn.chapter_id) chapterName
         from daily_book_notes dbn
         <where>
-            <if test="param.name!=null and param.name!=''">and dbn.title like concat('%', #{param.name}, '%')</if>
-            <if test="param.bookId!=null and param.bookId!=''">and dbn.book_id=#{param.bookId}</if>
-            <if test="param.chapterId!=null and param.chapterId!=''">and dbn.chapter_id=#{param.chapterId}</if>
+            <if test="param.name!=null and param.name!=''">
+                and dbn.title like concat('%', #{param.name}, '%')
+            </if>
+            <if test="param.bookId!=null and param.bookId!=''">
+                and dbn.book_id=#{param.bookId}
+            </if>
+            <if test="param.chapterId!=null and param.chapterId!=''">
+                and dbn.chapter_id=#{param.chapterId}
+            </if>
+            <if test="param.chapterIds!=null and param.chapterIds.size()>0">
+                and chapter_id in
+                <foreach item="item" index="index" collection="param.chapterIds"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
         </where>
 
     </select>

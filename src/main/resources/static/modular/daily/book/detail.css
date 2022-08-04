@@ -7,7 +7,7 @@
 
 .p-b-l {
     overflow-x: scroll;
-    width: 300px;
+    width: 25%;
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 20px;
@@ -15,7 +15,7 @@
     border-right: 1px solid #eee;
 }
 .p-b-r {
-    height: calc(100vh - 61px)
+    width: 75%
 }
 .layui-tree.layui-tree-line {
     overflow: hidden;
@@ -31,4 +31,16 @@
 }
 .liHover:hover {
     background-color: #E1E1E1;
+}
+.xm-body {
+    height: 300px;
+}
+.scroll-body {
+    height: 290px;
+}
+.tree-entry-selected {
+    background-color: #f3f3f3 !important;
+}
+.edui-editor-body, .edui-body-container {
+    height: 200px;
 }

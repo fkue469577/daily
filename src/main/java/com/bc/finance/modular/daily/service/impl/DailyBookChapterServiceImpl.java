@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +44,10 @@ public class DailyBookChapterServiceImpl extends ServiceImpl<DailyBookChapterMap
         Set<String> idList = id2Chapter.keySet();
         chapterList.stream()
                 .filter(e -> StringUtils.isNotBlank(e.getParentId()) && idList.contains(e.getParentId()))
-                .forEach(e->id2Chapter.get(e.getParentId()).addChildren(e));
+                .forEach(e->{
+                    id2Chapter.get(e.getParentId()).addChildren(e);
+                    e.setParentName(id2Chapter.get(e.getParentId()).getName());
+                });
 
         return rootList;
     }
@@ -82,5 +82,31 @@ public class DailyBookChapterServiceImpl extends ServiceImpl<DailyBookChapterMap
     public int countByBookIdAndParentId(String bookId, String parentId) {
 
         return mapper.countByBookIdAndParentId(bookId, parentId);
+    }
+
+    @Override
+    public List<String> listBelongId(String chapterId) {
+        DailyBookChapter chapter = this.getById(chapterId);
+        List<DailyBookChapter> chapterList = this.listByBookIdDepend(chapter.getBookId());
+
+        List<String> chapterIds = new ArrayList<>();
+        chapterIds.add(chapterId);
+        collectIds(chapterIds, chapterList, chapterId);
+
+        return chapterIds;
+    }
+
+    // 通过 parentId 收集该 id 下的所有 id
+    private void collectIds(List<String> chapterIds, List<DailyBookChapter> chapterList, String parentId) {
+        if(chapterList==null) return;
+
+        for (DailyBookChapter chapter: chapterList) {
+            if(chapter.getParentId().equals(parentId)) {
+                chapterIds.add(chapter.getId());
+                collectIds(chapterIds, chapter.getChildren(), chapter.getId());
+            } else {
+                collectIds(chapterIds, chapter.getChildren(), parentId);
+            }
+        }
     }
 }
