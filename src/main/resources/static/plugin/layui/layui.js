@@ -5553,14 +5553,15 @@ layui.define("form", function (e) {
         var n = this, t = n.config, r = a || t.data;
         layui.each(r, function (a, r) {
             var l = r.children && r.children.length > 0,
-                debugger
                 o = i('<div class="layui-tree-pack" ' + (r.spread ? 'style="display: block;"' : "") + "></div>"),
                 h = i(['<div data-id="' + r.id + '" class="layui-tree-set' + (r.spread ? " layui-tree-spread" : "") + (r.checked ? " layui-tree-checkedFirst" : "") + '">', '<div class="layui-tree-entry">', '<div class="layui-tree-main">', function () {
                     return t.showLine ? l ? '<span class="layui-tree-iconClick layui-tree-icon"><i class="layui-icon ' + (r.spread ? "layui-icon-subtraction" : "layui-icon-addition") + '"></i></span>' : '<span class="layui-tree-iconClick"><i class="layui-icon layui-icon-file"></i></span>' : '<span class="layui-tree-iconClick"><i class="layui-tree-iconArrow ' + (l ? "" : c) + '"></i></span>'
                 }(), function () {
                     return t.showCheckbox ? '<input type="checkbox" name="' + (r.field || "layuiTreeCheck_" + r.id) + '" same="layuiTreeCheck" lay-skin="primary" ' + (r.disabled ? "disabled" : "") + ' value="' + r.id + '">' : ""
                 }(), function () {
-                    return t.isJump && r.href ? '<a href="' + r.href + '" target="_blank" class="' + y + '">' + (r.title || r.label || t.text.defaultNodeName) + "</a>" : '<span class="' + y + (r.disabled ? " " + d : "") + '">' + (r.title || r.label || t.text.defaultNodeName) + "</span>"
+                    // debugger
+                    var title = r.name || r.title || r.label || t.text.defaultNodeName
+                    return t.isJump && r.href? `<a href="${r.href}" target="block" class="${y}">${title}</a>`: `<span class="${y} ${r.disabled? (" " + d): ""}" title="${title}">${title}</span>`
                 }(), "</div>", function () {
                     if (!t.edit) return "";
                     var e = {
@@ -5572,7 +5573,7 @@ layui.define("form", function (e) {
                         i.push(e[n] || "")
                     }), i.join("") + "</div>") : void 0
                 }(), "</div></div>"].join(""));
-            l && (h.append(o), n.tree(o, r.children)), e.append(h), h.prev("." + s)[0] && h.prev().children(".layui-tree-pack").addClass("layui-tree-showLine"), l || h.parent(".layui-tree-pack").addClass("layui-tree-lineExtend"), n.spread(h, r), t.showCheckbox && (r.checked && n.checkids.push(r.id), n.checkClick(h, r)), t.edit && n.operate(h, r)
+            l && (h.append(o), n.tree(o, r.children)), e.append(h), h.prev("." + s)[0] && h.prev().children(".layui-tree-pack").addClass("layui-tree-showLine"), l || h.parent(".layui-tree-pack").addClass("layui-tree-lineExtend"), n.spread(h, r), (t.rightClickFunc? n.rightClick(h, r, t):""), t.showCheckbox && (r.checked && n.checkids.push(r.id), n.checkClick(h, r)), t.edit && n.operate(h, r)
         })
     }, b.prototype.spread = function (e, a) {
         var n = this, t = n.config, r = e.children("." + p), l = r.children("." + f), c = r.find("." + o),
@@ -5594,6 +5595,15 @@ layui.define("form", function (e) {
                 data: a
             }))
         })
+    }, b.prototype.rightClick = function (e, a, t) {
+        var r = e.children("." + p),
+            k = r.find("." + y);
+        k.on("contextmenu", e1=>false);
+        k.on("mousedown", function(e1) {
+            if (3 == e1.which && t.rightClickFunc) {
+                t.rightClickFunc(k, a);
+            }
+        });
     }, b.prototype.setCheckbox = function (e, i, a) {
         var n = this, t = (n.config, a.prop("checked"));
         if (!a.prop("disabled")) {

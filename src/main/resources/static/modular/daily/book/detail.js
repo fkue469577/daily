@@ -9,15 +9,34 @@ $(function() {
 //渲染
 function loadTree() {
     $.get("/daily/book/chapter/tree", {bookId: id}, function(res) {
-        var data = JSON.parse(JSON.stringify(res.data).replaceAll("name", "title"))
         tree.render({
             elem: '.p-b-l'  //绑定元素
             , onlyIconControl: true
-            , data: data
-            , click: function(obj) {
-                console.log(obj)
+            , data: res.data
+            , rightClickFunc: function(elem, data) {
+                console.log(elem.offset().left, elem.width())
+                // console.log(elem, data);
+                // console.log(elem.offset().top, elem.offset().left);
+                layer.open({
+                    type: 1,
+                    area: ["150px", "auto"],
+                    offset: [elem.offset().top + elem.height(), elem.offset().left+elem.width()],
+                    closeBtn: 0,
+                    shadeClose: true,
+                    title: false,
+                    content: template("menuTPL", {})
+                })
+                $(".layui-layer-shade").on("contextmenu", e1=>false);
+                $(".add").click(function (){
+                    openChapter({});
+                });
+                $(".edit").click(function (){
+                    openChapter({id: data.id, name: data.name, parentId: data.parentId});
+                });
             }
-            // ,edit: ['add', 'update'] //操作节点的图标
+            , click: function(data) {
+                
+            }
         });
     })
 }
@@ -41,4 +60,8 @@ function page(chapterId) {
         ]]
         ,page: true
     });
+}
+
+function openChapter(model) {
+
 }

@@ -17,3 +17,18 @@
 .p-b-r {
     height: calc(100vh - 61px)
 }
+.layui-tree.layui-tree-line {
+    overflow: hidden;
+}
+
+.rightClickUl {
+    padding: 10px;
+}
+.liHover {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5%;
+}
+.liHover:hover {
+    background-color: #E1E1E1;
+}
