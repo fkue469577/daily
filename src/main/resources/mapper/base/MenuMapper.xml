@@ -33,10 +33,11 @@
 
 
     <select id="listByUserId" resultType="com.bc.finance.modular.base.entity.SysMenu">
-        select * from base_menu bm
+        select *
+        from base_menu bm
         where exists(select 1 from (select * from base_user_role where user_id=#{userId}) bur
             inner join base_role_menu brm on bur.role_id=brm.role_id
             where bm.id=brm.menu_id)
-
+        and status = 1
     </select>
 </mapper>
