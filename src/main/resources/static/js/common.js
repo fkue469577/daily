@@ -66,7 +66,7 @@ function initAjax() {
             if(typeof switchDomain == "function") switchDomain()
         },
         beforeSend: function (xhr) {//发送请求前触发
-            xhr.setRequestHeader("Authorization", sessionStorage.getItem("Authorization"))
+            xhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"))
             lyload();
         }
     });

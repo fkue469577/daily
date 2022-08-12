@@ -43,3 +43,6 @@ body {
 body .layer-ext-myskin .layui-layer-content {
     overflow: visible !important;
 }
+.edui-editor-body, .edui-body-container {
+    height: 230px;
+}

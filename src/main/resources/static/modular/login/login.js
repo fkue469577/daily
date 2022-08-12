@@ -7,7 +7,7 @@ $(function () {
 		$("input[name=password]").val($.md5($("#password").val()));
 		$("form").checkCommit({url: "/login", unalert: true,
 			callback: function(data) {
-				sessionStorage.setItem("Authorization", data.accessToken)
+				localStorage.setItem("Authorization", data.accessToken)
 				location.href = "/";
 			}})
 	});

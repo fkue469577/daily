@@ -11,7 +11,7 @@ body {
 .i-l-h {
     width: 100%;
     height: 68px;
-    background: url("/static/img/banner.png");
+    /*background: url("/static/img/banner.png");*/
 }
 .i-l-b {
     padding-top: 20px;

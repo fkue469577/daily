@@ -11,7 +11,7 @@ $.get("/index/menu", function(result) {
 })
 
 $(".h-c-logout").click(function() {
-	sessionStorage.removeItem("Authorization");
+	localStorage.removeItem("Authorization");
 	layer.msg("退出成功");
 	setTimeout(()=>location.href="/login", 1000)
 });
