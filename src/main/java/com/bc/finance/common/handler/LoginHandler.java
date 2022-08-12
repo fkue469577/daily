@@ -55,7 +55,7 @@ public class LoginHandler {
         try {
             String token = jwtTokenUtil.generateToken(jwtInfo);
             String key = userConfiguration.getUserTokenHeader();
-            request.getSession().setAttribute(key, token);
+//            request.getSession().setAttribute(key, token);
 
             result.put("accessToken", "Bearer " + token);
             result.put("id", jwtInfo.getId());

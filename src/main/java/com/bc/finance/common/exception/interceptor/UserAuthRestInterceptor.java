@@ -36,14 +36,12 @@ public class UserAuthRestInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 配置该注解，说明不进行用户拦截
-        try {
-            userHelper.isLogin();
-        } catch (Exception e) {
-            String requestedWith = request.getHeader("X-Requested-With");
-            if("XMLHttpRequest".equals(requestedWith)) {
+        String requestedWith = request.getHeader("X-Requested-With");
+        if("XMLHttpRequest".equals(requestedWith)) {
+            try {
+                userHelper.isLogin();
+            } catch(Exception e) {
                 throw new UserTokenException();
-            } else {
-                response.sendRedirect("/login");
             }
         }
 
