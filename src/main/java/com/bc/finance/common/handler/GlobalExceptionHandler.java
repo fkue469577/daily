@@ -1,5 +1,6 @@
 package com.bc.finance.common.handler;
 
+import com.bc.finance.common.constant.CodeEnum;
 import com.bc.finance.common.constant.CommonConstants;
 import com.bc.finance.common.exception.BaseException;
 import com.bc.finance.common.exception.auth.ClientLoginInvalidException;
@@ -61,7 +62,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserTokenException.class)
     public BaseResponse userTokenExceptionHandler(HttpServletResponse response, UserTokenException ex) {
-        response.setStatus(200);
+        response.setStatus(CodeEnum.EX_USER_INVALID_CODE.getCode());
         logger.error(ex.getMessage(), ex);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
