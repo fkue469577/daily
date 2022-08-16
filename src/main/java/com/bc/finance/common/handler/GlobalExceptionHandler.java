@@ -26,58 +26,63 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public BaseResponse businessException(HttpServletResponse response, BusinessException ex) {
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(CommonConstants.EX_CLIENT_BUSINESS_CODE, ex.getMessage());
     }
+
     @ExceptionHandler(NotEmptyException.class)
     public BaseResponse businessException(HttpServletResponse response, NotEmptyException ex) {
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(CommonConstants.EX_NOT_EMPTY_CODE, ex.getMessage());
     }
+
     @ExceptionHandler( MethodArgumentNotValidException.class)
     public BaseResponse methodArgumentNotValidException(HttpServletResponse response, MethodArgumentNotValidException ex) {
-        response.setStatus(406);
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(CommonConstants.EX_NOT_EMPTY_CODE, ex.getMessage());
     }
 
     @ExceptionHandler(ClientTokenException.class)
     public BaseResponse clientTokenExceptionHandler(HttpServletResponse response, ClientTokenException ex) {
-        response.setStatus(403);
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
 
     @ExceptionHandler(ClientLoginInvalidException.class)
     public BaseResponse clientLoginInvalidHandler(HttpServletResponse response, ClientLoginInvalidException ex) {
-        response.setStatus(401);
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
 
     @ExceptionHandler(UserTokenException.class)
     public BaseResponse userTokenExceptionHandler(HttpServletResponse response, UserTokenException ex) {
-        response.setStatus(ex.getStatus());
+        response.setStatus(200);
         logger.error(ex.getMessage(), ex);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
 
     @ExceptionHandler(UserPassInvalidException.class)
     public BaseResponse userInvalidExceptionHandler(HttpServletResponse response, UserPassInvalidException ex) {
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
 
     @ExceptionHandler(BaseException.class)
     public BaseResponse baseExceptionHandler(HttpServletResponse response, BaseException ex) {
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
-        response.setStatus(500);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public BaseResponse otherExceptionHandler(HttpServletResponse response, Exception ex) {
-        response.setStatus(500);
+        response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return new BaseResponse(CommonConstants.EX_OTHER_CODE, ex.getMessage());
     }

@@ -66,7 +66,6 @@ function initAjax() {
             if(typeof switchDomain == "function") switchDomain()
         },
         beforeSend: function (xhr) {//发送请求前触发
-            xhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"))
             lyload();
         }
     });
@@ -1063,3 +1062,16 @@ $(function () {
         }
     })
 })
+
+let req = XMLHttpRequest;
+(function(send, load) {
+    XMLHttpRequest.prototype.send = function (xhr) {
+        this.setRequestHeader("Authorization", localStorage.getItem("Authorization"))
+        send.apply(this, arguments);
+    }
+    XMLHttpRequest.prototype.load = function (xhr) {
+        console.log(arguments);
+        load.apply(this, arguments);
+    }
+    XMLHttpRequest.
+})(XMLHttpRequest.prototype.send, XMLHttpRequest.prototype.load)
