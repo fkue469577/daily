@@ -46,7 +46,7 @@ table.on('toolbar(test)', function(obj){
 function openWin(model) {
 	layer.open({
 		type: 1,
-		area: ['700px', '470px'],
+		area: ['700px', '585px'],
 		title: model.id? "编辑":"创建" + '笔记',
 		shadeClose: true, //点击遮罩关闭
 		content: template("tpl", {model: model})
@@ -60,9 +60,25 @@ function openWin(model) {
 		}
 	});
 
-	UM.delEditor('context');
-	var ue = UM.getEditor('context');
-	ue.setContent(model.context??"")
-
+	UE.delEditor('context')
+	var editor = UE.getEditor('context',{
+		//这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
+		toolbars:[
+			['fullscreen', 'source', 'undo', 'redo'],
+			['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', "insertcode", 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+		],
+		//focus时自动清空初始化时的内容
+		autoClearinitialContent:true,
+		//关闭字数统计
+		wordCount:false,
+		//关闭elementPath
+		elementPathEnabled:false,
+		//默认的编辑区域高度
+		initialFrameHeight:300
+		//更多其他参数，请参考ueditor.config.js中的配置项
+	})
+	editor.ready(function() {
+		editor.setContent(model.context);
+	});
 }
 
