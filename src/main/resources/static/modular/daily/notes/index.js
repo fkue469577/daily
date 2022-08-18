@@ -69,6 +69,8 @@ function openWin(model) {
 		],
 		//focus时自动清空初始化时的内容
 		autoClearinitialContent:true,
+		autoHeightEnabled: false,
+		zIndex: 19891019,
 		//关闭字数统计
 		wordCount:false,
 		//关闭elementPath
