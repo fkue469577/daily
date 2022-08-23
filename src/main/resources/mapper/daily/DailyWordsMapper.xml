@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bc.finance.modular.daily.mapper.DailyWordsMapper">
+
+    <select id="page" resultType="java.util.Map">
+        select `id`, `word`, `explain`, `completed`
+        from daily_words dw
+        <where>
+            <if test="param.word!=null and param.word!=''">
+                and dw.word like concat('%', #{param.word}, '%')
+            </if>
+            <if test="param.explain!=null and param.explain!=''">
+                and dw.explain like concat('%', #{param.explain}, '%')
+            </if>
+            <if test="param.disabled!=null and param.disabled!=''">
+                and dw.disabled=#{param.disabled}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

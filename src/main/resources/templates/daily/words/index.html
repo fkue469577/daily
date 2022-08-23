@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>笔记管理</title>
+<head th:include="common/common :: common_common"></head>
+<body>
+<div class="body">
+    <div class="p-t justify">
+        <div class="p-t-l">
+            <h2>笔记管理</h2>
+        </div>
+        <div class="p-t-r">
+
+        </div>
+    </div>
+    <div class="p-b">
+        <form class="layui-form flex demoTable" id="searchForm">
+            <input name="word" class="layui-input" style="width: 200px;" placeholder="单词"/>
+            <input name="explain" class="layui-input" style="width: 200px;" placeholder="词义"/>
+            <button type="button"  class="layui-btn" onclick="page()">搜索</button>
+        </form>
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+</div>
+</body>
+
+
+
+<link href="/static/modular/daily/words/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/daily/words/index.js" ></script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="create">创建</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <div class="flex item-content">
+        {{#  if(!d.completed){ }}
+            <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>
+            <i class="layui-btn layui-btn-xs" lay-event="complete">完成</i>
+        {{#  } }}
+    </div>
+</script>
+<script type="text/html" id="tpl">
+    <form class="layui-form" id="form">
+        <input name="id" type="hidden" value="{{model.id}}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单词</label>
+            <div class="layui-input-block">
+                <input name="word" class="layui-input" required value="{{model.word}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">词义</label>
+            <div class="layui-input-block">
+                <input name="explain" class="layui-input" required value="{{model.explain}}" type="text"/>
+            </div>
+        </div>
+    </form>
+</script>
+</html>
