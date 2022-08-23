@@ -53,7 +53,7 @@ function openWin(model) {
     layer.open({
         type: 1,
         area: ['500px', '300'],
-        title: model.id? "编辑":"创建" + '笔记',
+        title: model.id? "编辑":"创建" + '单词',
         shadeClose: true, //点击遮罩关闭
         content: template("tpl", {model: model})
         ,btn: ['提交','取消']
