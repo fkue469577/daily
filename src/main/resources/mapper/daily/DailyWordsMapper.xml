@@ -16,6 +16,6 @@
                 and dw.disabled=#{param.disabled}
             </if>
         </where>
-        order by id desc
+        order by completed, id desc
     </select>
 </mapper>
