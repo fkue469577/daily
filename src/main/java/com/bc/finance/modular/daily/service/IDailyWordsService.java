@@ -24,4 +24,6 @@ public interface IDailyWordsService extends IService<DailyWords> {
     void insert(DailyWords words);
 
     void update(DailyWords words);
+
+    DailyWords getByWord(String word);
 }

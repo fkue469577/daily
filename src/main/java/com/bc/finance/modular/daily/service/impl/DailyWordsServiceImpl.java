@@ -1,6 +1,7 @@
 package com.bc.finance.modular.daily.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bc.finance.common.exception.business.BusinessException;
 import com.bc.finance.common.utils.ObjectId;
 import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyWords;
@@ -49,6 +50,12 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
 
     @Override
     public void insert(DailyWords words) {
+
+        DailyWords temp = this.getByWord(words.getWord());
+        if(temp!=null) {
+            throw new BusinessException("该单词已经添加过, 请勿重复添加");
+        }
+
         words.setId(ObjectId.getString());
         words.setCrtTime(LocalDateTime.now());
         super.save(words);
@@ -59,5 +66,12 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
     public void update(DailyWords words) {
 
         super.updateById(words);
+    }
+
+
+    @Override
+    public DailyWords getByWord(String word) {
+
+        return mapper.getByWord(word);
     }
 }
