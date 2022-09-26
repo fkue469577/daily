@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>账号密码管理</title>
+<head th:include="common/common :: common_common"></head>
+<body>
+<div class="body">
+    <div class="p-t justify">
+        <div class="p-t-l">
+            <h2>账号密码管理</h2>
+        </div>
+        <div class="p-t-r">
+
+        </div>
+    </div>
+    <div class="p-b">
+        <form class="layui-form flex demoTable" id="searchForm">
+            <input name="account" class="layui-input" style="width: 200px;" placeholder="账号"/>
+            <input name="password" class="layui-input" style="width: 200px;" placeholder="密码"/>
+            <input name="describe" class="layui-input" style="width: 200px;" placeholder="说明"/>
+            <button type="button"  class="layui-btn" onclick="page()">搜索</button>
+        </form>
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+</div>
+</body>
+
+
+
+<link href="/static/modular/daily/account/password/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/daily/account/password/index.js" ></script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="create">创建</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <div class="flex item-content">
+        {{#  if(!d.completed){ }}
+            <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>
+        {{#  } }}
+    </div>
+</script>
+<script type="text/html" id="tpl">
+    <form class="layui-form" id="form">
+        <input name="id" type="hidden" value="{{model.id}}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司</label>
+            <div class="layui-input-block">
+                <select name="companyId">
+                    <option value="">--请选择--</option>
+                    {{each companyList com}}
+                    <option value="{{com.id}}">{{com.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+                <input name="url" class="layui-input"  value="{{model.url}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">账户</label>
+            <div class="layui-input-block">
+                <input name="account" class="layui-input"  value="{{model.account}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input name="password" class="layui-input"  value="{{model.password}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-block">
+                <textarea name="describe" class="layui-textarea"> {{model.describe}} </textarea>
+            </div>
+        </div>
+    </form>
+</script>
+</html>
