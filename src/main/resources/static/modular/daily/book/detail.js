@@ -162,7 +162,7 @@ table.on('toolbar(test)', function(obj){
 function openWin(model) {
     var i = layer.open({
         type: 1,
-        area: ['700px', '440px'],
+        area: ['700px', '600px'],
         title: model.id? "编辑":"创建" + '章节笔记',
         shadeClose: true, //点击遮罩关闭
         content: template("noteTPL", {model: model})
@@ -207,6 +207,6 @@ function openWin(model) {
         selector: '#editor-toolbar',
         config: {}
     })
-    $("#editor-text-area").css("height", "135px")
+    $("#editor-text-area").css("height", "295px")
 }
 
