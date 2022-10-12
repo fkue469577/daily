@@ -2,3 +2,6 @@
     padding-top: 20px;
     padding-left: 30px;
 }
+.w-e-full-screen-container {
+    z-index: 100;
+}

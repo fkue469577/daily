@@ -44,3 +44,6 @@
 .edui-editor-body, .edui-body-container {
     height: 200px;
 }
+.w-e-full-screen-container {
+    z-index: 100;
+}

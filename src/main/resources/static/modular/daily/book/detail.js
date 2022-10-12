@@ -170,6 +170,7 @@ function openWin(model) {
         ,btnAlign: 'r'
         ,skin: 'layer-ext-myskin'
         ,yes:function () {
+            $("textarea[name=context]").val(editor.getHtml());
             $("#form").checkCommit({
                 url: "/daily/book/notes/save"
                 , callback: function() {
@@ -181,8 +182,31 @@ function openWin(model) {
     });
     form.render();
 
-    UM.delEditor('context');
-    var ue = UM.getEditor('context');
-    ue.setContent(model.context??"")
+
+    const E = window.wangEditor
+    // 切换语言
+    const LANG = location.href.indexOf('lang=en') > 0 ? 'en' : 'zh-CN'
+    E.i18nChangeLanguage(LANG)
+    var editor = E.createEditor({
+        selector: '#editor-text-area',
+        html: model.context,
+        config: {
+            placeholder: 'Type here...',
+            MENU_CONF: {
+                uploadImage: {
+                    fieldName: 'your-fileName',
+                    base64LimitSize: 10 * 1024 * 1024 // 10M 以下插入 base64
+                }
+            },
+            onChange(editor) {
+            }
+        }
+    })
+    var toolbar = E.createToolbar({
+        editor,
+        selector: '#editor-toolbar',
+        config: {}
+    })
+    $("#editor-text-area").css("height", "135px")
 }
 

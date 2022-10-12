@@ -2,7 +2,7 @@
 <html lang="en">
 <title>笔记管理</title>
 <head th:include="common/common :: common_common"></head>
-<head th:include="common/ueditor :: ueditor_ueditor"></head>
+<head th:include="common/wangEditor :: ueditor_ueditor"></head>
 <body>
 <div class="body">
     <div class="p-t justify">
@@ -49,7 +49,12 @@
         <div class="layui-form-item" >
             <label class="layui-form-label">内容</label>
             <div class="layui-input-block">
-                <textarea name="context" class="" id="context" ></textarea>
+                <textarea name="context" style="display: none"></textarea>
+                <!-- 编辑器 DOM -->
+                <div style="border: 1px solid #ccc;">
+                    <div id="editor-toolbar" style="border-bottom: 1px solid #ccc;"></div>
+                    <div id="editor-text-area" style="height: 500px"></div>
+                </div>
             </div>
         </div>
     </form>

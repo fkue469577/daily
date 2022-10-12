@@ -54,33 +54,37 @@ function openWin(model) {
 		,btnAlign: 'r'
 		,skin: 'layer-ext-myskin'
 		,yes:function () {
+			$("textarea[name=context]").val(editor.getHtml());
 			$("#form").checkCommit({
 				url: "/daily/notes/save",
 			})
 		}
 	});
 
-	UE.delEditor('context')
-	var editor = UE.getEditor('context',{
-		//这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
-		toolbars:[
-			['fullscreen', 'source', 'undo', 'redo'],
-			['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', "insertcode", 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
-		],
-		//focus时自动清空初始化时的内容
-		autoClearinitialContent:true,
-		autoHeightEnabled: false,
-		zIndex: 19891019,
-		//关闭字数统计
-		wordCount:false,
-		//关闭elementPath
-		elementPathEnabled:false,
-		//默认的编辑区域高度
-		initialFrameHeight:300
-		//更多其他参数，请参考ueditor.config.js中的配置项
+	const E = window.wangEditor
+	// 切换语言
+	const LANG = location.href.indexOf('lang=en') > 0 ? 'en' : 'zh-CN'
+	E.i18nChangeLanguage(LANG)
+	var editor = E.createEditor({
+		selector: '#editor-text-area',
+		html: model.context,
+		config: {
+			placeholder: 'Type here...',
+			MENU_CONF: {
+				uploadImage: {
+					fieldName: 'your-fileName',
+					base64LimitSize: 10 * 1024 * 1024 // 10M 以下插入 base64
+				}
+			},
+			onChange(editor) {
+			}
+		}
 	})
-	editor.ready(function() {
-		editor.setContent(model.context);
-	});
+	var toolbar = E.createToolbar({
+		editor,
+		selector: '#editor-toolbar',
+		config: {}
+	})
+	$("#editor-text-area").css("height", "260px")
 }
 
