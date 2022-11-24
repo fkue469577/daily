@@ -11,6 +11,8 @@ $(function() {
 //渲染
 function loadTree() {
     $.get("/daily/book/chapter/tree", {bookId: id}, function(res) {
+        treeHandle(res.data[0].children);
+
         tree.render({
             elem: '.p-b-l'  //绑定元素
             , onlyIconControl: true
@@ -46,8 +48,21 @@ function loadTree() {
         });
 
         $(".layui-tree-txt:eq(0)").click()
+        $(".layui-tree-pack:eq(0)").show()
     })
 }
+
+
+function treeHandle(tree, seq="") {
+    tree.forEach((e, i)=>{
+        var order = seq+"."+(i+1);
+        e.name = order + " " + e.name;
+        if(e.children) {
+            treeHandle(e.children, order);
+        }
+    })
+}
+
 
 function page(chapterId) {
     table.render({
