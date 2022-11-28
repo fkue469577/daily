@@ -18,7 +18,7 @@ spring:
   mvc:
     static-path-pattern: /static/**
   datasource:
-    url: jdbc:mysql://112.74.62.96:3306/daily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
+    url: jdbc:mysql://192.168.1.220:3306/daily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
     username: 469577278@qq.com
     password: fkue469577278
     driver-class-name: com.mysql.cj.jdbc.Driver
