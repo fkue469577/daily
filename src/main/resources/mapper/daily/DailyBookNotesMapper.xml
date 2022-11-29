@@ -3,7 +3,7 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyBookNotesMapper">
 
     <select id="page" resultType="java.util.Map">
-        select id, `title`
+        select id, `title`, context
         , (select `name` from daily_book db where db.id=dbn.book_id) bookName
         , (select concat(seq, ' ', name) name from daily_book_chapter dbc where dbc.id=dbn.chapter_id) chapterName
         from daily_book_notes dbn

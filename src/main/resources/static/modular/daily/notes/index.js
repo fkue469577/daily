@@ -19,10 +19,24 @@ function page() {
 		}
 		,cols: [[
 			{type:'checkbox'}
-			,{field:'title', title:'标题'}
+			,{title:'标题', templet: (obj)=>{
+				return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.title}</div>`
+				}}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
+		, done: function (res, curr, count) {
+			$(".p-b-c").click(function() {
+				var _this = $(this);
+				var context = res.data[_this.attr("data-index")].context
+				layer.open({
+					type: 1,
+					content: `<div class="editor-content-view">${context}</div>`,
+					area: ["700px", "500px"],
+					shadeClose: true
+				})
+			});
+		}
 	});
 }
 
@@ -65,7 +79,7 @@ function openWin(model) {
 	// 切换语言
 	const LANG = location.href.indexOf('lang=en') > 0 ? 'en' : 'zh-CN'
 	E.i18nChangeLanguage(LANG)
-	var editor = E.createEditor({
+	window.editor = E.createEditor({
 		selector: '#editor-text-area',
 		html: model.context,
 		config: {

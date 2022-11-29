@@ -64,27 +64,6 @@ function treeHandle(tree, seq="") {
 }
 
 
-function page(chapterId) {
-    table.render({
-        elem: '#test'
-        ,url:'/daily/book/notes/page'
-        ,toolbar: '#toolbarDemo'
-        ,title: '用户数据表'
-        , where: {bookId: id, chapterId: chapterId}
-        ,parseData: function(res) {
-            res.code = 0;
-            return res;
-        }
-        ,cols: [[
-            {field:'bookName', title:'书本名称'}
-            ,{field:'chapterName', title:'章节'}
-            ,{field:'title', title:'标题'}
-            ,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
-        ]]
-        ,page: true
-    });
-}
-
 function openChapter(model) {
     layer.open({
         type: 1,
@@ -146,12 +125,25 @@ function pageNotes() {
             return res;
         }
         ,cols: [[
-            {field:'bookName', title:'书本名称'}
-            ,{field:'chapterName', title:'章节'}
-            ,{field:'title', title:'标题'}
+            {field:'chapterName', title:'章节'}
+            ,{title:'标题', templet: (obj)=>{
+                    return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.title}</div>`
+                }}
             ,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
         ]]
         ,page: true
+        , done: function (res, curr, count) {
+            $(".p-b-c").click(function() {
+                var _this = $(this);
+                var context = res.data[_this.attr("data-index")].context
+                layer.open({
+                    type: 1,
+                    content: `<div class="editor-content-view">${context}</div>`,
+                    area: ["700px", "500px"],
+                    shadeClose: true
+                })
+            });
+        }
     });
 
 }

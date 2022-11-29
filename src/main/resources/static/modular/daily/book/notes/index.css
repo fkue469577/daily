@@ -5,3 +5,10 @@
 .w-e-full-screen-container {
     z-index: 100;
 }
+.p-b-c {
+    height: 28px;
+    width: fit-content;
+    padding: 0px 10px;
+    margin-left: -10px;
+    cursor: pointer;
+}

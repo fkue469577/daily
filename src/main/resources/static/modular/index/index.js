@@ -5,9 +5,12 @@ $.get("/index/menu", function(result) {
 	$(".l-b-i").click(function() {
 		$(".l-b-i").removeClass("l-b-i-select");
 		$(this).addClass("l-b-i-select");
+		localStorage.setItem("current_menu_src", $(this).attr("src"))
 		$("iframe").attr("src", $(this).attr("src"))
 	});
-	$(".l-b-i").eq(0).click();
+	var current_menu = $(`.l-b-i[src='${localStorage.getItem("current_menu_src")}']`)
+	current_menu = current_menu.get(0)? current_menu: $(".l-b-i").eq(0)
+	current_menu.click();
 })
 
 $(".h-c-logout").click(function() {
