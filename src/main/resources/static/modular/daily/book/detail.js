@@ -66,7 +66,7 @@ function renderTree() {
 function treeHandle(tree, seq="") {
     tree.forEach((e, i)=>{
         treeDataMap[e.id]=e;
-        var order = seq+"."+(i+1);
+        var order = seq? seq+"."+(i+1): (i+1);
         e.name = order + " " + e.name;
         if(e.children) {
             treeHandle(e.children, order);
@@ -87,9 +87,25 @@ function openChapter(model) {
         ,skin: 'layer-ext-myskin'
         ,yes:function () {
             $("#chapterForm").checkCommit({
+                timeout: false,
                 url: "/daily/book/chapter/save",
-                callback: ()=>{
-                    renderTree();
+                callback: (res)=>{
+                    var formData = $("#chapterForm").serializeObject();
+                    if(!formData.id) {
+                        var children;
+                        var parent = treeDataMap[formData.parentId];
+                        if(parent) {
+                            children = parent["children"]??[];
+                            formData["seq"]=parent.seq + "." + (children.length+1)
+                        } else {
+                            children = treeData[0]["children"];
+                            formData["seq"]=(children.length+1)
+                        }
+                        formData["id"]=res
+                        formData["name"]=formData["seq"] + " " + formData["name"]
+                        children.push(formData)
+                        renderTree();
+                    }
                     layer.closeAll();
                 }
             })

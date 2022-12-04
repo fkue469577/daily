@@ -313,7 +313,7 @@ $.fn.extend({
                         } else {
                             history.go(0);
                         }
-                    });
+                    }, option.timeout? option.timeout: 0);
                 }
             })
         }

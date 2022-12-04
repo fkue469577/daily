@@ -75,7 +75,7 @@ public class BookChapterController {
 
     @PostMapping("/save")
     @ResponseBody
-    public BaseResponse save(@RequestBody DailyBookChapter chapter) {
+    public ObjectResponse save(@RequestBody DailyBookChapter chapter) {
 
         if(StringUtils.isBlank(chapter.getId())) {
             chapterService.insert(chapter);
@@ -83,7 +83,7 @@ public class BookChapterController {
             chapterService.update(chapter);
         }
 
-        return BaseResponse.success();
+        return new ObjectResponse(chapter.getId());
     }
 
 
