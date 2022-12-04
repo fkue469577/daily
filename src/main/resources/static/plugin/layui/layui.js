@@ -5577,8 +5577,10 @@ layui.define("form", function (e) {
         })
     }, b.prototype.spread = function (e, a) {
         var n = this, t = n.config, r = e.children("." + p), l = r.children("." + f), c = r.find("." + o),
-            k = r.find("." + y), m = t.onlyIconControl ? c : l, x = "";
+            k = r.find("." + y), m = t.onlyIconControl ? c : l, x = "", a1=a;
         m.on("click", function (i) {
+            if(typeof t.spreadFunc=="function") t.spreadFunc(e, a1)
+            a1.spread = a1.spread? false: true;
             var a = e.children("." + v),
                 n = m.children(".layui-icon")[0] ? m.children(".layui-icon") : m.find(".layui-tree-icon").children(".layui-icon");
             if (a[0]) {

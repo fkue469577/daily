@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 112.74.62.96
-Source Server Version : 50544
-Source Host           : 112.74.62.96:3306
+Source Server         : 192.168.1.220
+Source Server Version : 50736
+Source Host           : 192.168.1.220:3306
 Source Database       : daily
 
 Target Server Type    : MYSQL
-Target Server Version : 50544
+Target Server Version : 50736
 File Encoding         : 65001
 
-Date: 2022-11-25 18:00:24
+Date: 2022-12-04 15:06:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -377,6 +377,24 @@ INSERT INTO `daily_book_chapter` VALUES ('637f314546e0fb0006ad2027', '637edb4046
 INSERT INTO `daily_book_chapter` VALUES ('637f315f46e0fb0006ad2028', '637edb4046e0fb0006035776', '', '附录:  Settings 细节', '2022-11-24 16:54:55', '19', '19');
 INSERT INTO `daily_book_chapter` VALUES ('637f317146e0fb0006ad2029', '637edb4046e0fb0006035776', '', '附录:  Sun 规格说明可选实现', '2022-11-24 16:55:13', '20', '20');
 INSERT INTO `daily_book_chapter` VALUES ('637f31e046e0fb0006ad202a', '637edb4046e0fb0006035776', '637f312b46e0fb0006ad2025', '简介', '2022-11-24 16:57:04', '21', '1.1');
+INSERT INTO `daily_book_chapter` VALUES ('63899a3f5f150300079b5305', '637edb4046e0fb0006035776', '637f31e046e0fb0006ad202a', 'Nexus 历史', '2022-12-02 14:25:04', '22', '1.1.1');
+INSERT INTO `daily_book_chapter` VALUES ('63899a585f150300079b5306', '637edb4046e0fb0006035776', '637f312b46e0fb0006ad2025', '安装 Nexus', '2022-12-02 14:25:29', '23', '16.2');
+INSERT INTO `daily_book_chapter` VALUES ('63899a675f150300079b5307', '637edb4046e0fb0006035776', '63899a585f150300079b5306', '从Sonatype下载Nexus', '2022-12-02 14:25:44', '24', '16.2.1');
+INSERT INTO `daily_book_chapter` VALUES ('63899a735f150300079b5308', '637edb4046e0fb0006035776', '63899a585f150300079b5306', '安装Nexus', '2022-12-02 14:25:55', '25', '16.2.2');
+INSERT INTO `daily_book_chapter` VALUES ('63899a7c5f150300079b5309', '637edb4046e0fb0006035776', '63899a585f150300079b5306', '运行Nexus', '2022-12-02 14:26:04', '26', '16.2.3');
+INSERT INTO `daily_book_chapter` VALUES ('63899a885f150300079b530a', '637edb4046e0fb0006035776', '63899a585f150300079b5306', '安装后检查单', '2022-12-02 14:26:16', '27', '16.2.4');
+INSERT INTO `daily_book_chapter` VALUES ('63899a925f150300079b530b', '637edb4046e0fb0006035776', '63899a585f150300079b5306', '为Redhat/Fedora/CentOS设置启动脚本', '2022-12-02 14:26:27', '28', '16.2.5');
+INSERT INTO `daily_book_chapter` VALUES ('63899a9d5f150300079b530c', '637edb4046e0fb0006035776', '63899a585f150300079b5306', '升级Nexus版本', '2022-12-02 14:26:38', '29', '16.2.6');
+INSERT INTO `daily_book_chapter` VALUES ('63899aa65f150300079b530d', '637edb4046e0fb0006035776', '637f312b46e0fb0006ad2025', '使用Nexus', '2022-12-02 14:26:46', '30', '16.3');
+INSERT INTO `daily_book_chapter` VALUES ('63899ab35f150300079b530e', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', '浏览仓库', '2022-12-02 14:26:59', '31', '16.3.1');
+INSERT INTO `daily_book_chapter` VALUES ('63899abe5f150300079b530f', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', '浏览组', '2022-12-02 14:27:11', '32', '16.3.2');
+INSERT INTO `daily_book_chapter` VALUES ('6389b2d85f150300079b5311', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', '搜索构件', '2022-12-02 16:10:01', '33', '16.3.3');
+INSERT INTO `daily_book_chapter` VALUES ('6389b2e65f150300079b5312', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', '浏览系统RSS源', '2022-12-02 16:10:15', '34', '16.3.4');
+INSERT INTO `daily_book_chapter` VALUES ('6389b2f05f150300079b5313', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', '浏览日志文件和配置', '2022-12-02 16:10:25', '35', '16.3.5');
+INSERT INTO `daily_book_chapter` VALUES ('6389b2fb5f150300079b5314', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', '更改你的密码', '2022-12-02 16:10:36', '36', '16.3.6');
+INSERT INTO `daily_book_chapter` VALUES ('638c459a57218d15a8fe77bb', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', 'aa', '2022-12-04 15:00:43', '37', '16.3.7');
+INSERT INTO `daily_book_chapter` VALUES ('638c461857218d15a8fe77bc', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', 'bb', '2022-12-04 15:02:49', '38', '16.3.8');
+INSERT INTO `daily_book_chapter` VALUES ('638c466957218d15a8fe77bd', '637edb4046e0fb0006035776', '63899aa65f150300079b530d', 'cc', '2022-12-04 15:04:09', '39', '16.3.9');
 
 -- ----------------------------
 -- Table structure for daily_book_notes
@@ -457,6 +475,7 @@ INSERT INTO `daily_notes` VALUES ('633d698d46e0fb0006745059', '0 到 100 岁，�
 INSERT INTO `daily_notes` VALUES ('63726d6f46e0fb0006035775', 'SpringCloud 常见的组件', '<p>1. 有无数的微服务, 他们需要相互调用(open Feign)</p><p>2. 这么多服务要相互调用, 用注册中心管理管理.</p><p>3. 服务都去找注册中心注册, 拉取的服务可能是个列表, 将来做远程调用需要用到负载均衡(ribbon)</p><p>4. 这么多服务, 做配置管理(配置组件)</p><p>5. 微服务群行程了, 对外提供服务(微服务网关)</p><p><br></p><p>注册中心组件: Eureka、Nacos等</p><p>负载均衡组件: Ribbon</p><p>远程调用组件: OpenFeign</p><p>网关组件: Zuul、GateWay</p><p>服务保护组件: Hystrix、Sentinel</p><p>服务配置管理组件: SpringCloudConfig、Nacos</p>', '2022-11-15 00:31:43');
 INSERT INTO `daily_notes` VALUES ('6380340846e0fb0006ad202c', '类跟Class对象的关系', '<p>1。类是程序的一部分，梅个类都有一个class对象。每当编写并且编译了一个新类，就会产生一个class对象（更恰当的说，是被保存在一个同名的class文件中）。</p><p>2。所有的类都是在对其第一次使用的时候被加载到JVM中，如当程序创建对第一个静态成员的引用时,就会加载这个类；或者使用new关键字创建新的对象的时候。因此java程序在它运行之前并非完全加载。其各个部分是在必须的时候才加载。</p><p>3。Class没有公共构造方法，因此不能显式地声明一个Class对象，Class对象是在载入类时由Java虚拟机一级通过调用类载入器中的defineClass方法自己主动构造的。</p>', '2022-11-25 11:18:32');
 INSERT INTO `daily_notes` VALUES ('63806e7946e0fb0006ad202d', 'Spring Aop 术语', '<p>1。通知（Advice）</p><p> &nbsp; &nbsp; &nbsp; 就是扩展的功能。比如我们的程序中需要添加日志、事务等功能，编写该功能的方法就是通知，也可以成为增强</p><p> &nbsp; &nbsp; &nbsp; &nbsp;通知类型：</p><p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;前置通知（after）</p><p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;后置通知（afterReturning）</p><p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;环绕通知（around）</p><p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;异常通知（afterThrowing）</p><p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;最终通知等（after）</p><p>2。连接点（JoinPoint）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;可以增强的功能，比如添加、删除、修改、查询等方法。</p><p>3。切入点（Pointcut）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;实际上增强的方法，就比如我们增强添加的功能。</p><p>4。切面（Aspect）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;切入点，增强所在的那个类叫切面，这些代码需要编写出来，这个配置的类就是这个切面。</p><p>5。引入（introduction）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;语序我们想现有的类添加新方法属性。这相当于吧切面用到目标累中</p><p>6。目标（target）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;引入中所提到的目标累，也就是 要被通知的对象，也就是真正的业务逻辑。可以在毫不知情的情况下，被织入切面。而自己专注于业务本身的逻辑</p><p>7。代理（proxy）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;AOP都是通过代理模式实现</p><p>8。织入（weAVing）</p><p> &nbsp; &nbsp; &nbsp; &nbsp;把切面应用到目标对象来创建新的代理对象的过程。一共有3中方式，spring采用的是运行时织入</p>', '2022-11-25 15:27:53');
+INSERT INTO `daily_notes` VALUES ('6386bf0957218d32c00a74bf', 'IDEA 快捷键', '<p><span style=\"color: rgb(77, 77, 77); background-color: rgb(255, 255, 255); font-size: 16px;\">ctrl+alt+向左箭头 返回上一次</span><a href=\"https://so.csdn.net/so/search?q=%E5%85%89%E6%A0%87&amp;spm=1001.2101.3001.7020\" target=\"_blank\" style=\"text-align: start;\">光标</a><span style=\"color: rgb(77, 77, 77); background-color: rgb(255, 255, 255); font-size: 16px;\">所在位置<br>ctrl+alt+向右箭头 返回下一次光标所在位置</span></p>', '2022-11-30 10:25:14');
 
 -- ----------------------------
 -- Table structure for daily_words
@@ -534,6 +553,9 @@ INSERT INTO `daily_words` VALUES ('63595e8046e0fb0006035771', 'correlate', '相�
 INSERT INTO `daily_words` VALUES ('6359601246e0fb0006035772', 'mandatory', '强制性的', '\0', '2022-10-27 00:28:02');
 INSERT INTO `daily_words` VALUES ('6359685546e0fb0006035773', 'durable', '持久的', '\0', '2022-10-27 01:03:17');
 INSERT INTO `daily_words` VALUES ('635ea4a846e0fb0006035774', 'recover', '恢复', '\0', '2022-10-31 00:22:00');
+INSERT INTO `daily_words` VALUES ('6383753146e0fb0006ad202e', 'absent', '缺席的', '\0', '2022-11-27 22:33:21');
+INSERT INTO `daily_words` VALUES ('6383777f46e0fb0006ad202f', 'consistency', '一致性', '\0', '2022-11-27 22:43:11');
+INSERT INTO `daily_words` VALUES ('6389aca75f150300079b5310', 'mirror', '镜子, 反射', '\0', '2022-12-02 15:43:35');
 
 -- ----------------------------
 -- Table structure for qzone_image_phf

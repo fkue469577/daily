@@ -3,7 +3,10 @@ var tree = layui.tree,
     form = layui.form,
     laydate = layui.laydate;
 
-var currentChapterId;
+
+var currentChapterId
+    , treeData
+    , treeDataMap = {};
 
 $(function() {
     loadTree()
@@ -11,50 +14,58 @@ $(function() {
 //渲染
 function loadTree() {
     $.get("/daily/book/chapter/tree", {bookId: id}, function(res) {
+        treeData = res.data;
         treeHandle(res.data[0].children);
-
-        tree.render({
-            elem: '.p-b-l'  //绑定元素
-            , onlyIconControl: true
-            , data: res.data
-            , rightClickFunc: function(elem, data) {
-                var i = layer.open({
-                    type: 1,
-                    area: ["150px", "auto"],
-                    offset: [elem.offset().top + elem.height(), elem.offset().left+elem.width()],
-                    closeBtn: 0,
-                    shadeClose: true,
-                    title: false,
-                    content: template("menuTPL", {})
-                })
-                $(".layui-layer-shade").on("contextmenu", e1=>false);
-                $(".add").click(function (){
-                    layer.close(i)
-                    openChapter(data.type==="book"? {bookId: id}:{bookId: id, parentId: data.id, parentName: data.name});
-                });
-                $(".edit").click(function (){
-                    if(data.type === 'book') return
-                    layer.close(i)
-                    openChapter({id: data.id, name: data.name, parentId: data.parentId, parentName: data.parentName});
-                });
-            }
-            , click: function(obj) {
-                $(".tree-entry-selected").removeClass("tree-entry-selected")
-                $(obj.elem[0]).find(".layui-tree-entry:eq(0)").addClass("tree-entry-selected")
-
-                currentChapterId = obj.data.type!=="book"? obj.data.id: undefined;
-                pageNotes();
-            }
-        });
+        renderTree();
 
         $(".layui-tree-txt:eq(0)").click()
-        $(".layui-tree-pack:eq(0)").show()
     })
+}
+
+function renderTree() {
+    tree.render({
+        elem: '.p-b-l'  //绑定元素
+        , onlyIconControl: true
+        , data: treeData
+        , rightClickFunc: function(elem, data) {
+            var i = layer.open({
+                type: 1,
+                area: ["150px", "auto"],
+                offset: [elem.offset().top + elem.height(), elem.offset().left+elem.width()],
+                closeBtn: 0,
+                shadeClose: true,
+                title: false,
+                content: template("menuTPL", {})
+            })
+            $(".layui-layer-shade").on("contextmenu", e1=>false);
+            $(".add").click(function (){
+                layer.close(i);
+                openChapter(data.type==="book"? {bookId: id}:{bookId: id, parentId: data.id, parentName: data.name});
+            });
+            $(".edit").click(function (){
+                if(data.type === 'book') return
+                layer.close(i);
+                openChapter({id: data.id, name: data.name, parentId: data.parentId, parentName: data.parentName});
+            });
+        }
+        , click: function(obj) {
+            $(".tree-entry-selected").removeClass("tree-entry-selected")
+            $(obj.elem[0]).find(".layui-tree-entry:eq(0)").addClass("tree-entry-selected")
+
+            currentChapterId = obj.data.type!=="book"? obj.data.id: undefined;
+            pageNotes();
+        }
+        , spreadFunc: function() {
+
+        }
+    });
+    $(".layui-tree-pack:eq(0)").show()
 }
 
 
 function treeHandle(tree, seq="") {
     tree.forEach((e, i)=>{
+        treeDataMap[e.id]=e;
         var order = seq+"."+(i+1);
         e.name = order + " " + e.name;
         if(e.children) {
@@ -77,6 +88,10 @@ function openChapter(model) {
         ,yes:function () {
             $("#chapterForm").checkCommit({
                 url: "/daily/book/chapter/save",
+                callback: ()=>{
+                    renderTree();
+                    layer.closeAll();
+                }
             })
         }
     });
