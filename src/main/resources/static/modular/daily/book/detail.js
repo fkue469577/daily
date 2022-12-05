@@ -95,7 +95,11 @@ function openChapter(model) {
                         var children;
                         var parent = treeDataMap[formData.parentId];
                         if(parent) {
-                            children = parent["children"]??[];
+                            children = parent["children"];
+                            if(!children) {
+                                children = [];
+                                parent["children"] = children;
+                            }
                             formData["seq"]=parent.seq + "." + (children.length+1)
                         } else {
                             children = treeData[0]["children"];
@@ -103,6 +107,7 @@ function openChapter(model) {
                         }
                         formData["id"]=res
                         formData["name"]=formData["seq"] + " " + formData["name"]
+                        treeDataMap[res]=formData
                         children.push(formData)
                         renderTree();
                     }
