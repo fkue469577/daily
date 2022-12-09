@@ -32,6 +32,8 @@ public class DailyNotes implements Serializable {
 
     private String context;
 
+    private Integer zIndex;
+
     private LocalDateTime crtTime;
 
 

@@ -22,6 +22,9 @@ function page() {
 			,{title:'标题', templet: (obj)=>{
 				return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.title}</div>`
 				}}
+			, {title: "堆叠顺序", templet: (obj)=>{
+					return `<input class="p-b-z-index layui-input" type="number" min="0" value="${obj.zIndex}" data-index="${obj.LAY_TABLE_INDEX}"/>`
+				}}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
@@ -35,6 +38,12 @@ function page() {
 					area: ["700px", "500px"],
 					shadeClose: true
 				})
+			});
+			$(".p-b-z-index").change(function() {
+				var _this = $(this);
+				var id = res.data[_this.attr("data-index")].id;
+				var zIndex = _this.val();
+				$.post("/daily/notes/save", {id: id, zIndex: zIndex}, (res)=>refresh(res, ()=>$(".layui-laypage-btn").click()));
 			});
 		}
 	});

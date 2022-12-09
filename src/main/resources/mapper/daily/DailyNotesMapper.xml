@@ -3,10 +3,11 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyNotesMapper">
 
     <select id="page" resultType="java.util.Map">
-        select id, title, context
+        select id, title, context, z_index zIndex
         from daily_notes dn
         <where>
             <if test="param.name!=null and param.name!=''">and dn.title like concat('%', #{param.name}, '%')</if>
         </where>
+        order by z_index desc
     </select>
 </mapper>
