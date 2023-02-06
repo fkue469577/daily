@@ -19,6 +19,7 @@ function page() {
 		,cols: [[
 			{field:'name', title:'名称', templet: (data)=>`<a href="/daily/book/detail/${data.id}">${data.name}</a>`}
 			,{field:'publishedDate', title:'出版时间'}
+			,{field:'lastUpdateTime', title:'最新更新时间', sort: true}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,11 +44,9 @@ public class BookController {
     public TableResponse page(@RequestParam Map param) {
         Page page = PageHelper.defaultPage();
 
-        QueryWrapper query = new QueryWrapper();
-        query.select("id", "name", "published_date");
-        bookService.page(page, query);
+        List list = bookService.paging(page, param);
 
-        return new TableResponse(page.getTotal(), page.getRecords());
+        return new TableResponse(page.getTotal(), list);
     }
 
     @GetMapping("/get/{id}")

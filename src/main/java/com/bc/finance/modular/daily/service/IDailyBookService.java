@@ -1,7 +1,11 @@
 package com.bc.finance.modular.daily.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bc.finance.modular.daily.entity.DailyBook;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,4 +20,6 @@ public interface IDailyBookService extends IService<DailyBook> {
     void insert(DailyBook book);
 
     void update(DailyBook book);
+
+    List paging(Page page, Map param);
 }
