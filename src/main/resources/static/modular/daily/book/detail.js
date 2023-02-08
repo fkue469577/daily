@@ -27,6 +27,7 @@ function renderTree() {
         elem: '.p-b-l'  //绑定元素
         , onlyIconControl: true
         , data: treeData
+        , accordion: true
         , rightClickFunc: function(elem, data) {
             var i = layer.open({
                 type: 1,
@@ -120,32 +121,27 @@ function openChapter(model) {
 
     var value = [{value: model.parentId, name: model.parentName??""}];
     loadChapter(model.bookId, value)
-
-    form.on("select(bookId)", function(res) {
-        loadChapter(res, value);
-    });
 }
 function loadChapter(bookId, value) {
-    $.get(`/daily/book/chapter/listByBookId/${id}`, function(res) {
-        var chapter = xmSelect.render({
-            el: '#parentId',
-            model: { label: { type: 'text' } },
-            tree: {
-                show: true,
-                strict: false,
-                expandedKeys: [ -1 ],
-            },
-            name: "parentId",
-            height: 'auto',
-            data: res.data,
-            on: function(data){
-                if(data.isAdd){
-                    return data.change.slice(0, 1)
-                }
-            },
-        })
-        chapter.setValue(value)
-    });
+    var data = JSON.parse(JSON.stringify(treeData[0].children));
+    var chapter = xmSelect.render({
+        el: '#parentId',
+        model: { label: { type: 'text' } },
+        tree: {
+            show: true,
+            strict: false,
+            expandedKeys: [ -1 ],
+        },
+        name: "parentId",
+        height: 'auto',
+        data: data,
+        on: function(data){
+            if(data.isAdd){
+                return data.change.slice(0, 1)
+            }
+        },
+    })
+    chapter.setValue(value)
 }
 
 function pageNotes() {
