@@ -45,7 +45,7 @@ function renderTree() {
             $(".edit").click(function (){
                 if(data.type === 'book') return
                 layer.close(i);
-                openChapter({id: data.id, name: data.name, parentId: data.parentId, parentName: data.parentName});
+                openChapter({id: data.id, name: data.name, bookId: id, parentName: data.parentName});
             });
         }
         , click: function(obj) {
