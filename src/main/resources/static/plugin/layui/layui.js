@@ -5560,7 +5560,8 @@ layui.define("form", function (e) {
                     return t.showCheckbox ? '<input type="checkbox" name="' + (r.field || "layuiTreeCheck_" + r.id) + '" same="layuiTreeCheck" lay-skin="primary" ' + (r.disabled ? "disabled" : "") + ' value="' + r.id + '">' : ""
                 }(), function () {
                     // debugger
-                    var title = r.name || r.title || r.label || t.text.defaultNodeName
+                    var titlePre = r.namePre || r.titlePre || r.labelPre || t.text.defaultNodeNamePre
+                    var title = (titlePre? titlePre+" ": "") + (r.name || r.title || r.label || t.text.defaultNodeName)
                     return t.isJump && r.href? `<a href="${r.href}" target="block" class="${y}">${title}</a>`: `<span class="${y} ${r.disabled? (" " + d): ""}" title="${title}">${title}</span>`
                 }(), "</div>", function () {
                     if (!t.edit) return "";

@@ -46,7 +46,7 @@ function renderTree() {
             $(".edit").click(function (){
                 if(data.type === 'book') return
                 layer.close(i);
-                openChapter({id: data.id, name: data.name, bookId: id, parentName: data.parentName});
+                openChapter({id: data.id, name: data.name, bookId: id, parentName: data.parentName, parentId: data.parentId});
             });
         }
         , click: function(obj) {
@@ -68,7 +68,7 @@ function treeHandle(tree, seq="") {
     tree.forEach((e, i)=>{
         treeDataMap[e.id]=e;
         var order = seq? seq+"."+(i+1): (i+1);
-        e.name = order + " " + e.name;
+        e.titlePre = order;
         if(e.children) {
             treeHandle(e.children, order);
         }
@@ -80,7 +80,7 @@ function openChapter(model) {
     layer.open({
         type: 1,
         area: ['550px', 'auto'],
-        title: model.id? "编辑":"创建" + '章节',
+        title: (model.id? "编辑":"创建") + '章节',
         shadeClose: true, //点击遮罩关闭
         content: template("chapterTPL", {model: model})
         ,btn: ['提交','取消']
