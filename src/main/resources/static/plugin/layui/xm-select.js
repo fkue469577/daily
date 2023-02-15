@@ -875,10 +875,12 @@
 						s = e.tree, u = o.name, p = o.disabled, f = i.label, d = f.type, h = f[d], b = a;
 					s.show && s.strict && s.simple && (b = [], Object(c.j)(n, a, b, o));
 					var y = "", x = !0, v = b.map((function (e) {
-						return e[u]
+						var titlePre = e.namePre || e.titlePre || e.labelPre;
+						return (titlePre? titlePre+" ": "") + e[u]
 					})).join(",");
 					if ("text" === d) y = b.map((function (e) {
-						return "".concat(h.left).concat(e[u]).concat(h.right)
+						var titlePre = e.namePre || e.titlePre || e.labelPre;
+						return "".concat(h.left).concat((titlePre? titlePre+" ": "") + e[u]).concat(h.right)
 					})).join(h.separator); else if ("block" === d) {
 						x = !1;
 						var g = L(b), _ = {backgroundColor: r.color}, w = h.showCount <= 0 ? g.length : h.showCount;
@@ -1661,6 +1663,7 @@
 						s = e.template, u = e.data, p = e.tree, f = e.filterable, d = e.remoteSearch, h = e.searchTips,
 						b = e.iconfont, y = e.enableKeyboard, x = o.name, v = o.value, g = o.disabled, _ = o.children,
 						w = o.optgroup, k = "hidden" != e.model.icon, O = function (e, t, o) {
+							var titlePre = e.namePre || e.titlePre || e.labelPre;
 							var r = !!i.find((function (t) {
 								return t[v] == e[v]
 							})), c = e[g], f = !0 === e.__node.half;
@@ -1698,7 +1701,7 @@
 								onClick: n.optionClick.bind(n, e, r, e[g], "checkbox")
 							}), m("div", {
 								class: "xm-option-content",
-								dangerouslySetInnerHTML: {__html: s({data: u, item: e, arr: i, name: e[x], value: e[v]})}
+								dangerouslySetInnerHTML: {__html: s({data: u, item: e, arr: i, name: ((titlePre? titlePre+" ": "") + e[x]), value: e[v]})}
 							}))
 						};
 					f && (d ? this.postData() : this.filterData(u, this.state.filterValue));

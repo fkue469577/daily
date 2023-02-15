@@ -50,6 +50,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">是否完结</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="end" lay-skin="switch" lay-text="是|否" {{if model.end}}checked{{/if}}>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
                 <textarea name="remark" class="layui-textarea">{{model.remark}}</textarea>

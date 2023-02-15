@@ -41,12 +41,12 @@ function renderTree() {
             $(".layui-layer-shade").on("contextmenu", e1=>false);
             $(".add").click(function (){
                 layer.close(i);
-                openChapter(data.type==="book"? {bookId: id}:{bookId: id, parentId: data.id, parentName: data.name});
+                openChapter(data.type==="book"? {bookId: id}:{bookId: id, parentId: data.id, parentName: data.name, seq: data.seq});
             });
             $(".edit").click(function (){
                 if(data.type === 'book') return
                 layer.close(i);
-                openChapter({id: data.id, name: data.name, bookId: id, parentName: data.parentName, parentId: data.parentId});
+                openChapter({id: data.id, name: data.name, bookId: id, parentName: data.parentName, parentId: data.parentId, seq: data.seq});
             });
         }
         , click: function(obj) {
@@ -93,25 +93,28 @@ function openChapter(model) {
                 callback: (res)=>{
                     var formData = $("#chapterForm").serializeObject();
                     if(!formData.id) {
-                        var children;
+                        var children, seq="seq", children="children";
                         var parent = treeDataMap[formData.parentId];
                         if(parent) {
-                            children = parent["children"];
+                            children = parent[children];
                             if(!children) {
                                 children = [];
-                                parent["children"] = children;
+                                parent[children] = children;
                             }
-                            formData["seq"]=parent.seq + "." + (children.length+1)
+                            formData[seq]=parent[seq] + "." + (children.length+1)
                         } else {
-                            children = treeData[0]["children"];
-                            formData["seq"]=(children.length+1)
+                            children = treeData[0][children];
+                            formData[seq]=(children.length+1)
                         }
                         formData["id"]=res
-                        formData["name"]=formData["seq"] + " " + formData["name"]
+                        formData["name"]=formData["name"]
+                        formData["titlePre"]=formData[seq]
                         treeDataMap[res]=formData
                         children.push(formData)
-                        renderTree();
+                    } else {
+                        Object.assign(treeDataMap[formData.id], formData);
                     }
+                    renderTree();
                     layer.closeAll();
                 }
             })
@@ -119,7 +122,7 @@ function openChapter(model) {
     });
     form.render();
 
-    var value = [{value: model.parentId, name: model.parentName??""}];
+    var value = [{value: model.parentId, name: model.seq + " " + model.parentName}];
     loadChapter(model.bookId, value)
 }
 function loadChapter(bookId, value) {

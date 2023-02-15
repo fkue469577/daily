@@ -301,6 +301,9 @@ $.fn.extend({
 
         function submitForm() {
             var form = $(_this).serializeObject();
+            if(option.dataBefore) {
+                option.dataBefore(form);
+            }
             $.ajax({
                 method: "post",
                 url: option.url,

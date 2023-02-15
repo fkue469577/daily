@@ -37,4 +37,7 @@ public class DailyBook implements Serializable {
     private LocalDate publishedDate;
 
     private String remark;
+
+    @ApiModelProperty("是否完结")
+    private Boolean end;
 }

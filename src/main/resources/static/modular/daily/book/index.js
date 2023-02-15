@@ -19,6 +19,7 @@ function page() {
 		,cols: [[
 			{field:'name', title:'名称', templet: (data)=>`<a href="/daily/book/detail/${data.id}">${data.name}</a>`}
 			,{field:'publishedDate', title:'出版时间'}
+			,{field:'end', title:'是否完结', templet: (res)=>`${res.end? `<span style="color: red;">是</span>`: `<span style="color: green">否</span>`}`}
 			,{field:'lastUpdateTime', title:'最新更新时间', sort: true}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
@@ -62,6 +63,9 @@ function openWin(model) {
 		,yes:function () {
 			$("#form").checkCommit({
 				url: "/daily/book/save",
+				dataBefore: function(data) {
+					data.end = data.end=="on"? 1: 0
+				}
 			})
 		}
 	});

@@ -3,7 +3,7 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyBookMapper">
 
     <select id="paging" resultType="java.util.Map">
-        select id, name, published_date publishedDate
+        select id, name, published_date publishedDate, end
              , t.lastUpdateTime
         from daily_book db
         left join (
@@ -13,5 +13,6 @@
                 select book_id, crt_time from daily_book_notes dbn
             )t group by book_id
         )t on db.id=t.book_id
+        order by end asc
     </select>
 </mapper>
