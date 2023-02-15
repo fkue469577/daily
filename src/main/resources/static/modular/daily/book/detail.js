@@ -41,7 +41,7 @@ function renderTree() {
             $(".layui-layer-shade").on("contextmenu", e1=>false);
             $(".add").click(function (){
                 layer.close(i);
-                openChapter(data.type==="book"? {bookId: id}:{bookId: id, parentId: data.id, parentName: data.name, seq: data.seq});
+                openChapter(data.type==="book"? {bookId: id}:{bookId: id, parentId: data.id, parentName: data.name??"", seq: data.seq??""});
             });
             $(".edit").click(function (){
                 if(data.type === 'book') return
