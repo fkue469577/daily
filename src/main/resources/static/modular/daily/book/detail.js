@@ -15,7 +15,7 @@ $(function() {
 function loadTree() {
     $.get("/daily/book/chapter/tree", {bookId: id}, function(res) {
         treeData = res.data;
-        treeHandle(res.data[0].children);
+        treeHandle(treeData);
         renderTree();
 
         $(".layui-tree-txt:eq(0)").click()
@@ -64,13 +64,12 @@ function renderTree() {
 }
 
 
-function treeHandle(tree, seq="") {
+function treeHandle(tree) {
     tree.forEach((e, i)=>{
         treeDataMap[e.id]=e;
-        var order = seq? seq+"."+(i+1): (i+1);
-        e.titlePre = order;
+        e.titlePre = e.seq;
         if(e.children) {
-            treeHandle(e.children, order);
+            treeHandle(e.children);
         }
     })
 }
@@ -95,17 +94,12 @@ function openChapter(model) {
                     if(!formData.id) {
                         var children, seq="seq", children="children";
                         var parent = treeDataMap[formData.parentId];
-                        if(parent) {
-                            children = parent[children];
-                            if(!children) {
-                                children = [];
-                                parent[children] = children;
-                            }
-                            formData[seq]=parent[seq] + "." + (children.length+1)
-                        } else {
-                            children = treeData[0][children];
-                            formData[seq]=(children.length+1)
+                        children = parent["children"];
+                        if(!children) {
+                            children = [];
+                            parent["children"] = children;
                         }
+                        formData[seq]=(parent[seq]? parent[seq]+".": "") + (children.length+1)
                         formData["id"]=res
                         formData["name"]=formData["name"]
                         formData["titlePre"]=formData[seq]
@@ -126,7 +120,6 @@ function openChapter(model) {
     loadChapter(model.bookId, value)
 }
 function loadChapter(bookId, value) {
-    var data = JSON.parse(JSON.stringify(treeData[0].children));
     var chapter = xmSelect.render({
         el: '#parentId',
         model: { label: { type: 'text' } },
@@ -137,7 +130,7 @@ function loadChapter(bookId, value) {
         },
         name: "parentId",
         height: 'auto',
-        data: data,
+        data: treeData,
         on: function(data){
             if(data.isAdd){
                 return data.change.slice(0, 1)

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -58,13 +60,19 @@ public class DailyBookChapterServiceImpl extends ServiceImpl<DailyBookChapterMap
         chapter.setId(ObjectId.getString());
 
         int number = this.maxNumberByChapter(chapter.getBookId());
-        chapter.setNumber(++number);
-        number = this.countByBookIdAndParentId(chapter.getBookId(), chapter.getParentId());
-        DailyBookChapter parent = this.getById(chapter.getParentId());
-        chapter.setSeq(parent==null? String.valueOf(++number): parent.getSeq()+"."+(++number));
+        chapter.setNumber(number+1);
+        if (number==-1) {
+            chapter.setNumbers(String.format("[%d]", chapter.getNumber()));
+        } else {
+            number = this.countByBookIdAndParentId(chapter.getBookId(), chapter.getParentId())+1;
+            DailyBookChapter parent = this.getById(chapter.getParentId());
+            chapter.setSeq(parent==null||StringUtils.isBlank(parent.getSeq())? String.valueOf(number): parent.getSeq()+"."+number);
+            chapter.setNumbers(String.format("%s[%d]", StringUtils.getObjectValue(parent.getNumbers()), chapter.getNumber()));
+        }
 
         super.save(chapter);
     }
+
 
     @Override
     public void update(DailyBookChapter chapter) {
@@ -72,10 +80,11 @@ public class DailyBookChapterServiceImpl extends ServiceImpl<DailyBookChapterMap
         super.updateById(chapter);
     }
 
+
     @Override
     public int maxNumberByChapter(String bookId) {
-
-        return mapper.maxNumberByChapter(bookId);
+        int number = mapper.maxNumberByChapter(bookId);
+        return number;
     }
 
     @Override
@@ -84,29 +93,4 @@ public class DailyBookChapterServiceImpl extends ServiceImpl<DailyBookChapterMap
         return mapper.countByBookIdAndParentId(bookId, parentId);
     }
 
-    @Override
-    public List<String> listBelongId(String chapterId) {
-        DailyBookChapter chapter = this.getById(chapterId);
-        List<DailyBookChapter> chapterList = this.listByBookIdDepend(chapter.getBookId());
-
-        List<String> chapterIds = new ArrayList<>();
-        chapterIds.add(chapterId);
-        collectIds(chapterIds, chapterList, chapterId);
-
-        return chapterIds;
-    }
-
-    // 通过 parentId 收集该 id 下的所有 id
-    private void collectIds(List<String> chapterIds, List<DailyBookChapter> chapterList, String parentId) {
-        if(chapterList==null) return;
-
-        for (DailyBookChapter chapter: chapterList) {
-            if(chapter.getParentId().equals(parentId)) {
-                chapterIds.add(chapter.getId());
-                collectIds(chapterIds, chapter.getChildren(), chapter.getId());
-            } else {
-                collectIds(chapterIds, chapter.getChildren(), parentId);
-            }
-        }
-    }
 }

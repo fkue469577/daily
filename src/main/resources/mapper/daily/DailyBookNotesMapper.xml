@@ -15,13 +15,12 @@
                 and dbn.book_id=#{param.bookId}
             </if>
             <if test="param.chapterId!=null and param.chapterId!=''">
-                and dbn.chapter_id=#{param.chapterId}
-            </if>
-            <if test="param.chapterIds!=null and param.chapterIds.size()>0">
-                and chapter_id in
-                <foreach item="item" index="index" collection="param.chapterIds"  open="(" separator="," close=")">
-                    #{item}
-                </foreach>
+                and exists (
+                    select 1 from daily_book_chapter dbc
+                    inner join (select book_id, `number` from daily_book_chapter where id=#{param.chapterId})  t
+                    on dbc.numbers like concat("%[", t.number, "]%") and dbc.book_id=t.book_id
+                    where dbn.chapter_id=dbc.id
+                )
             </if>
         </where>
 

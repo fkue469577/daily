@@ -1,9 +1,9 @@
 package com.bc.finance.modular.daily.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.modular.daily.entity.DailyCompany;
 import com.bc.finance.modular.daily.mapper.DailyCompanyMapper;
 import com.bc.finance.modular.daily.service.IDailyCompanyService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

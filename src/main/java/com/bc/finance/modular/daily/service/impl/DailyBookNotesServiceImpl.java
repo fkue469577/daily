@@ -1,13 +1,12 @@
 package com.bc.finance.modular.daily.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.common.utils.ObjectId;
-import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyBookNotes;
 import com.bc.finance.modular.daily.mapper.DailyBookNotesMapper;
 import com.bc.finance.modular.daily.service.IDailyBookChapterService;
 import com.bc.finance.modular.daily.service.IDailyBookNotesService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +34,6 @@ public class DailyBookNotesServiceImpl extends ServiceImpl<DailyBookNotesMapper,
 
     @Override
     public List page(IPage page, Map param) {
-        if(StringUtils.isNotBlank(param.get("chapterId"))) {
-            List<String> chapterIds = chapterService.listBelongId(String.valueOf(param.get("chapterId")));
-            param.put("chapterIds", chapterIds);
-            param.remove("chapterId");
-        }
-
-
         List<Map> list = mapper.page(page, param);
 
         return list;

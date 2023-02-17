@@ -1,8 +1,8 @@
 package com.bc.finance.modular.daily.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.bc.finance.modular.daily.entity.DailyBookChapter;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bc.finance.modular.daily.entity.DailyBookChapter;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +28,4 @@ public interface IDailyBookChapterService extends IService<DailyBookChapter> {
     int maxNumberByChapter(String bookId);
 
     int countByBookIdAndParentId(String bookId, String parentId);
-
-    List<String> listBelongId(String chapterId);
 }

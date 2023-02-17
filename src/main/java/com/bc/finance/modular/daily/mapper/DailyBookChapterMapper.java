@@ -23,7 +23,7 @@ public interface DailyBookChapterMapper extends BaseMapper<DailyBookChapter> {
     @Select("select id,name,seq,parent_id from daily_book_chapter where book_id=#{bookId}")
     List<DailyBookChapter> listByBookId(String bookId);
 
-    @Select("select ifnull(max(number), 0) number from daily_book_chapter where book_id=#{bookId}")
+    @Select("select ifnull(max(number), -1) number from daily_book_chapter where book_id=#{bookId}")
     int maxNumberByChapter(String bookId);
 
 

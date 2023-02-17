@@ -1,13 +1,13 @@
 package com.bc.finance.modular.daily.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.common.exception.business.BusinessException;
 import com.bc.finance.common.utils.ObjectId;
 import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyWords;
 import com.bc.finance.modular.daily.mapper.DailyWordsMapper;
 import com.bc.finance.modular.daily.service.IDailyWordsService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

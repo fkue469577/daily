@@ -1,7 +1,7 @@
 package com.bc.finance.modular.daily.service;
 
-import com.bc.finance.modular.daily.entity.DailyCompany;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bc.finance.modular.daily.entity.DailyCompany;
 
 /**
  * <p>
