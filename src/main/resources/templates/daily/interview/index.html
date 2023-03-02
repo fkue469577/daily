@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>笔记管理</title>
+<title>面试题管理</title>
 <meta name="referrer" content="never">
 <head th:include="common/common :: common_common"></head>
 <head th:include="common/wangEditor :: ueditor_ueditor"></head>
@@ -8,7 +8,7 @@
 <div class="body">
     <div class="p-t justify">
         <div class="p-t-l">
-            <h2>笔记管理</h2>
+            <h2>面试题管理</h2>
         </div>
         <div class="p-t-r">
 
@@ -16,7 +16,11 @@
     </div>
     <div class="p-b">
         <form class="layui-form flex demoTable" id="searchForm">
-            <input name="name" class="layui-input" style="width: 200px;" placeholder="笔记标题"/>
+            <input name="name" class="layui-input" style="width: 200px;" placeholder="标题"/>
+            <select name="titleId">
+                <option value="">--面试标题--</option>
+                <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
+            </select>
             <button type="button"  class="layui-btn" onclick="page()">搜索</button>
         </form>
         <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -26,8 +30,8 @@
 
 
 
-<link href="/static/modular/daily/notes/index.css?v=4.1.0" rel="stylesheet"/>
-<script src="/static/modular/daily/notes/index.js" ></script>
+<link href="/static/modular/daily/interview/index.css?v=4.1.0" rel="stylesheet"/>
+<script src="/static/modular/daily/interview/index.js" ></script>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn" lay-event="create">创建</button>
@@ -44,7 +48,15 @@
         <div class="layui-form-item">
             <label class="layui-form-label">标题</label>
             <div class="layui-input-block">
-                <input name="title" class="layui-input" required value="{{model.title}}" type="text"/>
+                <input name="name" class="layui-input" required value="{{model.name}}" type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">面试标题</label>
+            <div class="layui-input-block">
+                <select name="titleId">
+                    <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
+                </select>
             </div>
         </div>
         <div class="layui-form-item" >

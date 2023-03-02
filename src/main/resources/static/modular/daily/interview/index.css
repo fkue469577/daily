@@ -1,0 +1,17 @@
+.p-t {
+    padding-top: 20px;
+    padding-left: 30px;
+}
+.w-e-full-screen-container {
+    z-index: 100;
+}
+.p-b-c {
+    height: 28px;
+    width: fit-content;
+    padding: 0px 10px;
+    margin-left: -10px;
+    cursor: pointer;
+}
+.p-b-z-index {
+    width: 100px;
+}

@@ -12,7 +12,7 @@ public class CodeGenerator {
     public static void main(String[] args) {
         String modular = "daily";
         String projectPath = System.getProperty("user.dir");
-        FastAutoGenerator.create("jdbc:mysql://112.74.62.96:3306/daily?useUnicode=true&useSSL=false&characterEncoding=utf8", "469577278@qq.com", "fkue469577278")
+        FastAutoGenerator.create("jdbc:mysql://192.168.1.220:3306/daily?useUnicode=true&useSSL=false&characterEncoding=utf8", "root", "123456")
                 .globalConfig(builder -> {
                     builder.author("pcc") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
