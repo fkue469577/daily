@@ -66,7 +66,7 @@ table.on('toolbar(test)', function(obj){
 	};
 });
 function openWin(model) {
-	layer.open({
+	var index = layer.open({
 		type: 1,
 		area: ['700px', '585px'],
 		title: model.id? "编辑":"创建" + '面试题',
@@ -79,6 +79,7 @@ function openWin(model) {
 			$("textarea[name=context]").val(editor.getHtml());
 			$("#form").checkCommit({
 				url: "/daily/interview/save",
+				index: index
 			})
 		}
 	});

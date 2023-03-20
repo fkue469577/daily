@@ -67,7 +67,7 @@ table.on('toolbar(test)', function(obj){
 	};
 });
 function openWin(model) {
-	layer.open({
+	var index = layer.open({
 		type: 1,
 		area: ['700px', '585px'],
 		title: model.id? "编辑":"创建" + '笔记',
@@ -79,7 +79,8 @@ function openWin(model) {
 		,yes:function () {
 			$("textarea[name=context]").val(editor.getHtml());
 			$("#form").checkCommit({
-				url: "/daily/notes/save",
+				url: "/daily/notes/save"
+				, index: index
 			})
 		}
 	});

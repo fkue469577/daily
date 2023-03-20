@@ -46,7 +46,7 @@ table.on('toolbar(test)', function(obj){
 	};
 });
 function openWin(model) {
-	layer.open({
+	var index = layer.open({
 		type: 1,
 		area: ['550px', 'auto'],
 		title: model.id? "编辑":"创建" + '章节',
@@ -57,7 +57,8 @@ function openWin(model) {
 		,skin: 'layer-ext-myskin'
 		,yes:function () {
 			$("#form").checkCommit({
-				url: "/daily/book/chapter/save",
+				url: "/daily/book/chapter/save"
+				, index: index
 			})
 		}
 	});

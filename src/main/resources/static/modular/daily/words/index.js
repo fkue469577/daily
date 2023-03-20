@@ -77,7 +77,7 @@ table.on('toolbar(test)', function(obj){
 });
 
 function openWin(model) {
-    layer.open({
+    var index = layer.open({
         type: 1,
         area: ['500px', '300'],
         title: model.id? "编辑":"创建" + '单词',
@@ -88,7 +88,8 @@ function openWin(model) {
         ,skin: 'layer-ext-myskin'
         ,yes:function () {
             $("#form").checkCommit({
-                url: "/daily/words/save",
+                url: "/daily/words/save"
+                , index: index
             })
         }
     });

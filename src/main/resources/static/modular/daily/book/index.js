@@ -51,7 +51,7 @@ table.on('toolbar(test)', function(obj){
 	};
 });
 function openWin(model) {
-	layer.open({
+	var index = layer.open({
 		type: 1,
 		area: ['550px', 'auto'],
 		title: model.id? "编辑":"创建" + '责任主体',
@@ -66,6 +66,7 @@ function openWin(model) {
 				dataBefore: function(data) {
 					data.end = data.end=="on"? 1: 0
 				}
+				, index: index
 			})
 		}
 	});

@@ -1,4 +1,5 @@
 ﻿var swfurl = "/webupload/Uploader.swf";
+var successMsg="操作成功";
 
 var layerIndex;
 
@@ -75,7 +76,7 @@ initAjax();
 
 function lysuccess(data, url) {
     if (data == undefined || data > 0)
-        layer.alert("操作成功", function () {
+        layer.alert(successMsg, function () {
 
             if (url != undefined)
                 location.href = url;
@@ -89,7 +90,7 @@ function lysuccess(data, url) {
 
 function lysuccess2(data, url) {
     if (data == 1)
-        layer.alert("操作成功", function () {
+        layer.alert(successMsg, function () {
             if (url != undefined)
                 location.href = url;
             else
@@ -102,7 +103,7 @@ function lysuccess2(data, url) {
 }
 
 function lyreload() {
-    layer.alert("操作成功", function () {
+    layer.alert(successMsg, function () {
         location.reload();
     })
 }
@@ -313,6 +314,10 @@ $.fn.extend({
                     refresh(result, ()=>{
                         if(option.callback) {
                             option.callback(result.data);
+                        } else if($(".layui-laypage-btn").length>0 && option.index!=undefined) {
+                            $(".layui-laypage-btn").click();
+                            layer.close(option.index);
+                            layer.msg(successMsg)
                         } else {
                             history.go(0);
                         }
