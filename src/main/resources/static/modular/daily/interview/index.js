@@ -83,6 +83,7 @@ function openWin(model) {
 			})
 		}
 	});
+	$(`#form select[name=titleId] option[value=${model.titleId}]`).attr("selected", "selected");
 	form.render();
 
 	const E = window.wangEditor
