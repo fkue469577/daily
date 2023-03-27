@@ -49,3 +49,6 @@
 .editor-content-view input[type="checkbox"] {
     margin-right: 5px;
 }
+.editor-content-view>* {
+    padding-bottom: 15px;
+}

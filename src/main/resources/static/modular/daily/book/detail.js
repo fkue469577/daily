@@ -163,7 +163,8 @@ function pageNotes() {
         , done: function (res, curr, count) {
             $(".p-b-c").click(function() {
                 var _this = $(this);
-                var context = res.data[_this.attr("data-index")].context
+                var data = res.data[_this.attr("data-index")]
+                var context = data.context
                 layer.open({
                     type: 1,
                     content: `<div class="editor-content-view">${context}</div>`,
