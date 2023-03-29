@@ -39,13 +39,13 @@ function page() {
 					area: ["700px", "500px"],
 					shadeClose: true
 				})
+				layer.photos({
+					photos: ".editor-content-view"
+					,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+				});
+
 			});
-			$(".p-b-z-index").change(function() {
-				var _this = $(this);
-				var id = res.data[_this.attr("data-index")].id;
-				var zIndex = _this.val();
-				$.post("/daily/interview/save", {id: id, zIndex: zIndex}, (res)=>refresh(res, ()=>$(".layui-laypage-btn").click()));
-			});
+
 		}
 	});
 }

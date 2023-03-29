@@ -1070,3 +1070,31 @@ $(function () {
         }
     })
 })
+
+// 方法二
+$(document).on("mousewheel DOMMouseScroll", ".layui-layer-phimg", function (e) {
+    $("#layui-layer-photos").css("height", "auto")
+    window.ele = e;
+    var delta = ele.originalEvent.wheelDelta / Math.abs(ele.originalEvent.wheelDelta);
+    var photos = $(".layui-layer-photos");
+    var oldWidth = photos.width();
+    var oldHeight = photos.height();
+    var width = oldWidth * (1 + delta * 0.1);
+    var height = oldHeight * (1 + delta * 0.1);
+
+    if(delta<-1 && width<100) return;
+    photos.css("width", width+"px");
+    photos.css("height", height+"px");
+
+    var oldLeft = parseFloat(photos.css("left").replaceAll("px", ""));
+    var oldTop = parseFloat(photos.css("top").replaceAll("px", ""));
+    var clientX = ele.originalEvent.clientX;
+    var clientY = ele.originalEvent.clientY;
+    var innerWidth = window.innerWidth;
+    var innerHeight = window.innerHeight;
+
+    var top = oldTop - (height-oldHeight)*clientY/innerHeight;
+    var left = oldLeft - (width-oldWidth)*clientX/innerWidth;
+    photos.css("top", top);
+    photos.css("left", left);
+})
