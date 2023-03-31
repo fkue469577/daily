@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -76,4 +79,21 @@ public class DailyWordsController {
 
         return BaseResponse.success();
     }
+
+
+    @GetMapping("/getWordDetail")
+    @ResponseBody
+    public ObjectResponse getWordDetail(@RequestParam("word") String word) throws IOException {
+        URL url = new URL("http://dict.youdao.com/fsearch?client=deskdict&keyfrom=chrome.extension&q=" + word + "&pos=-1&doctype=xml&xmlVersion=3.2&dogVersion=1.0&vendor=unknown&appVer=3.1.17.4208&le=eng");
+        InputStreamReader reader = new InputStreamReader(url.openStream(),"utf-8");
+        StringBuilder builder = new StringBuilder();
+        char[] chars = new char[1024];
+        int read;
+        if((read = reader.read(chars))>-1) {
+            builder.append(chars);
+        }
+        reader.close();
+        return new ObjectResponse(builder.toString());
+    }
+
 }

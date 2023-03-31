@@ -1,5 +1,7 @@
 var form = layer.form
-    , table = layui.table
+    , table = layui.table;
+
+var audio;
 
 $(function() {
     page();
@@ -22,49 +24,73 @@ function page() {
                 return `<div class="word-class" lay-event="wordFilter">${obj.word}</div>`
                 }}
             ,{field:'explain', title:'词义'}
+            , {title: "读音", templet:(obj)=>{
+                return `<div class="voice-c"><i class="voice-player" lay-event="voicePlayerFilter"></i></div>`
+                }}
             ,{title:'是否完成', templet: (obj)=>obj.completed? `<span style="color: green">是</span>`:"否", sort: true}
             ,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
         ]]
         ,page: true
     });
     table.on('tool(test)', function(obj){
-        return;
+        window.obj = obj;
         var layEvent = obj.event
-        if(layEvent === 'wordFilter'){
-            layer.open({
-                type: 1
-                ,title: false //不显示标题栏
-                ,closeBtn: false
-                ,area: '300px;'
-                ,shade: 0.8
-                , shadeClose: true
-                ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                ,btnAlign: 'c'
-                ,moveType: 1 //拖拽模式，0或者1
-                ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br> layer 只是作为 layui 的一个弹层模块，由于其用户基数较大，所以常常会有人以为 layui 是 <del>layerui</del><br><br>layer 虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级 ^_^</div>'
-                ,success: function(layero){
-                    var btn = layero.find('.layui-layer-btn');
-                    btn.find('.layui-layer-btn0').attr({
-                        href: '../index.htm'/*tpa=http://www.ilayuis.com/*/
-                        ,target: '_blank'
-                    });
-                }
+        if (layEvent === 'edit') { //编辑
+            $.get("/daily/words/get/"+obj.data.id, function(result) {
+                openWin(result.data)
             });
+        } else if(layEvent === "complete") {
+            $.get("/daily/words/complete/"+obj.data.id, function(result) {
+                refresh(result, ()=>$(".layui-laypage-btn").click())
+            });
+        } else if(layEvent === 'wordFilter'){
+            $.get("/daily/words/getWordDetail", {"word": encodeURIComponent(obj.data.word)}, function(res) {
+                var xmls = res.data.match(/(?<=(\<translation\>\<content\>\<\!\[CDATA\[)).*(?=(\]\]\>\<\/content\>\<\/translation\>))/g);
+                layer.open({
+                    type: 1,
+                    area: ['500px', '300'],
+                    title: obj.data.word,
+                    shadeClose: true, //点击遮罩关闭
+                    content: xmls.map(e=>`<div>${e}</div>`).join("")
+                    ,btn: ['提交','取消']
+                    ,btnAlign: 'r'
+                    ,skin: 'layer-ext-myskin'
+                    ,yes:function () {
+                        $("#form").checkCommit({
+                            url: "/daily/words/save"
+                            , index: index
+                        })
+                    }
+                });
+            })
+        } else if(layEvent === "voicePlayerFilter") {
+            var audioSrc = "http://dict.youdao.com/dictvoice?type=0&audio="+obj.data.word
+            var _obj = $(obj.tr).find(".voice-player");
+            if(audio && audio.src===audioSrc) {
+                if(!audio.paused) {
+                    audio.pause();
+                    $(".voice-playing").removeClass("voice-playing");
+                } else {
+                    audio.play();
+                    _obj.addClass("voice-playing");
+                }
+
+                return;
+            }
+
+            if(audio && audio.src!=audioSrc) {
+                audio.pause();
+            }
+
+            $(".voice-playing").removeClass("voice-playing");
+            audio = new Audio(audioSrc);
+            audio.loop = true;
+            audio.play();
+            _obj.addClass("voice-playing")
         }
     })
 }
 
-table.on('tool(test)', function (obj) {
-    if (obj.event === 'edit') { //编辑
-        $.get("/daily/words/get/"+obj.data.id, function(result) {
-            openWin(result.data)
-        });
-    } else if(obj.event === "complete") {
-        $.get("/daily/words/complete/"+obj.data.id, function(result) {
-            refresh(result, ()=>$(".layui-laypage-btn").click())
-        });
-    }
-});
 //头工具栏事件
 table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id);
