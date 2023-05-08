@@ -11,8 +11,15 @@
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 20px;
-    height: calc(100vh - 61px);
+    height: calc(100vh - 98px);
     border-right: 1px solid #eee;
+}
+.p-b-chapter {
+    height: 55%;
+    overflow-y: scroll;
+}
+.p-b-notes {
+    height: 45%;
 }
 .p-b-r {
     width: 75%
@@ -52,5 +59,33 @@
     width: fit-content;
     padding: 0px 10px;
     margin-left: -10px;
+    cursor: pointer;
+}
+.layui-table {
+    width: 100% !important;
+}
+.p-b-menu {
+    position: absolute;
+    padding: 6px;
+    margin-left: 20px;
+    z-index: 10000;
+    background-color: white;
+    cursor: pointer;
+    margin-top: -18px;
+}
+.p-b-menu .layui-icon {
+    font-size: 23px;
+}
+.notes-title {
+    padding: 10px 0px;
+    height: 20px;
+}
+.notes-content {
+    height: calc(100% - 45px);
+    border-top: 1px solid #eee;
+    overflow-y: scroll;
+}
+.notes-item {
+    padding: 5px;
     cursor: pointer;
 }

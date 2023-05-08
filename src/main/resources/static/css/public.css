@@ -24,7 +24,7 @@ body {
 .align {
     align-items: center;
 }
-.layui-form {
+.layui-layer-content {
     padding: 20px;
 }
 .layui-btn-1 {
@@ -45,4 +45,7 @@ body .layer-ext-myskin .layui-layer-content {
 }
 .edui-editor-body, .edui-body-container {
     height: 230px;
+}
+.p-b {
+    padding: 20px 20px 0px 20px;
 }

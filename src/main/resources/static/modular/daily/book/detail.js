@@ -24,7 +24,7 @@ function loadTree() {
 
 function renderTree() {
     tree.render({
-        elem: '.p-b-l'  //绑定元素
+        elem: '.p-b-chapter'  //绑定元素
         , onlyIconControl: true
         , data: treeData
         , accordion: true
@@ -48,13 +48,18 @@ function renderTree() {
                 layer.close(i);
                 openChapter({id: data.id, name: data.name, bookId: id, parentName: data.parentName, parentId: data.parentId, seq: data.seq});
             });
+            $(".addNotes").click(function() {
+                layer.close(i);
+                openWin({bookId: id, chapterId: data.id})
+            });
         }
         , click: function(obj) {
             $(".tree-entry-selected").removeClass("tree-entry-selected")
             $(obj.elem[0]).find(".layui-tree-entry:eq(0)").addClass("tree-entry-selected")
 
             currentChapterId = obj.data.type!=="book"? obj.data.id: undefined;
-            pageNotes();
+            loadNotes();
+            loadContent();
         }
         , spreadFunc: function() {
 
@@ -140,43 +145,54 @@ function loadChapter(bookId, value) {
     chapter.setValue(value)
 }
 
-function pageNotes() {
+function loadNotes() {
     var where = !currentChapterId?{bookId: id}: {chapterId: currentChapterId};
-    table.render({
-        elem: '#test'
-        ,url:'/daily/book/notes/page'
-        ,toolbar: '#toolbarDemo'
-        ,title: '用户数据表'
-        , where: where
-        ,parseData: function(res) {
-            res.code = 0;
-            return res;
-        }
-        ,cols: [[
-            {field:'chapterName', title:'章节'}
-            ,{title:'标题', templet: (obj)=>{
-                    return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.title}</div>`
-                }}
-            ,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
-        ]]
-        ,page: true
-        , done: function (res, curr, count) {
-            $(".p-b-c").click(function() {
-                var _this = $(this);
-                var data = res.data[_this.attr("data-index")]
-                var context = data.context
-                layer.open({
-                    type: 1,
-                    content: `<div class="editor-content-view">${context}</div>`,
-                    area: ["700px", "500px"],
-                    shadeClose: true
-                })
-                layer.photos({
-                    photos: ".editor-content-view"
-                    ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-                });
+
+    $.get("/daily/book/notes/list", where, function(res) {
+        var html = res.data.map(e=>`<div data="${encodeURIComponent(JSON.stringify(e))}" class="notes-item">${e.seq} ${e.title}</div>`).join("");
+        $(".notes-content").html(html);
+
+        $(".notes-item").click(function(e) {
+            var _this = $(this);
+            var data = JSON.parse(decodeURIComponent(_this.attr("data")))
+            var context = data.context
+            layer.open({
+                type: 1,
+                content: `<div class="editor-content-view">${context}</div>`,
+                area: ["700px", "500px"],
+                shadeClose: true
+            })
+            layer.photos({
+                photos: ".editor-content-view"
+                ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
             });
-        }
+        });
+
+        // 菜单右击事件
+        $(".notes-item").contextmenu(function(e) {
+            var _this = $(this);
+            if(e.which == 3) {
+                var event = event || window.event;
+                var offsetY = event.clientY>document.body.offsetHeight-100? event.clientY-90: event.clientY;
+                var i = layer.open({
+                    type: 1,
+                    area: ["150px", "auto"],
+                    offset: [offsetY, event.clientX],
+                    closeBtn: 0,
+                    shadeClose: true,
+                    title: false,
+                    content: template("chapterMenuTPL", {})
+                })
+
+                $(".edit").click(function() {
+                    var data = JSON.parse(decodeURIComponent(_this.attr("data")))
+                    layer.close(i);
+                    openWin(data)
+                });
+
+                return false;
+            }
+        });
     });
 
 }
@@ -191,12 +207,6 @@ table.on('tool(test)', function (obj) {
 //头工具栏事件
 table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id);
-    switch(obj.event){
-        case 'create':
-            openWin({bookId: id, chapterId: currentChapterId})
-
-            break;
-    };
 });
 
 function openWin(model) {
@@ -215,7 +225,7 @@ function openWin(model) {
                 url: "/daily/book/notes/save"
                 , callback: function() {
                     layer.close(i)
-                    pageNotes()
+                    loadNotes()
                 }
             })
         }
@@ -250,3 +260,59 @@ function openWin(model) {
     $("#editor-text-area").css("height", "295px")
 }
 
+$(".p-b-menu").click(function() {
+    var i = $(this).find("i");
+    if(i.hasClass("layui-icon-shrink-right")) {
+        $(".p-b-l").hide();
+        i.removeClass("layui-icon-shrink-right")
+        i.addClass("layui-icon-spread-left")
+        $(".p-b-r").css("width", "100%")
+    } else {
+        $(".p-b-l").show();
+        i.removeClass("layui-icon-spread-left")
+        i.addClass("layui-icon-shrink-right")
+        $(".p-b-r").css("width", "75%")
+    }
+});
+function loadContent() {
+    $.get("/daily/book/chapter/get/"+currentChapterId, function(res) {
+        const E = window.wangEditor
+        // 切换语言
+        const LANG = location.href.indexOf('lang=en') > 0 ? 'en' : 'zh-CN'
+        E.i18nChangeLanguage(LANG)
+        var editor = E.createEditor({
+            selector: '#context-text-area',
+            html: res.data.context,
+            config: {
+                placeholder: 'Type here...',
+                MENU_CONF: {
+                    uploadImage: {
+                        fieldName: 'your-fileName',
+                        base64LimitSize: 10 * 1024 * 1024 // 10M 以下插入 base64
+                    }
+                },
+                onChange(editor) {
+                }
+            }
+        })
+        var toolbar = E.createToolbar({
+            editor,
+            selector: '#context-toolbar',
+            config: {}
+        })
+        $("#editor-text-area").css("height", "295px");
+        $(".p-b-r #context-toolbar .w-e-toolbar").prepend(`
+            <div class="w-e-bar-item">
+                <span style="width: 51px;padding: 5px;background-color: #009688;color: white;cursor: pointer;" id="save">保存
+                </span>
+            </div>
+        `);
+
+        $("#save").click(function() {
+            var data = {id: currentChapterId, context: editor.getHtml()}
+            $.post("/daily/book/chapter/save", data, function(){
+
+            });
+        });
+    })
+}

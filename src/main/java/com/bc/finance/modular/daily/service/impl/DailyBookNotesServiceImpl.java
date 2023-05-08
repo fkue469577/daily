@@ -33,8 +33,8 @@ public class DailyBookNotesServiceImpl extends ServiceImpl<DailyBookNotesMapper,
     IDailyBookChapterService chapterService;
 
     @Override
-    public List page(IPage page, Map param) {
-        List<Map> list = mapper.page(page, param);
+    public List listing(Map param) {
+        List<Map> list = mapper.listing(param);
 
         return list;
     }

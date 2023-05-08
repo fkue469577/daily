@@ -49,14 +49,13 @@ public class BookNotesController {
         return "daily/book/notes/index";
     }
 
-    @GetMapping("/page")
+    @GetMapping("/list")
     @ResponseBody
-    public TableResponse page(@RequestParam Map param) {
+    public ObjectResponse list(@RequestParam Map param) {
 
-        Page page = PageHelper.defaultPage();
-        List list = notesService.page(page, param);
+        List list = notesService.listing(param);
 
-        return new TableResponse(page.getTotal(), list);
+        return new ObjectResponse(list);
     }
 
     @PostMapping("/save")

@@ -45,6 +45,8 @@ public class DailyBookChapter implements Serializable {
 
     private String numbers;
 
+    private String context;
+
 
 
 

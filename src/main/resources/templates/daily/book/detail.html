@@ -20,11 +20,23 @@
         </div>
     </div>
     <div class="p-b flex">
+        <div class="p-b-menu">
+            <i class="layui-icon layui-icon-shrink-right"></i>
+        </div>
         <div class="p-b-l">
-
+            <div class="p-b-chapter"></div>
+            <div class="p-b-notes">
+                <div class="notes-title">笔记</div>
+                <div class="notes-content"></div>
+            </div>
         </div>
         <div class="p-b-r">
-            <table class="layui-hide" id="test" lay-filter="test"></table>
+            <textarea name="chapter-context" style="display: none"></textarea>
+            <!-- 编辑器 DOM -->
+            <div style="border: 1px solid #ccc;">
+                <div id="context-toolbar" style="border-bottom: 1px solid #ccc;"></div>
+                <div id="context-text-area" style="height: 500px"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -33,11 +45,6 @@
 
 <link href="/static/modular/daily/book/detail.css?v=4.1.0" rel="stylesheet"/>
 <script src="/static/modular/daily/book/detail.js" ></script>
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn" lay-event="create">创建</button>
-    </div>
-</script>
 <script type="text/html" id="barDemo">
     <div class="flex item-content">
         <i class="layui-btn layui-btn-xs" lay-event="edit">编辑</i>
@@ -46,6 +53,12 @@
 <script type="text/html" id="menuTPL">
     <ul class="rightClickUl">
         <li class="liHover add"><span class="">添加</span></li>
+        <li class="liHover edit"><span class="">编辑</span></li>
+        <li class="liHover addNotes"><span class="">添加笔记</span></li>
+    </ul>
+</script>
+<script type="text/html" id="chapterMenuTPL">
+    <ul class="rightClickUl">
         <li class="liHover edit"><span class="">编辑</span></li>
     </ul>
 </script>

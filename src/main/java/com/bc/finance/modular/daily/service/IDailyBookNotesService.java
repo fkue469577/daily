@@ -3,6 +3,7 @@ package com.bc.finance.modular.daily.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bc.finance.modular.daily.entity.DailyBookNotes;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public interface IDailyBookNotesService extends IService<DailyBookNotes> {
 
-    List page(IPage page, Map param);
+    List listing(Map param);
 
     void insert(DailyBookNotes notes);
 
