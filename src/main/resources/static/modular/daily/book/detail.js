@@ -277,8 +277,8 @@ $(".p-b-menu").click(function() {
     }
 });
 function loadContent() {
-    $.get("/daily/book/chapter/get/"+currentChapterId, function(res) {
-        if(typeof editor!="undefined" && editor) {
+    $.get("/daily/book/chapter/get/" + currentChapterId, function (res) {
+        if (typeof editor != "undefined" && editor) {
             editor.destroy();
         }
 
@@ -302,11 +302,15 @@ function loadContent() {
                     event.preventDefault();
                     return false;
                 },
-                    onChange(editor) {
+                onChange(editor) {
                 }
             }
         })
-        editor.setHtml(res.data.context??"");
+        // editor.setHtml(res.data.context??"");
+        setTimeout(()=>{
+            $("#context-text-area div[contenteditable=true]").html(res.data.context);
+            $("#context-text-area .w-e-text-placeholder").remove();
+        }, 500)
         var toolbar = E.createToolbar({
             editor,
             selector: '#context-toolbar',
@@ -320,11 +324,12 @@ function loadContent() {
             </div>
         `);
 
-        $("#save").click(function() {
-            var data = {id: currentChapterId, context: editor.getHtml()}
-            $.post("/daily/book/chapter/save", data, function(){
+
+        $("#save").click(function () {
+            var data = {id: currentChapterId, context: $("#context-text-area div[contenteditable=true]").html()}
+            $.post("/daily/book/chapter/save", data, function () {
 
             });
         });
-    })
+    });
 }
