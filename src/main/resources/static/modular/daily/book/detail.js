@@ -8,6 +8,8 @@ var currentChapterId
     , treeData
     , treeDataMap = {};
 
+var editor;
+
 $(function() {
     loadTree()
 })
@@ -276,13 +278,17 @@ $(".p-b-menu").click(function() {
 });
 function loadContent() {
     $.get("/daily/book/chapter/get/"+currentChapterId, function(res) {
+        if(typeof editor!="undefined" && editor) {
+            editor.destroy();
+        }
+
         const E = window.wangEditor
         // 切换语言
         const LANG = location.href.indexOf('lang=en') > 0 ? 'en' : 'zh-CN'
         E.i18nChangeLanguage(LANG)
-        var editor = E.createEditor({
+        editor = E.createEditor({
             selector: '#context-text-area',
-            html: res.data.context,
+            // html: res.data.context,
             config: {
                 placeholder: 'Type here...',
                 MENU_CONF: {
@@ -291,10 +297,16 @@ function loadContent() {
                         base64LimitSize: 10 * 1024 * 1024 // 10M 以下插入 base64
                     }
                 },
-                onChange(editor) {
+                customPaste: (editor, event) => {
+                    console.log(editor, event);
+                    event.preventDefault();
+                    return false;
+                },
+                    onChange(editor) {
                 }
             }
         })
+        editor.setHtml(res.data.context??"");
         var toolbar = E.createToolbar({
             editor,
             selector: '#context-toolbar',
