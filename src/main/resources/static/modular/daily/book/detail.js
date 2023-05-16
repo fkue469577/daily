@@ -298,7 +298,7 @@ function loadContent() {
                     }
                 },
                 customPaste: (editor, event) => {
-                    console.log(editor, event);
+                    // editor.dangerouslyInsertHtml()
                     event.preventDefault();
                     return false;
                 },
