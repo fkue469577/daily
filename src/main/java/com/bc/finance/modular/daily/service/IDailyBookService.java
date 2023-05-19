@@ -22,4 +22,6 @@ public interface IDailyBookService extends IService<DailyBook> {
     void update(DailyBook book);
 
     List paging(Page page, Map param);
+
+    DailyBook getByName(String name);
 }

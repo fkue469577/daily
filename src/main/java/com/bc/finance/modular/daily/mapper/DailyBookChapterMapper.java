@@ -29,4 +29,7 @@ public interface DailyBookChapterMapper extends BaseMapper<DailyBookChapter> {
 
     @Select("select ifnull(count(1), 0) number from daily_book_chapter where book_id=#{bookId} and parent_id=#{parentId}")
     int countByBookIdAndParentId(String bookId, String parentId);
+
+    @Select("select * from daily_book_chapter where book_id=#{bookId} and name=#{name}")
+    DailyBookChapter getByBookIdAndName(String bookId, String name);
 }

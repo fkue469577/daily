@@ -61,4 +61,11 @@ public class DailyBookServiceImpl extends ServiceImpl<DailyBookMapper, DailyBook
         List list = mapper.paging(page, param);
         return list;
     }
+
+
+    @Override
+    public DailyBook getByName(String name) {
+        DailyBook book = mapper.getByName(name);
+        return book;
+    }
 }

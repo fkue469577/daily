@@ -28,4 +28,6 @@ public interface IDailyBookChapterService extends IService<DailyBookChapter> {
     int maxNumberByChapter(String bookId);
 
     int countByBookIdAndParentId(String bookId, String parentId);
+
+    DailyBookChapter getByBookIdAndName(String bookId, String name);
 }

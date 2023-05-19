@@ -93,4 +93,11 @@ public class DailyBookChapterServiceImpl extends ServiceImpl<DailyBookChapterMap
         return mapper.countByBookIdAndParentId(bookId, parentId);
     }
 
+
+    @Override
+    public DailyBookChapter getByBookIdAndName(String bookId, String name) {
+        DailyBookChapter chapter = mapper.getByBookIdAndName(bookId, name);
+        return chapter;
+    }
+
 }

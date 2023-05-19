@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 @TableName("daily_book")
 @ApiModel(value = "DailyBook对象", description = "书本名称")
 public class DailyBook implements Serializable {
