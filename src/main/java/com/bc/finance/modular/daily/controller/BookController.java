@@ -6,6 +6,7 @@ import com.bc.finance.common.helper.PageHelper;
 import com.bc.finance.common.msg.BaseResponse;
 import com.bc.finance.common.msg.ObjectResponse;
 import com.bc.finance.common.msg.TableResponse;
+import com.bc.finance.common.utils.ObjectId;
 import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyBook;
 import com.bc.finance.modular.daily.entity.DailyBookChapter;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -97,13 +99,19 @@ public class BookController {
         }
 
         String parentName = pojo.getChapter().getParentName();
-        String[] strs = parentName.split("第  ");
-        DailyBookChapter parent = Optional.ofNullable(chapterService.getByBookIdAndName(book.getId(), strs[strs.length-1])).orElseGet(DailyBookChapter::new);
+        DailyBookChapter parent = Optional.ofNullable(chapterService.getByBookIdAndName(book.getId(), parentName.replaceAll("第 \\d 章 ", "")))
+                .orElseGet(DailyBookChapter::new);
 
         DailyBookChapter chapter = new DailyBookChapter()
+                .setId(ObjectId.getString())
                 .setParentId(parent.getId())
                 .setBookId(book.getId())
-                .
+                .setCrtTime(LocalDateTime.now())
+                .setContext(pojo.getChapter().getContext())
+                .setName(pojo.getChapter().getName().replaceAll("(第 \\d 章 )|(\\d\\.\\d )", ""));
+        chapter.setSeq(pojo.getChapter().getName().replace(chapter.getName().trim(), ""));
+
+        chapterService.save(chapter);
 
         return BaseResponse.success();
     }
