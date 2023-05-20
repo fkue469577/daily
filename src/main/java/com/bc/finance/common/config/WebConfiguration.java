@@ -5,6 +5,8 @@ import com.bc.finance.common.handler.GlobalExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -23,6 +25,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     GlobalExceptionHandler getGlobalExceptionHandler() {
         return new GlobalExceptionHandler();
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(0, new MappingJackson2HttpMessageConverter());
     }
 
     @Override
