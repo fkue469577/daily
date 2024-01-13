@@ -1,5 +1,6 @@
 package com.bc.finance.modular.daily.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.common.exception.business.BusinessException;
@@ -14,6 +15,7 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -73,5 +75,28 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
     public DailyWords getByWord(String word) {
 
         return mapper.getByWord(word);
+    }
+
+
+    @Override
+    public void imports(List<DailyWords> words) {
+        List<String> wordKeys = words.stream().map(e -> e.getWord()).collect(Collectors.toList());
+        QueryWrapper query = new QueryWrapper();
+        query.in("word", wordKeys);
+        List<DailyWords> list = mapper.selectList(query);
+        List<String> existsWords = list.stream().map(e -> e.getWord()).collect(Collectors.toList());
+        List<DailyWords> insertList = words.stream().filter(e -> !existsWords.contains(e.getWord())).collect(Collectors.toList());
+        this.insertBatch(insertList);
+    }
+
+
+    @Override
+    public void insertBatch(List<DailyWords> insertList) {
+        LocalDateTime now = LocalDateTime.now();
+        for (DailyWords words : insertList) {
+            words.setId(ObjectId.getString());
+            words.setCrtTime(now);
+        }
+        super.saveBatch(insertList);
     }
 }

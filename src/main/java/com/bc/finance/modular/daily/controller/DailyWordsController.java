@@ -96,4 +96,11 @@ public class DailyWordsController {
         return new ObjectResponse(builder.toString());
     }
 
+
+    @PostMapping("/imports")
+    @ResponseBody
+    public BaseResponse imports(@RequestBody List<DailyWords> words) {
+        wordsService.imports(words);
+        return BaseResponse.success();
+    }
 }

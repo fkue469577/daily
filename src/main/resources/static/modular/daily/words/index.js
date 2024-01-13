@@ -99,6 +99,10 @@ table.on('toolbar(test)', function(obj){
             openWin({})
 
             break;
+        case 'imports':
+            openImports()
+
+            break;
     };
 });
 
@@ -117,6 +121,34 @@ function openWin(model) {
                 url: "/daily/words/save"
                 , index: index
             })
+        }
+    });
+}
+function openImports() {
+    layer.open({
+        type: 1,
+        area: ['500px', '300px'],
+        title: '导入单词',
+        shadeClose: true, //点击遮罩关闭
+        content: `<form id="form"><textarea style="width: 450px; height: 160px;"></textarea></form>`
+        ,btn: ['提交','取消']
+        ,btnAlign: 'r'
+        ,skin: 'layer-ext-myskin'
+        ,yes:function () {
+            var data = $("#form textarea").val();
+            var words = data.split("\n").map(e=>{
+                var arrs = e.replaceAll(/\t+/g, "|").split("|");
+                return {word: arrs[0], explain: arrs.length>0? arrs[1]:""}
+            })
+
+            $.ajax({
+                url: "/daily/words/imports",
+                type: "POST",
+                data: JSON.stringify(words),
+                headers: {"Content-Type": "application/json"}
+            })
+
+            // $.post("/daily/words/imports", words, (res)=>{refresh(res)})
         }
     });
 }
