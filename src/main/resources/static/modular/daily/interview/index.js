@@ -20,7 +20,7 @@ function page() {
 		,cols: [[
 			{type:'checkbox'}
 			,{title: "序号", type: "numbers"}
-			,{title:'面试标题', field: "title"}
+			,{title:'面试标题', field: "title", width: 100}
 			,{title:'标题', templet: (obj)=>{
 					return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.name}</div>`
 				}}
