@@ -6,6 +6,11 @@ $(function() {
 	page();
 })
 
+form.on("select(titleId)", function(res) {
+	page();
+})
+
+
 function page() {
 	table.render({
 		elem: '#test'
@@ -30,20 +35,32 @@ function page() {
 		, done: function (res, curr, count) {
 			$(".p-b-c").click(function() {
 				var _this = $(this);
-				var data = res.data[_this.attr("data-index")]
-				var context = data.context
-				layer.open({
-					type: 1,
-					title: data.name,
-					content: `<div class="editor-content-view">${context}</div>`,
-					area: ["700px", "500px"],
-					shadeClose: true
-				})
-				layer.photos({
-					photos: ".editor-content-view"
-					,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-				});
+				var id = res.data[_this.attr("data-index")].id;
+				$.get(`/daily/interview/get/${id}`, function(res) {
+					var data = res.data;
+					layer.open({
+						type: 1,
+						title: data.name,
+						content: `<div class="editor-content-view">${data.context}</div>`,
+						area: ["700px", "500px"],
+						maxmin: true,
+						shadeClose: true,
+						success: function (layero, index, that) {
+							layero.find("img").css("width", "100%")
+						},
+						full: function (){
+							window.parent.fullScreen()
+						},
+						restore: function () {
+							window.parent.smallScreen();
+						}
+					})
+					layer.photos({
+						photos: ".editor-content-view"
+						,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+					});
 
+				})
 			});
 
 		}
@@ -62,8 +79,7 @@ table.on('toolbar(test)', function(obj){
 	var checkStatus = table.checkStatus(obj.config.id);
 	switch(obj.event){
 		case 'create':
-			openWin({})
-
+			openWin({titleId: $("select[name=titleId]").val()})
 			break;
 	};
 });
@@ -76,6 +92,7 @@ function openWin(model) {
 		content: template("tpl", {model: model})
 		,btn: ['提交','取消']
 		,btnAlign: 'r'
+		,maxmin: true
 		,skin: 'layer-ext-myskin'
 		,yes:function () {
 			$("textarea[name=context]").val(editor.getHtml());
@@ -84,8 +101,17 @@ function openWin(model) {
 				index: index
 			})
 		}
+		,full: function(layero, index, that) {
+			$("#editor-text-area").css("height", Math.max(layero.height()-267-$("#editor-toolbar").height(), 200));
+			window.parent.fullScreen()
+		}
+		,restore: function(layero, index, that) {
+			$("#editor-text-area").css("height", "200px")
+			window.parent.smallScreen()
+		}
 	});
-	$(`#form select[name=titleId] option[value=${model.titleId}]`).attr("selected", "selected");
+	form.val("form", {"titleId": model.titleId})
+
 	form.render();
 
 	const E = window.wangEditor
@@ -113,5 +139,5 @@ function openWin(model) {
 		config: {}
 	})
 	$("#editor-text-area").css("height", "200px")
-}
 
+}

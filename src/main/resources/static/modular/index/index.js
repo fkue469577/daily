@@ -18,3 +18,18 @@ $(".h-c-logout").click(function() {
 	layer.msg("退出成功");
 	setTimeout(()=>location.href="/login", 1000)
 });
+
+
+function fullScreen() {
+	$(".i-l").css("display", "none");
+	$(".i-r-h").css("display", "none");
+	$(".i-r-b").css("padding", "0");
+	$(".i-r-b").css("height", "100%");
+}
+
+function smallScreen() {
+	$(".i-l").css("display", "unset");
+	$(".i-r-h").css("display", "unset");
+	$(".i-r-b").css("padding", "30");
+	$(".i-r-b").css("height", "calc(100vh - 106px)");
+}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <style type="text/css">
+        .salary-title {
+            width: 150px;
+        }
+        .salary-item {
+            display: flex;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body >
+<div>
+    <div>专项扣除：<input name="zxkc" type="number" onchange="calc()" value="0"/></div>
+    <div>五险一金：<input name="wxyj" type="number" onchange="calc()"/></div>
+</div>
+<div id="salary">
+    <table>
+        <thead>
+        <tr>
+            <th>月份</th>
+            <th>薪资</th>
+            <th>当月实得</th>
+            <th>实发工资总额</th>
+            <th>扣税金额</th>
+            <th>累计需扣税金额</th>
+            <th>扣税总金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <!--    <input type="file" id="fileInput"/>-->
+    <button id="downloadExample">下载示例</button>
+</div>
+</body>
+
+<script type="text/javascript">
+    var html = Array(12).fill(1).map((e, i)=>`
+        <tr>
+            <td>第${i+1}个月</td>
+            <td><input name="salary" type="number" onchange="calc(this)" value="0"/></td>
+            <td><span class="obtain"></span></td>
+            <td><span class="salaryTotal"></span></td>
+            <td><span class="deduction"></span></td>
+            <td><span class="deductionTotal"></span></td>
+            <td><span class="taxTotal"></span></td>
+        </tr>
+    `).join("")
+    $("tbody").html(html);
+
+    var deduction_total = 0;    // 需要扣税总金额
+    var salary_total = 0; // 实发工资总额
+    var tax_total = 0; // 扣税总金额
+    function calc(obj) {
+        deduction_total = 0;
+        var zxkc = defaultZero($("input[name=zxkc]").val());    // 专项扣除
+        var wxyj = defaultZero($("input[name=wxyj]").val());    // 五险一金
+
+        if(obj) fillSalary(obj);
+
+        var nsje = ""; // 扣除专项扣除与五险一金需要纳税的金额
+        var salary = ""; // 税前薪资
+
+        $("input[name=salary]").each((i, e)=>{
+            var before_salary = defaultZero(e.value);
+            var before_obtain = Math.max(0, before_salary - zxkc - wxyj - 5000);
+            var deduction_amount = incomeDeduction(before_obtain, deduction_total)
+            var obtain = before_salary - deduction_amount;
+            salary_total += obtain;
+            tax_total += deduction_amount;
+            var tr = $(e).parents("tr");
+            tr.find(".obtain").html(obtain);
+            tr.find(".deduction").html(deduction_amount);
+            tr.find(".deductionTotal").html(deduction_total);
+            tr.find(".salaryTotal").html(salary_total);
+            tr.find(".taxTotal").html(tax_total);
+        })
+    }
+
+    function fillSalary(obj) {
+        if(obj) {
+            var value = obj.value;
+            $(obj).parents("tr").nextAll().find("input").val(value)
+        }
+    }
+
+    /**
+     *
+     * @param salary 需要扣税的金额
+     * @returns {number}
+     */
+    function incomeDeduction(salary) {
+        var part1 = 36000;
+        if(deduction_total<part1) {
+            if(deduction_total+salary>part1) {
+                var stage_exceed = deduction_total+salary-part1;
+                deduction_total = part1
+                return incomeDeduction(stage_exceed) + (salary-stage_exceed)*0.03;
+            }
+            deduction_total += salary;
+            return salary*0.03;
+        }
+        var part2 = 144000;
+        if(deduction_total>=part1 && deduction_total<part2) {
+            if(deduction_total+salary>part2) {
+                var stage_exceed = deduction_total+salary-part2;
+                deduction_total = part2
+                return incomeDeduction(stage_exceed) + (salary-stage_exceed)*0.1;
+            }
+            deduction_total += salary;
+            return salary*0.1;
+        }
+        var part3 = 300000;
+        if(deduction_total>=part2 && deduction_total<part3) {
+            if(deduction_total+salary>part3) {
+                var stage_exceed = deduction_total+salary-part3;
+                deduction_total = part3
+                return incomeDeduction(stage_exceed) + (salary-stage_exceed)*0.2;
+            }
+            deduction_total += salary;
+            return salary*0.2;
+        }
+        var part4 = 420000;
+        if(deduction_total>=part3 && deduction_total<part4) {
+            if(deduction_total+salary>part4) {
+                var stage_exceed = deduction_total+salary-part4;
+                deduction_total = part4
+                return incomeDeduction(stage_exceed) + (salary-stage_exceed)*0.25;
+            }
+            deduction_total += salary;
+            return salary*0.25;
+        }
+        var part5 = 660000;
+        if(deduction_total>=part4 && deduction_total<part5) {
+            if(deduction_total+salary>part5) {
+                var stage_exceed = deduction_total+salary-part5;
+                deduction_total = part5
+                return incomeDeduction(stage_exceed) + (salary-stage_exceed)*0.3;
+            }
+            deduction_total += salary;
+            return salary*0.3;
+        }
+        var part6 = 960000;
+        if(deduction_total>=part5 && deduction_total<part6) {
+            if(deduction_total+salary>part6) {
+                var stage_exceed = deduction_total+salary-part6;
+                deduction_total = part6
+                return incomeDeduction(stage_exceed) + (salary-stage_exceed)*0.35;
+            }
+            deduction_total += salary;
+            return salary*0.35;
+        }
+        if(deduction_total>=part6) {
+            return salary*0.45;
+        }
+    }
+
+    function defaultZero(val) {
+        return val? val: 0
+    }
+
+    calc();
+
+    // const inputElement = document.getElementById('fileInput');
+    // inputElement.addEventListener('change', function(e) {
+    //     const file = e.target.files[0]; // 获取文件引用
+    //     const reader = new FileReader(); // 创建FileReader对象
+    //
+    //     reader.onload = function(e) {
+    //         const base64 = btoa(e.target.result); // 将文件内容转换为Base64
+    //         console.log(base64); // 输出Base64字符串
+    //     };
+    //
+    //     reader.onerror = function(e) {
+    //         console.error("File could not be read! Code " + e.target.error.code);
+    //     };
+    //
+    //     reader.readAsBinaryString(file); // 以二进制字符串的形式读取文件内容
+    // });
+
+    $("#downloadExample").click(function (){
+        var xlsBase64 = "data:application/vnd.ms-excel;base64,UEsDBAoAAAAAAIdO4kAAAAAAAAAAAAAAAAAJAAAAZG9jUHJvcHMvUEsDBBQAAAAIAIdO4kC7N9mvMAEAADQCAAAQAAAAZG9jUHJvcHMvYXBwLnhtbJ2RwUoDMRRF94L/ELJvMy0iUjIpgog7B1p1HTNv2sBMEpLn0PotLnQh+Adu9G9U/AwzE9CpuHJ3X+7lvvMIn2+amrTgg7Ymp5NxRgkYZUttVjm9WJ6OjigJKE0pa2sgp1sIdC7293jhrQOPGgKJFSbkdI3oZowFtYZGhnG0TXQq6xuJcfQrZqtKKzix6qYBg2yaZYcMNgimhHLkvgtpapy1+N/S0qqOL1wuty4CC37sXK2VxHiluCoW5PPh6eP+hbPhOz8D2d1dSO2D4C3OWlBoPQn6Nl4+peRaBugac9pKr6XB2NzF0tDr2gX04v358e31Li7hLPrprZfD6FDrAzHpA1HsBruCxBGNXcKlxhrCeVVIj38AT4bAPUPCTTiLNQCmnUO+/uK46Vc3+/lu8QVQSwMEFAAAAAgAh07iQKNTjbYvAQAANwIAABEAAABkb2NQcm9wcy9jb3JlLnhtbI2Ry07DMBBF90j8Q+R9YifhUVlJugB1BRISQVTsLHuaWsSOZbuk/XucpA3lsWBp3ztn7swUy71qow+wTna6RGlCUASad0LqpkQv9SpeoMh5pgVrOw0lOoBDy+ryouCG8s7Ck+0MWC/BRYGkHeWmRFvvDcXY8S0o5pLg0EHcdFYxH562wYbxd9YAzgi5wQo8E8wzPABjMxPRESn4jDQ7244AwTG0oEB7h9MkxV9eD1a5PwtG5cyppD+YMNMx7jlb8Emc3XsnZ2Pf90mfjzFC/hSvHx+ex1FjqYddcUBVITjlFpjvbMW3Ox103YQ9NAU+U4JrDDVZQUShDZ1CnZTX/O6+XqEqI9lVTG5jktfpgqY5JeRtYH2rH9pOHyqccCP/R7yuSUbzH8QToCrwr1NXn1BLAwQUAAAACACHTuJAIvyHzf4AAAB+AQAAEwAAAGRvY1Byb3BzL2N1c3RvbS54bWydkMtugzAQAO+V+g+W78bGCS0gICqQXHpopaa5I9skSPgh29Ciqv9eo/Rx73E1q9HsFrt3OYJZWDdoVcI4IhAIxTQf1LmEr8cDSiFwvlO8G7USJVyEg7vq9qZ4ttoI6wfhQFAoV8KL9ybH2LGLkJ2LAlaB9NrKzofRnrHu+4GJVrNJCuUxJeQOs8l5LZH51cGrL5/9f5Vcs7XOnY6LCblV8S1fQC/9wEv40SZN2yYkQXSfNSgmcY2yTXaPSEoIrWlzyB72nxCYdZlCoDoZTn98eQpaPjFfT8PIT8IG9ezz0bw5bytKEoo2EYniaJtu0wL/oQL/FFQFXtOuj6u+AFBLAwQKAAAAAACHTuJAAAAAAAAAAAAAAAAAAwAAAHhsL1BLAwQKAAAAAACHTuJAAAAAAAAAAAAAAAAADgAAAHhsL3dvcmtzaGVldHMvUEsDBBQAAAAIAIdO4kDX6U1jtQUAALUWAAAYAAAAeGwvd29ya3NoZWV0cy9zaGVldDEueG1snZhbj6JKEMffT3K+A+GVjNAoIBN1s4B4Tzbn+sxgO5IB8QCjs99+q7sB6UZFzzyMSv3+1Zcqqi+jb19JLJ1wlkfpYSyjniZL+BCm2+jwPpb//st/GcpSXgSHbRCnBzyWf+Jc/jb5/bfROc0+8j3GhQQeDvlY3hfF8VVV83CPkyDvpUd8AMsuzZKggJ/Zu5ofMxxsqSiJVV3TTDUJooPMPLxmj/hId7soxF4afib4UDAnGY6DAvqf76NjXnn72j7kb5sFZxhr1Z9GFz1mqf2hQat/SRRmaZ7uil6YJirrWnuUtmpz40zClqMrk5UE2cfn8QUcH2Fwb1EcFT/pcOXJiE7hj0ydjLYRTAOJnZTh3Vj+jl43SJfBQJF/InzOG9+lInj7E8c4LPAWgi1LRXpc413h4jgGcV+WSFTf0vSDKBfAaKQ1qiBtBGERnTCjpyQx/qOtwldoUa2bbH6vmvdpHvzIpC3eBZ9x4abxv9G22I9lu4cG+tCwqv9yhfyRnuc4et8X0FWrZ5I2wjQGh/BfSiKSrrKUBF/088ycIaNnWaZVu5Ol8DMv0qRsC5VOmFwv5WTcpVzvGXclg1ICn5XE6g2QVvcefN1pEZzTDsNnJdd7yDbrCTDvysHKxgs9/z96BL1jDhpDfqD/Kpt3GmAvKILJKEvPErxfEID8GJC3H73qkCohefidJNZYzuH3aaKN1BPkQ1jaHESfGpp2MajgrPYII7viEZ7WHpHgkbR7mkA1ueERhlp7JK2zPsLT2qNee+S6AkG6CPu1Eh7Xyn6tpF6dpm3A29ymzeBtXtNm8rZp02bxNr9pG/K2WdNm87Z504Yu80YHseCMwmwvOeNl4qhyxRmFuVlzRmFyNpzxMjtcPCD7r8UDHtfxQMLkOWadHMIoXWLZUeU+yPBWZgXUNV83pJ2Ilj4H3O2q7BIceC0HTARVimWjwE+f5P0n+dmT/PxJfvEkv3ySXz3Jr5/kIaxCwG/Gi8s6S5bICmRCwWCFvV6Trqcj8KQcNpNSeGsdi/Rk4pgvDnpx4B2iKYb6zQpG3yeXgW4n6DHQ6wSnDJx2gj4D/U5wxsBZJzhn4LwTXDBw0QkuGbjsBFcMXHWCawauO8ENAzf3QC6LYLNEssiCOvdQFgF/KWpCZXfIzmssc2uiUODdbsRrI7pYsq4gwnrgdyOzbmTejSy6kWU3supG1t3I5gpyWQq5uNss7jp8PhR34Oq468IK6tiP1o0StBWhdOhmq8Z4jHVtRagefbvFThnr2YpQQAxu90Vrl8/Yqa0INcTk9n6UnTHWtxWhjFjDVh/mjJ3ZilBJbNRiF4yd24pYTLRBC14yeGErYkFBVgteMXhpK9eKivAarRm8shWxsAzaNX/D4LWtiMXF4ILHZRmCUzspL/1HywsRCKuULmzJHGDoMoWUeo1qT4RbU5riNEjUnmCvREHCoXo7cNMSBQmPtvPBL1GQcGj/SpqVKEg4dNDO3nmJzkS0/VIsShQknFc+XDTPlyUKEg4122mwKlGQcCiJgJheJQoSHm1Ha1OiawEdctHiU6t5xIPzY3V+Qs0djn7ZsdOBOmAl22A42YqnC/e2yatN0B3+wDKtTEMYFG/yb5tmt03z26bFbdPytml127S+bdpUJgvStR4XH4DmibgZgOb6r4vnHrgEYi8vrNdse3ktFBWkKxCWEuzburgP8EpvLtIVCFIJGkNTBKclCAIF4lKCltUXQZ+BreMXPKcXWPQABjkEDhuObFMTHc3ajsi2nt7zQP6hgSUq5vcV/T6UgzoSNJsX9xWGjkTF8r7C0oaiYnVfMbRhieV7tb6r0KEJUUFuBq8cgcq50nWjOVcsB9mdHrvyOQbveBNk79Ehl2K4NIQTco/sZzN2Rcd+wIUiPfy8pQXcutGve7jzxXAtpPUMhIaaUf3BMXuXpsV1E5yimc6nCLlerC+cJ78AUEsDBAoAAAAAAIdO4kAAAAAAAAAAAAAAAAAJAAAAeGwvdGhlbWUvUEsDBBQAAAAIAIdO4kBMHZbQ2wUAACAZAAATAAAAeGwvdGhlbWUvdGhlbWUxLnhtbO1ZTW8bNxC9F+h/WOy9kWTrIzIiB7Y+4iZ2EkRKihypXWqXEXe5ICk7uhXJsUCBomnRS4HeeijaBkiAXtJf4zZFmwL5Cx1yVytSomrHyCEtYl8k7pvh48zwDbm6cvVhQr1jzAVhacevXar6Hk4DFpI06vh3R4OPLvuekCgNEWUp7vhzLPyrux9+cAXtyBgn2AP7VOygjh9Lme1UKiKAYSQusQyn8GzCeIIkfOVRJeToBPwmtLJVrTYrCSKp76UoAbe3JhMSYH934bZPwXcqhRoIKB8qp3gdG05rCiHmoku5d4xox4cZQnYywg+l71EkJDzo+FX951d2r1TQTmFE5QZbw26g/wq7wiCcbuk5eTQuJ63XG/XmXulfA6hcx/Vb/Wa/WfrTABQEsNKci+mzsd/e7zUKrAHKPzp891q97ZqFN/xvr3Hea6h/C69Buf/6Gn4w6EIULbwG5fjGGr5eb2116xZeg3J8cw3fqu716i0Lr0ExJel0DV1tNLe7i9WWkAmjB054u1EftLYK50sUVENZXWqKCUvlplpL0APGBwBQQIokST05z/AEBVC/XUTJmBPvkESxVNOgHYyM5/lQINaG1IyeCDjJZMe/niHYEUuvr1/8+PrFM+/1i6enj56fPvrl9PHj00c/574swwOURqbhq++/+PvbT72/nn336slXbrww8b//9Nlvv37pBsI+WjJ6+fXTP54/ffnN53/+8MQB3+NobMJHJMHCu4lPvDssgbXpwNjM8Zi/mcUoRsSyQDH4drjuy9gC3pwj6sLtYzt49zhIiAt4bfbA4jqM+UwSx8w34sQCHjFG9xl3BuCGmsuI8GiWRu7J+czE3UHo2DV3F6VWavuzDLSTuFx2Y2zRvE1RKlGEUyw99YxNMXas7j4hVlyPSMCZYBPp3SfePiLOkIzI2CqkpdEBSSAvcxdBSLUVm6N73j6jrlX38LGNhA2BqIP8CFMrjNfQTKLE5XKEEmoG/BDJ2EVyOOeBiesLCZmOMGVeP8RCuGxucVivkfQbIB/utB/ReWIjuSRTl89DxJiJ7LFpN0ZJ5sIOSRqb2I/FFEoUebeZdMGPmL1D1HfIA0o3pvsewVa6zxaCu6CcJqVlgagnM+7I5TXMrPodzukEYa0yIOyWXickPVO88xney3bH3+PEuXkOVsR6E+4/KNE9NEtvY9gV6y3qvUK/V2j/f6/Qm/by29flpRSDSqvDYH7i1ufvZOPxe0IoHco5xYdCn8AFNKBwAIPKTl86cXkdy2L4qHYyTGDhIo60jceZ/ITIeBijDE7vNV85iUThOhJexgTcGvWw07fC01lyxML81lmrqRtmLh4CyeV4tVGOw41B5uhma3mTKt1rtpG+8S4IKNs3IWFMZpPYdpBoLQZVkPT9GoLmIKFX9lZYtB0sLiv3i1StsQBqZVbghOTBuarjN+pgAkZwbUIUhypPeaoX2dXJfJuZ3hRMqwKq8FKjqIBlptuK68blqdXlpXaOTFskjHKzSejI6B4mYhTiojrV6HlovGmu28uUWvRUKIpYGDRal/+NxUVzDXar2kBTUylo6p10/OZ2A0omQFnHn8DtHT4mGdSOUCdbRCN4+RVInm/4iyhLxoXsIRHnAdeik6tBQiTmHiVJx1fLL9NAU60hmlttCwThnSXXBll518hB0u0k48kEB9JMuzGiIp1/BYXPtcL5VJtfHKws2QzSPYzDE29MZ/wOghJrtGoqgCER8IqnlkczJPBWshSyZf2tNKZCds3XgrqG8nFEsxgVHcUU8xyupbyko7+VMTC+FWuGgBohKRrhOFIN1gyq1U3LrpFz2Nh1zzZSkTNEc9kzLVVRXdOtYtYMizawEsuLNXmD1SLE0C7NDp9L96rkthdat3JOKLsEBLyMn6PrnqMhGNSWk1nUFON1GVaaXYzavWOxwDOonadJGKrfXLhdiVvZI5zTweCFOj/YrVYtDE0W50odaf3DhfkLAxs/APHowbvcGZUiFwgN2v0HUEsDBBQAAAAIAIdO4kDUtIpEPwoAAOVNAAANAAAAeGwvc3R5bGVzLnhtbNVcbW/cWBX+jsR/sFzBh4pk/DYv7mZSmkksIS1opRYJCVA1mfEkljx28HhKAkIqdEtgUZFQFwqrlVh2FcoHGmBBbLVsu3+mM5182r/Audf29bnO9Yy7yXhcjZTYHp+Xe85zzj3X53o2rh8OXemOHYwc32vL6roiS7bX8/uOt9eWv3vLWmvJ0ijsev2u63t2Wz6yR/L1za9+ZWMUHrn2zX3bDiVg4Y3a8n4YHlyr1Ua9fXvYHa37B7YH3wz8YNgN4TTYq40OArvbHxGioVvTFKVRG3YdT97c8MZDaxiOpJ4/9sK2bLBLUvTNt/pw0ZCliFvH74Mqt6Wv/2jsh2988flJdHBVuvKNK1eUdUW5Lb0h+PYHa/O/j7isRf+uX6dMvnlbkmuJflgZPatMRvpVKSPuaqxuQf5qDn+qFWMen3Gaz9dby/KNaLNGpEzOfRUPSfxlrhK12LubGwPfS52sKeBlcmVzY/QT6U7XBfxpxNg93/UDKQQYgZdVav7u0I7umJz+5sWzh/Su/W4wAvRFhLpBrlHsxXcOHc8PyMVaJCMjifLlJCmFJNG7LiSn2IguICfY223LlmXdaG4rlzqoMTFx4ipkwFhgS1GU1qUK3M0RGGNDL+QxtSg2nBxp8fCaFvkUElnQedzw6oQzB8hLHh4nrVWqtPNY0S3yIUp4i2L7yxgTCXylPFJQ1pwgMDsQBY0yBraqMIfxKdalum6OOS2LiLtMc84RZnYa9dKEEfw3SwUKTAml+Q1iQL1cU+7i7ExT43KSJS0XRlCZOK7LClJdJ7UKXNncOOiGoR14FpxI8fGtowOoVDwokAlQa9F9C+7eC7pHqkaTfjGCke86faLFXgfXRyYRuRtfc7y+fWhDrdyg5VAN6VpUrxwxUHuHDinNlfWmaZottdFqtUxDV6mg5cs3VyyfBuoSh5kkc4jQTqcclzZSk+rg0ma93qqrpmaoJUEKubQO8k29ZTY0QJZCg2KJto4rgmY6/nLlJ77WLPiU42sUvuWONbY1PEVYafpAvi4X64mvrU6zs1OOr+uprVfi62Y5w0SQKneYzKU7W2ZJqRq5dCWzL7J1ueETpw+UvlYiH02V5WKNpc9Sijw0zJXADMG8XDezkO50zGVXP7GsG3XyKSdVotlvJX5FlV65fmXpY7nhE7u009ixypvkX3FIdJEJy9pdP+hDu0eKOy0mrCijS5sbrj0IgWvg7O2T/6F/QGT4YegP4aDvdPd8r+vCYS2hSP4TSmgTQUeoLYf7tKMTLc5jy2xp5EPAXiO3xjIKUlB9qDoFCUDxRO+CFNEgF48RBiCyTiKl7493XRssyg3esuDBOH0gCXYjxrywnKHdd8ZDJgejvLCIRGeRu9KHs0XdhSiKuQsRFHQXovhyZhSOmLOdQJOMS7nbi6ohFBxHRtpUKGpqRFHM1IhAMECR/xFF0TEuiIw8xLJVoUEeKhlNQ2kada0RpYqishP7ZnwVWxjhRpB7FtKct/FCEoGVF9LMG2ucbiF592zXvUnS7PcGLIMbJIUfDlBvGnr4pNlJeubkEB5UxodRuo5ONje6rrPnDW0PWqh2EDo90oDtwakddU0PB/lsSXM6ZqvB5I75St2DA/foO+Phrh1YtPdPtaBXt+jck57fSDRIL70V+KHdC+luBNIfvoCSpNOdKAkLmGoqiSypQvldUSVBM2ZKTks4mePv8vwLvq6m6TAIYRVbISWj7TSL0kTkXgvSSRqjFkRVerZValCjeIHVYoXMCWlwcdKtsDWhFVUlc6I5DLkctgxVX0m9sskIWxKOKxQ9YnersMmuokqivK5yoFzljIj8q3NKwcmcabrkDA6JJikm1MrWZdi/1Y1nMF9iSr2yAY1MWd14JglItFACsM6JHL4SWm65q6Lohl0XVU2M8Kw5MaQGx2n6BqzOseRybUeKs9i7fLYGO65MKWQpLllDkMzRqUzIoWUfp+H86YTXsNzJBeUa2MaC0Ddf5XKVRBNglc1qEGMufI4UYbU6C0SEgGoBwKBvjLxu621IkEnmrDJWQbcEqqgmek00RpBVq7sKf/2QgAomrhIBWMyZYMudCwhw48qEe7AKus/RkU+3y62dEDqrW3WmVtQqu8ZAhqzsspc8cUnwWOXsaZDYfu1qE1KSCq1bnZIfgVStbNLMK6BB4XlJk2tbLDdpoqkHLJougqs09WBXg77VVDIvH4HyJbu6hpvvUSsedeHJ+0Gv3oSXDgeX0I1HNUQ2Zyf8I2MhzKvze+vSj4PuwS37ELp+0c6lc7sBSCpbnIB5+fyugKTEuaBW1C/gCbQ7gt8bwfwmkVdN2/Lk6dPZ47dlZntpd+y48HZC5AnYyJIlaChfk9akyWefzv55b/qH48mTR2cfvj/79ccSVGzRAEn4pEzqdPtKlouWxwWqqogLyRQpF1h+C3QRaMHoSeWD6KN3YJMdI/HgZ88fTu6fJBJJQZdSQHdNINHI0xvERXqTNUvKRacbaAuPnnEh5S/iEr2gnNX+P48nT3+eyCXzU0pBX0TLihWYiwkkRVhKrtPXFrL0L//0fPKrX07/8W4ikzxTSIno/t0sTS5cwL8xXEiYplx0+nJZYTZg7pgNDztDaDKBBVI9eMTBS44C/+cOB6THevDAg/7nq7Bh8KUPtVOrwP4EAZvZ6V9enj5iknnoaULJAgukqvOog81MAplnd3/x4ukTJpOHnSa0em6wp87j4WcIMTA5ecbE8sjThPfnimUDph301MjQJhQMePqv4+nd/yWSNR5m0TurWbROPjll9/Oogi6ASMRHd6d/Ppk8+P3k/r3pB58xWh5KsJgT0JIcdvwpI8kkMWHam35wfPbhH6XUDDxwYOuVSM7jj86O35nefQxJf/r+35lAHjN1oY65nmDBR7sjyBNCuMd6sxgBtOHMEb2qmfXFjGbJ7ys/ZBrz2BE6JDfNM9m0pZwqDM8zBTabPLj34tkDyJln772biKetyZRQTPfJx7PTz88enb587+3Zf++fPXw+/e0JY8AjShikkaUYBY8jeKwm0DV3yMxH8Msh2Ny6kM3syV8nv3uHxwjciQmhdyeQn5tZ2RQFMwNmY4ij9d9/A5iykfPpCdpdAsm56AR5UU7XeaDVhWwEmZXlNygDONWFpsv1ANMDhozZ1IWGPAcY8ngATbDCFI2RimKFdD0QqTAxxFHJYEIe7SMaWDgLbJ47VmYysiMPsTGEbGLZDCJGBmnisc6pXWHm4aQKoytXeZZRQVvMBmJeYIMorM9lfahcMK1GU2G63oLSPuzCixV05zOr7QEYfXvQHbvhLfZlW06Pv01fkgAfxXe95dzxQ8qiLafHb5KXXaL0D6udN0fwbgr8l8aB05Z/urPVNLd3LG2tpWy11gzdrq+Z9a3ttbrR2dretkxFUzo/g4ghv3927VA1zv0G2tDpBf7IH4TrPXiHxh8MnJ59/lfQzJqZ/A4aMLk2cuGuIB5srPzN9FpbRieR+sTUNVA7+ksHURux32fb/D9QSwMEFAAAAAgAh07iQJTa6PayAQAAHgQAABQAAAB4bC9zaGFyZWRTdHJpbmdzLnhtbH2T32rbMBjF7wt9ByEIpCmpZTtJ/2A7d3uC7QFMojaBWA6RVra7Fhq2XCTbWKGkZBdd25GVsF00bdNS9jR2HL9FPyeDBcUavrCs36dzzDnIKr/zGuiQtnjdZzbWtwhGlFX8ap0d2PjN61f5HYy4cFnVbfiM2vg95bjsrK9ZnAsEZxm3cU2I5p6m8UqNei7f8puUAdn3W54r4LN1oPFmi7pVXqNUeA3NIKSkeW6dYVTx3zJhY2MbOxavO5ZwZncP4Z/jYHITDXuWJhxLS/YXLJh8jS8ep53LuH+1wp5O4/7PYHIUf/gis+nZfXw2lnej0UgHn+ngYwoxlMRUkoKSFJWkpCTbSrKjJLtKohM1Uqegq2IY9sJON3y4nt2dyOEt6lmuKpj0gqV24sHR7Mdx9HQLDUfnJ9BX/P1bigrgsD0Knz/JTDcJITkzY5u7RGZZNKcoj7IIMCGwMkvJewOeHDIzaDMF5ZBOMshGMCkrLtwA28lKpst+enFulEd6ofDPMRFOLGU6/x1j7moUV4Wj8e/ZrwvICvKEJNJTWgyF7S5ciP/OQZSfe+l9/dWQutTgfjsvUEsDBBQAAAAIAIdO4kDCwjnRKAEAAN0BAAAPAAAAeGwvd29ya2Jvb2sueG1sjZHLTsMwEEX3SPyDNXvqJG1RWzWphADRDaoElLWJJ41Vv2S7pPw9k0QFlqzm6aM71+vN2Wj2iSEqZ0vIJxkwtLWTyh5KeHt9vFkAi0lYKbSzWMIXRthU11frzoXjh3NHRgAbS2hT8ivOY92iEXHiPFqaNC4YkagMBx59QCFji5iM5kWW3XIjlIWRsAr/YbimUTXeu/pk0KYRElCLRPJjq3yEat0ojfvxIia8fxaGdJ81MC1iepAqoSxhSqXr8LcxBxZO/u6kNE2X06wAXv0cuQtU9NfuFXbxt9+XrFNWuu5dydSWUCwWGXk49p5QHdpEtubLWdbz+B/GYASxhsjsoPKlNycnx/u4JSGUh5WiJGxlPhAuz2qh611gfRgWZ7N5MR82Lj9TfQNQSwMECgAAAAAAh07iQAAAAAAAAAAAAAAAAAYAAABfcmVscy9QSwMEFAAAAAgAh07iQHs4drz/AAAA3wIAAAsAAABfcmVscy8ucmVsc62Sz0rEMBDG74LvEOa+TXcVEdl0LyLsTWR9gJhM/9AmE5JZ7b69QVEs1LoHj5n55pvffGS7G90gXjGmjryCdVGCQG/Idr5R8Hx4WN2CSKy91QN5VHDCBLvq8mL7hIPmPJTaLiSRXXxS0DKHOymTadHpVFBAnzs1Rac5P2Mjgza9blBuyvJGxp8eUE08xd4qiHu7BnE4hbz5b2+q687gPZmjQ88zK+RUkZ11bJAVjIN8o9i/EPVFBgY5z3J1Psvvd0qHrK1mLQ1FXIWYU4rc5Vy/cSyZx1xOH4oloM35QNPT58LBkdFbtMtIOoQlouv/JDLHxOSWeT41X0hy8i2rd1BLAwQKAAAAAACHTuJAAAAAAAAAAAAAAAAACQAAAHhsL19yZWxzL1BLAwQUAAAACACHTuJA5fCiGO0AAAC6AgAAGgAAAHhsL19yZWxzL3dvcmtib29rLnhtbC5yZWxzrZLPasMwDMbvg72D0X1x0o0xRp1exqDXrXsAYyt/aGIHS1ubt5/IoVmgdJdcDJ+Ev+8ny9vdue/UDyZqYzBQZDkoDC76NtQGvg7vDy+giG3wtosBDYxIsCvv77Yf2FmWS9S0AylxCWSgYR5etSbXYG8piwMG6VQx9ZZFploP1h1tjXqT5886/fWAcuGp9t5A2vsnUIdxkOT/vWNVtQ7fovvuMfCVCE2NTeg/Ocl4JMY21cgGFuVMiEFfh3lcFYbHTl5zppj0rfjNmvEsO8I5fZJ6OotbDMWaDKeYjtQg8sxxKZFsSzoXGL34ceUvUEsDBBQAAAAIAIdO4kCo8VpzZwEAAA0FAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbK2Uy04CMRSG9ya+w6RbM1NwYYxhYOFlqSTiA9T2wDT0lp6C8PaeKWACQYGMm0k67fm///y9DEYra4olRNTe1axf9VgBTnql3axmH5OX8p4VmIRTwngHNVsDstHw+mowWQfAgqod1qxJKTxwjrIBK7DyARzNTH20ItEwzngQci5mwG97vTsuvUvgUplaDTYcPMFULEwqnlf0e+MkgkFWPG4WtqyaiRCMliKRU7506oBSbgkVVeY12OiAN2SD8aOEduZ3wLbujaKJWkExFjG9Cks2uPJyHH1AToaqv1WO2PTTqZZAGgtLEVTQtqxAlYEkISYNP57/ZEsf4XL4LqO2+mLiApO3lzMPGpZZ5kz4ynBsRAT1niKdSOxMxxBBKGwAkjXVnvbuqByLvfWR1gb+3UAWPUFOdKmA52+/cwBZ5gTwy8f5p/fzzrDDtCn1ygrtzuDnLULafarp3vW+kba/LLzzwfNjNvwGUEsBAhQAFAAAAAgAh07iQKjxWnNnAQAADQUAABMAAAAAAAAAAQAgAAAAuCAAAFtDb250ZW50X1R5cGVzXS54bWxQSwECFAAKAAAAAACHTuJAAAAAAAAAAAAAAAAABgAAAAAAAAAAABAAAAAgHgAAX3JlbHMvUEsBAhQAFAAAAAgAh07iQHs4drz/AAAA3wIAAAsAAAAAAAAAAQAgAAAARB4AAF9yZWxzLy5yZWxzUEsBAhQACgAAAAAAh07iQAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAQAAAAAAAAAGRvY1Byb3BzL1BLAQIUABQAAAAIAIdO4kC7N9mvMAEAADQCAAAQAAAAAAAAAAEAIAAAACcAAABkb2NQcm9wcy9hcHAueG1sUEsBAhQAFAAAAAgAh07iQKNTjbYvAQAANwIAABEAAAAAAAAAAQAgAAAAhQEAAGRvY1Byb3BzL2NvcmUueG1sUEsBAhQAFAAAAAgAh07iQCL8h83+AAAAfgEAABMAAAAAAAAAAQAgAAAA4wIAAGRvY1Byb3BzL2N1c3RvbS54bWxQSwECFAAKAAAAAACHTuJAAAAAAAAAAAAAAAAAAwAAAAAAAAAAABAAAAASBAAAeGwvUEsBAhQACgAAAAAAh07iQAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAQAAAAbB8AAHhsL19yZWxzL1BLAQIUABQAAAAIAIdO4kDl8KIY7QAAALoCAAAaAAAAAAAAAAEAIAAAAJMfAAB4bC9fcmVscy93b3JrYm9vay54bWwucmVsc1BLAQIUABQAAAAIAIdO4kCU2uj2sgEAAB4EAAAUAAAAAAAAAAEAIAAAAOcaAAB4bC9zaGFyZWRTdHJpbmdzLnhtbFBLAQIUABQAAAAIAIdO4kDUtIpEPwoAAOVNAAANAAAAAAAAAAEAIAAAAH0QAAB4bC9zdHlsZXMueG1sUEsBAhQACgAAAAAAh07iQAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAQAAAASgoAAHhsL3RoZW1lL1BLAQIUABQAAAAIAIdO4kBMHZbQ2wUAACAZAAATAAAAAAAAAAEAIAAAAHEKAAB4bC90aGVtZS90aGVtZTEueG1sUEsBAhQAFAAAAAgAh07iQMLCOdEoAQAA3QEAAA8AAAAAAAAAAQAgAAAAyxwAAHhsL3dvcmtib29rLnhtbFBLAQIUAAoAAAAAAIdO4kAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAEAAAADMEAAB4bC93b3Jrc2hlZXRzL1BLAQIUABQAAAAIAIdO4kDX6U1jtQUAALUWAAAYAAAAAAAAAAEAIAAAAF8EAAB4bC93b3Jrc2hlZXRzL3NoZWV0MS54bWxQSwUGAAAAABEAEQAHBAAAUCIAAAAA";
+        // 将Base64字符串转换为Blob对象
+        function base64ToBlob(base64) {
+            var arr = base64.split(',');
+            var mime = arr[0].match(/:(.*?);/)[1];
+            var bstr = atob(arr[1]);
+            var n = bstr.length;
+            var u8arr = new Uint8Array(n);
+
+            while(n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+
+            return new Blob([u8arr], {type: mime});
+        }
+
+        // 创建Blob对象并获取其URL
+        var blob = base64ToBlob(xlsBase64);
+        var url = URL.createObjectURL(blob);
+
+        // 下载文件
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '文件名.xls'; // 设置下载文件名
+        a.click();
+
+        // 清理
+        URL.revokeObjectURL(url);
+    });
+</script>
+</html>

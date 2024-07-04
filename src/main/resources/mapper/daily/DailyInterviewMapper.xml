@@ -3,7 +3,7 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyInterviewMapper">
 
     <select id="paging" resultType="java.util.Map">
-        select id, name, context,
+        select id, name,
                (select name from daily_interview_title dit where dit.id=di.title_id) title
         from daily_interview di
         <where>

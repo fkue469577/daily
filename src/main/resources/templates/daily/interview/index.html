@@ -16,8 +16,8 @@
     </div>
     <div class="p-b">
         <form class="layui-form flex demoTable" id="searchForm">
-            <input name="name" class="layui-input" style="width: 200px;" placeholder="标题"/>
-            <select name="titleId">
+            <input name="name" class="layui-input" style="width: 200px;" placeholder="标题" id="name" />
+            <select name="titleId" lay-filter="titleId">
                 <option value="">--面试标题--</option>
                 <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
             </select>
@@ -43,7 +43,7 @@
     </div>
 </script>
 <script type="text/html" id="tpl">
-    <form class="layui-form" id="form">
+    <form class="layui-form" id="form" lay-filter="form">
         <input name="id" type="hidden" value="{{model.id}}"/>
         <div class="layui-form-item">
             <label class="layui-form-label">标题</label>
@@ -54,8 +54,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">面试标题</label>
             <div class="layui-input-block">
-                <select name="titleId">
-                    <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
+                <select name="titleId" >
+                    <option th:each="title: ${titles}" th:value="${title.id}" th:text="${title.name}"></option>
                 </select>
             </div>
         </div>
