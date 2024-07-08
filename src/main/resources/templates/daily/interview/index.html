@@ -51,12 +51,20 @@
                 <input name="name" class="layui-input" required value="{{model.name}}" type="text"/>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">面试标题</label>
-            <div class="layui-input-block">
-                <select name="titleId" >
-                    <option th:each="title: ${titles}" th:value="${title.id}" th:text="${title.name}"></option>
-                </select>
+        <div style="display: flex;">
+            <div class="layui-form-item" style="width: 50%">
+                <label class="layui-form-label">面试标题</label>
+                <div class="layui-input-block">
+                    <select name="titleId" >
+                        <option th:each="title: ${titles}" th:value="${title.id}" th:text="${title.name}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" style="width: 50%">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input name="sort" type="number" min="0" class="layui-input" value="{{model.sort}}"/>
+                </div>
             </div>
         </div>
         <div class="layui-form-item" >

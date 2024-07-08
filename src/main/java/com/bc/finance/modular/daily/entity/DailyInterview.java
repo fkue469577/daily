@@ -33,6 +33,8 @@ public class DailyInterview implements Serializable {
 
     private String context;
 
+    private Integer sort;
+
     private LocalDateTime crtTime;
 
 
