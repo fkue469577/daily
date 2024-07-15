@@ -60,6 +60,8 @@
     var tax_total = 0; // 扣税总金额
     function calc(obj) {
         deduction_total = 0;
+        salary_total = 0;
+        tax_total = 0;
         var zxkc = defaultZero($("input[name=zxkc]").val());    // 专项扣除
         var wxyj = defaultZero($("input[name=wxyj]").val());    // 五险一金
 
