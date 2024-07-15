@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserTokenException.class)
     public BaseResponse userTokenExceptionHandler(HttpServletResponse response, UserTokenException ex) {
-        response.setStatus(CodeEnum.EX_USER_INVALID_CODE.getCode());
+        response.setStatus(401);
         logger.error(ex.getMessage(), ex);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }

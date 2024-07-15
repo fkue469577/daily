@@ -29,6 +29,7 @@ function initAjax() {
     //jquery 全局ajax设置
     $.ajaxSetup({
         success: function (data) {//请求成功后触发
+            console.log("success");
         },
         error: function (xhr, status, e) {//请求失败遇到异常触发,先执行error,再执行complete
             switch (xhr.status) {
@@ -36,10 +37,10 @@ function initAjax() {
                     layer.alert("500-存在技术问题，请与平台联系");
                     break;
                 case (401):
-                    layer.alert("401-请重新登陆");
+                    layer.msg("登录信息已经过期")
                     setTimeout(()=>{
-                        history.go(0);
-                    }, 3000);
+                        location.href = "/login";
+                    }, 3000)
                     break;
                 case (403):
                     layer.alert("403-无权限执行此操作");
@@ -50,12 +51,6 @@ function initAjax() {
                 case (408):
                     layer.alert("408-请求超时");
                     break;
-                case (40101):
-                    layer.msg("登录信息已经过期")
-                    setTimeout(()=>{
-                        location.href = "/login";
-                    }, 3000)
-                    break;
                 default:
                     layer.alert("请检查网络是否断开或者重新登陆");
                     //layer.alert("后端代码出错：" + xhr.status + "未知错误");
@@ -63,6 +58,7 @@ function initAjax() {
             lyhide();
         },
         complete: function (xhr, status) {//完成请求后触发。即在success或er    ror触发后触发
+            console.log("complete");
             lyhide();
         },
         beforeSend: function (xhr) {//发送请求前触发
