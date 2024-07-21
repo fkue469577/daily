@@ -29,7 +29,6 @@ function initAjax() {
     //jquery 全局ajax设置
     $.ajaxSetup({
         success: function (data) {//请求成功后触发
-            console.log("success");
         },
         error: function (xhr, status, e) {//请求失败遇到异常触发,先执行error,再执行complete
             switch (xhr.status) {
@@ -58,7 +57,6 @@ function initAjax() {
             lyhide();
         },
         complete: function (xhr, status) {//完成请求后触发。即在success或er    ror触发后触发
-            console.log("complete");
             lyhide();
         },
         beforeSend: function (xhr) {//发送请求前触发
