@@ -14,7 +14,7 @@
                 and title_id=#{param.titleId}
             </if>
         </where>
-        order by sort desc
+        order by sort desc, id asc
 
     </select>
 </mapper>
