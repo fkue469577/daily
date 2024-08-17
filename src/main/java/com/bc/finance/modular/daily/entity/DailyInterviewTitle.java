@@ -27,6 +27,8 @@ public class DailyInterviewTitle implements Serializable {
 
     private String id;
 
+    private String parentId;
+
     private String name;
 
     private Integer sort;

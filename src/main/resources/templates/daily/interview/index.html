@@ -26,6 +26,9 @@
                 <option value="">--面试标题--</option>
                 <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
             </select>
+            <select name="subTitleId" lay-filter="subTitleId">
+                <option value="">--子标题--</option>
+            </select>
             <button type="button"  class="layui-btn" onclick="page()">搜索</button>
         </form>
         <table class="layui-hide" id="test" lay-filter="test"></table>

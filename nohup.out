@@ -1,0 +1,44 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.0)
+
+2024-07-31 08:27:21.300  INFO 58312 --- [           main] com.bc.finance.RunApplication            : Starting RunApplication v0.0.1 using Java 9.0.4 on chunchengdeMBP with PID 58312 (/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar started by chunchengpeng in /Users/chunchengpeng/Desktop/project/daily)
+2024-07-31 08:27:21.306  INFO 58312 --- [           main] com.bc.finance.RunApplication            : No active profile set, falling back to 1 default profile: "default"
+2024-07-31 08:27:23.270  INFO 58312 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8778 (http)
+2024-07-31 08:27:23.327  INFO 58312 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-31 08:27:23.328  INFO 58312 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2024-07-31 08:27:23.479  INFO 58312 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-31 08:27:23.479  INFO 58312 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2073 ms
+Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
+Registered plugin: 'com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor@138fe6ec'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyBookMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyInterviewTitleMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyAccountPasswordMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyInterviewMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyNotesMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyBookChapterMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyWordsMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyBookNotesMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/daily/DailyCompanyMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/MenuMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/BaseUserMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/BaseUserRoleMapper.xml]'
+This "id" is the table primary key by @TableId annotation in Class: "com.bc.finance.modular.base.entity.SysPermission",So @TableField annotation will not work!
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/PermissionMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/RoleMenuMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/RolePermissionMapper.xml]'
+Parsed mapper file: 'URL [jar:file:/Users/chunchengpeng/Desktop/project/daily/target/daily-0.0.1.jar!/BOOT-INF/classes!/mapper/base/RoleMapper.xml]'
+org.apache.ibatis.session.defaults.DefaultSqlSessionFactory@2fb69ff6
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        3.5.0 
+2024-07-31 08:27:25.830  INFO 58312 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-07-31 08:27:26.035  WARN 58312 --- [           main] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][main] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2024-07-31 08:27:26.221  INFO 58312 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8778 (http) with context path ''
+2024-07-31 08:27:26.236  INFO 58312 --- [           main] com.bc.finance.RunApplication            : Started RunApplication in 5.87 seconds (JVM running for 6.716)

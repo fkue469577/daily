@@ -2,17 +2,21 @@ package com.bc.finance.modular.daily.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bc.finance.common.utils.ObjectId;
+import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyInterview;
+import com.bc.finance.modular.daily.entity.DailyInterviewTitle;
 import com.bc.finance.modular.daily.entity.DailyNotes;
 import com.bc.finance.modular.daily.mapper.DailyInterviewMapper;
 import com.bc.finance.modular.daily.service.IDailyInterviewService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bc.finance.modular.daily.service.IDailyInterviewTitleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -27,6 +31,9 @@ public class DailyInterviewServiceImpl extends ServiceImpl<DailyInterviewMapper,
 
     @Resource
     DailyInterviewMapper mapper;
+
+    @Resource
+    IDailyInterviewTitleService interviewTitleService;
 
     @Override
     public List paging(Page page, Map param) {

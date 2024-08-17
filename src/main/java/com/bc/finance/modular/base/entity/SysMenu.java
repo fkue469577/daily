@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@TableName
+@TableName("base_menu")
 @Data
 public class SysMenu {
     @TableId(type= IdType.AUTO)

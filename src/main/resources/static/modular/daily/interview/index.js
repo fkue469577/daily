@@ -6,7 +6,20 @@ $(function() {
 	page();
 })
 
-form.on("select(titleId)", function(res) {
+form.on("select(titleId)", function(obj) {
+	page();
+	$.get("/daily/interview/getSubTitle/"+obj.value, function(res) {
+		console.log(res);
+		var subTitle = $("select[name=subTitleId]");
+		var html = "<option value>--子标题--</option>";
+		res.data.forEach(e=>{
+			html += `<option value="${e.id}">${e.name}</option>`
+		})
+		subTitle.html(html);
+		form.render();
+	})
+})
+form.on("select(subTitleId)", function(res) {
 	page();
 })
 

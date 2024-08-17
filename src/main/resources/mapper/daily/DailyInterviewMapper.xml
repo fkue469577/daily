@@ -11,7 +11,11 @@
                 and name like concat('%', #{param.name}, '%')
             </if>
             <if test="param.titleId!=null and param.titleId!=''">
-                and title_id=#{param.titleId}
+                and (title_id=#{param.titleId}
+                    or title_id in (select id from daily_interview_title where parent_id=#{param.titleId}))
+            </if>
+            <if test="param.subTitleId!=null and param.subTitleId!=''">
+                and title_id=#{param.subTitleId}
             </if>
         </where>
         order by sort desc, id asc
