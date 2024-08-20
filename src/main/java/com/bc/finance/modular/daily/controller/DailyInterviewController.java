@@ -12,6 +12,7 @@ import com.bc.finance.modular.daily.entity.DailyInterviewTitle;
 import com.bc.finance.modular.daily.service.IDailyInterviewService;
 import com.bc.finance.modular.daily.service.IDailyInterviewTitleService;
 import com.bc.finance.modular.daily.vo.InterviewGetSubTitleVO;
+import com.bc.finance.modular.daily.vo.InterviewGetVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,7 +70,13 @@ public class DailyInterviewController {
     @ResponseBody
     public ObjectResponse get(@PathVariable String id) {
         DailyInterview interview = interviewService.getById(id);
-        return new ObjectResponse(interview);
+        InterviewGetVO vo = InterviewGetVO.convert(interview);
+        DailyInterviewTitle title = interviewTitleService.getById(vo.getTitleId());
+        if(StringUtils.isNotBlank(title.getParentId())) {
+            vo.setSubTitleId(vo.getTitleId());
+            vo.setTitleId(title.getParentId());
+        }
+        return new ObjectResponse(vo);
     }
 
 

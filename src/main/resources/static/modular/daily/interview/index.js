@@ -1,6 +1,12 @@
 var table = layui.table,
 	form = layui.form,
 	laydate = layui.laydate;
+var sub_titleId_html = `<div class="layui-form-item" id="form_sub_titleId">
+                <label class="layui-form-label">面试子标题</label>
+                <div class="layui-input-block">
+                    <select name="subTitle" >%s</select>
+                </div>
+            </div>`
 
 $(function() {
 	page();
@@ -8,11 +14,10 @@ $(function() {
 
 form.on("select(titleId)", function(obj) {
 	page();
-	$.get("/daily/interview/getSubTitle/"+obj.value, function(res) {
-		console.log(res);
+	getSubTitle(obj.value, (data)=>{
 		var subTitle = $("select[name=subTitleId]");
 		var html = "<option value>--子标题--</option>";
-		res.data.forEach(e=>{
+		data.forEach(e=>{
 			html += `<option value="${e.id}">${e.name}</option>`
 		})
 		subTitle.html(html);
@@ -123,9 +128,17 @@ function openWin(model) {
 			window.parent.smallScreen()
 		}
 	});
-	form.val("form", {"titleId": model.titleId})
-
-	form.render();
+	if(model.subTitleId) {
+		getSubTitle(model.titleId, data=>{
+			if(data && data.length>0) {
+				form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
+				$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+			}
+			form.render();
+		})
+	} else {
+		form.render();
+	}
 
 	const E = window.wangEditor
 	// 切换语言
@@ -153,4 +166,21 @@ function openWin(model) {
 	})
 	$("#editor-text-area").css("height", "200px")
 
+	form.on("select(tpl_titleId)", function (obj){
+		getSubTitle(obj.value, data=>{
+			$("#form_sub_titleId").remove();
+			if(data && data.length>0) {
+				$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+				form.render();
+			}
+		})
+	});
+}
+
+function getSubTitle(id, callback) {
+	$.get("/daily/interview/getSubTitle/"+id, function(res) {
+		if(callback) {
+			callback(res.data)
+		}
+	})
 }
