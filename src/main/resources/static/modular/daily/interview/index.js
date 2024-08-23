@@ -4,7 +4,7 @@ var table = layui.table,
 var sub_titleId_html = `<div class="layui-form-item" id="form_sub_titleId">
                 <label class="layui-form-label">面试子标题</label>
                 <div class="layui-input-block">
-                    <select name="subTitle" >%s</select>
+                    <select name="subTitleId" >%s</select>
                 </div>
             </div>`
 
@@ -95,6 +95,11 @@ table.on('tool(test)', function (obj) {
 			openWin(result.data)
 		});
 	}
+	// if (obj.event === 'del') { //编辑
+	// 	$.get("/daily/interview/get/"+obj.data.id, function(result) {
+	// 		openWin(result.data)
+	// 	});
+	// }
 });
 //头工具栏事件
 table.on('toolbar(test)', function(obj){
@@ -121,7 +126,12 @@ function openWin(model) {
 			$("textarea[name=context]").val(editor.getHtml());
 			$("#form").checkCommit({
 				url: "/daily/interview/save",
-				index: index
+				index: index,
+				dataBefore: function (data) {
+					if(data.subTitleId) {
+						data.titleId = data.subTitleId;
+					}
+				}
 			})
 		}
 		,full: function(layero, index, that) {
@@ -136,12 +146,13 @@ function openWin(model) {
 	if(model.subTitleId) {
 		getSubTitle(model.titleId, data=>{
 			if(data && data.length>0) {
-				form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
 				$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+				form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
 			}
 			form.render();
 		})
 	} else {
+		form.val("form", {"titleId": model.titleId})
 		form.render();
 	}
 

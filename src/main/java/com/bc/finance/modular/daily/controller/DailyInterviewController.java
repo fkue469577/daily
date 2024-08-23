@@ -66,6 +66,7 @@ public class DailyInterviewController {
         return BaseResponse.success();
     }
 
+
     @GetMapping("/get/{id}")
     @ResponseBody
     public ObjectResponse get(@PathVariable String id) {

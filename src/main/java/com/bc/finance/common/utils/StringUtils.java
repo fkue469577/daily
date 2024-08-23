@@ -3,6 +3,7 @@ package com.bc.finance.common.utils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,5 +113,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
     public static long getAsLong(Map map, String key) {
         return Long.parseLong(String.valueOf(map.get(key)));
+    }
+
+
+    public static void notBlankRunnable(String ch, Runnable runnable) {
+        if(isNotBlank(ch)) {
+            runnable.run();
+        }
     }
 }

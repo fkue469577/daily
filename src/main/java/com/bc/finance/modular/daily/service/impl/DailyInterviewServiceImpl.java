@@ -83,13 +83,14 @@ public class DailyInterviewServiceImpl extends ServiceImpl<DailyInterviewMapper,
     public void insert(DailyInterview interview) {
         interview.setCrtTime(LocalDateTime.now());
         interview.setId(ObjectId.getString());
+        StringUtils.notBlankRunnable(interview.getContext(), ()-> interview.setSimplifyContext(interview.getContext().replaceAll("\\<.*?\\>", "")));
         super.save(interview);
     }
 
 
     @Override
     public void update(DailyInterview interview) {
-
+        StringUtils.notBlankRunnable(interview.getContext(), ()-> interview.setSimplifyContext(interview.getContext().replaceAll("\\<.*?\\>", "")));
         super.updateById(interview);
     }
 }
