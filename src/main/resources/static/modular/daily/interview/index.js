@@ -47,6 +47,7 @@ function page() {
 			,{title:'标题', templet: (obj)=>{
 					return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.name}</div>`
 				}}
+			,{title: '内容', field: 'substr_context'}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
@@ -56,6 +57,9 @@ function page() {
 				var id = res.data[_this.attr("data-index")].id;
 				$.get(`/daily/interview/get/${id}`, function(res) {
 					var data = res.data;
+					if($("#searchForm #name").val()) {
+						data.context = addBackgroundColor(data.context, $("#searchForm #name").val())
+					}
 					layer.open({
 						type: 1,
 						title: data.name,
@@ -102,6 +106,7 @@ table.on('toolbar(test)', function(obj){
 	};
 });
 function openWin(model) {
+	var searchName = $("#searchForm #name").val();
 	var index = layer.open({
 		type: 1,
 		area: ['700px', '585px'],
@@ -183,4 +188,26 @@ function getSubTitle(id, callback) {
 			callback(res.data)
 		}
 	})
+}
+
+
+function addBackgroundColor(html, pattern) {
+	var reg = new RegExp(`(?<!<\\/[^>]*>)\\b${pattern}\\b(?![^<]*>)`, 'gi')
+
+// 使用正则表达式在文本中查找匹配项
+	var matches = [];
+	var match;
+	while ((match = reg.exec(html)) !== null) {
+		matches.push(match.index)
+	}
+
+	var returnHtml="";
+	if(matches.length==0) {
+		return html;
+	}
+	returnHtml+=html.substring(0, matches[0]);
+	for (let i = 0; i < matches.length; i++) {
+		returnHtml += `<span style="background-color: yellow;">${pattern}</span>` + html.substring(matches[i]+pattern.length, i<matches.length-1? matches[i+1]: html.length)
+	}
+	return returnHtml;
 }

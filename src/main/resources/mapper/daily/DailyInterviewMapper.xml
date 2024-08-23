@@ -4,11 +4,12 @@
 
     <select id="paging" resultType="java.util.Map">
         select id, name,
+                ifnull(substring(simplify_context, locate(#{param.name}, simplify_context), 100), '') substr_context,
                (select name from daily_interview_title dit where dit.id=di.title_id) title
         from daily_interview di
         <where>
             <if test="param.name!=null and param.name!=''">
-                and name like concat('%', #{param.name}, '%')
+                and (name like concat('%', #{param.name}, '%') or simplify_context like concat('%', #{param.name}, '%'))
             </if>
             <if test="param.titleId!=null and param.titleId!=''">
                 and (title_id=#{param.titleId}
