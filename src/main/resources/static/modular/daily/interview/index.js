@@ -55,11 +55,11 @@ function page() {
 					return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.name}</div>`
 				}}
 			,{title: '内容', field: 'substr_context'}
-			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
+			,{title: "操作", width: 60, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
 	});
-	table.on('rowDouble(test)', (obj)=>{
+	table.on('row(test)', (obj)=>{
 		$.get(`/daily/interview/get/${obj.data.id}`, function(res) {
 			var data = res.data;
 			if($("#searchForm #name").val()) {
@@ -88,6 +88,7 @@ function page() {
 			});
 
 		})
+		window._obj = obj;
 	})
 }
 
@@ -198,14 +199,6 @@ function openWin(model) {
 	document.getElementsByClassName("w-e-text-container")?.[0].addEventListener("keydown", function(event) {
 		if(event.metaKey&&event.key=="Enter") {
 			commitForm();
-		}
-	})
-}
-
-function getSubTitle(id, callback) {
-	$.get("/daily/interview/getSubTitle/"+id, function(res) {
-		if(callback) {
-			callback(res.data)
 		}
 	})
 }
