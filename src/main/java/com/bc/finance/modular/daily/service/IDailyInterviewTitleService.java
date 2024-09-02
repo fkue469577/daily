@@ -1,5 +1,6 @@
 package com.bc.finance.modular.daily.service;
 
+import com.bc.finance.modular.daily.bo.InterviewTitleTreeVO;
 import com.bc.finance.modular.daily.entity.DailyInterviewTitle;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,4 +19,6 @@ public interface IDailyInterviewTitleService extends IService<DailyInterviewTitl
     List<DailyInterviewTitle> listByParentId(String parentId);
 
     List<DailyInterviewTitle> listRoot();
+
+    List<InterviewTitleTreeVO> tree();
 }

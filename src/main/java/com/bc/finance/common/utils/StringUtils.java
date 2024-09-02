@@ -1,9 +1,12 @@
 package com.bc.finance.common.utils;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -121,4 +124,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             runnable.run();
         }
     }
+
+    public static <T> T notBlankSupplier(String ch, Supplier<T> supplier) {
+        if(isNotBlank(ch)) {
+            T t = supplier.get();
+            return t;
+        }
+        return null;
+    }
+
 }

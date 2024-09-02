@@ -7,6 +7,7 @@ import com.bc.finance.common.msg.BaseResponse;
 import com.bc.finance.common.msg.ObjectResponse;
 import com.bc.finance.common.msg.TableResponse;
 import com.bc.finance.common.utils.StringUtils;
+import com.bc.finance.modular.daily.bo.InterviewTitleTreeVO;
 import com.bc.finance.modular.daily.entity.DailyInterview;
 import com.bc.finance.modular.daily.entity.DailyInterviewTitle;
 import com.bc.finance.modular.daily.service.IDailyInterviewService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +49,15 @@ public class DailyInterviewController {
         return "daily/interview/index";
     }
 
+    @GetMapping("/condition")
+    @ResponseBody
+    public ObjectResponse condition() {
+        Map map = new HashMap();
+        List<InterviewTitleTreeVO> titleList = interviewTitleService.tree();
+        map.put("titleList", titleList);
+        return new ObjectResponse(map);
+    }
+
     @GetMapping("/page")
     @ResponseBody
     public TableResponse page(@RequestParam Map param) {
@@ -72,20 +83,13 @@ public class DailyInterviewController {
     public ObjectResponse get(@PathVariable String id) {
         DailyInterview interview = interviewService.getById(id);
         InterviewGetVO vo = InterviewGetVO.convert(interview);
-        DailyInterviewTitle title = interviewTitleService.getById(vo.getTitleId());
-        if(StringUtils.isNotBlank(title.getParentId())) {
-            vo.setSubTitleId(vo.getTitleId());
-            vo.setTitleId(title.getParentId());
-        }
+        StringUtils.notBlankRunnable(interview.getTitleId(), ()->{
+            DailyInterviewTitle title = interviewTitleService.getById(vo.getTitleId());
+            if(StringUtils.isNotBlank(title.getParentId())) {
+                vo.setSubTitleId(vo.getTitleId());
+                vo.setTitleId(title.getParentId());
+            }
+        });
         return new ObjectResponse(vo);
-    }
-
-
-    @GetMapping({"/getSubTitle/{titleId}", "/getSubTitle/"})
-    @ResponseBody
-    public ObjectResponse getSubTitle(@PathVariable(required = false) String titleId) {
-        List<DailyInterviewTitle> list = interviewTitleService.listByParentId(titleId);
-        List<InterviewGetSubTitleVO> vos = InterviewGetSubTitleVO.from(list);
-        return new ObjectResponse(vos);
     }
 }

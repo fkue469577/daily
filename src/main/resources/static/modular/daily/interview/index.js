@@ -7,22 +7,29 @@ var sub_titleId_html = `<div class="layui-form-item" id="form_sub_titleId">
                     <select name="subTitleId" >%s</select>
                 </div>
             </div>`
+var titleList;
 
 $(function() {
+	$.get("/daily/interview/condition", (result)=>{
+		titleList = result.data.titleList;
+	})
 	page();
 })
 
 form.on("select(titleId)", function(obj) {
+	$(".searchForm_subTitleId").remove();
+	var children = titleList?.filter(e=>e.id==obj.value)?.[0]?.children;
+	if(children) {
+		var html = children.map(e=>`<option value="${e.id}">${e.name}</option>`).join("")
+		html = `<div class="searchForm_subTitleId"><select name="subTitleId" lay-filter="subTitleId">
+						<option value="">--子标题--</option>
+						${html}
+					</select></div>`;
+
+		$(".searchForm_titleId").after(html);
+		form.render(null, 'searchForm');
+	}
 	page();
-	getSubTitle(obj.value, (data)=>{
-		var subTitle = $("select[name=subTitleId]");
-		var html = "<option value>--子标题--</option>";
-		data.forEach(e=>{
-			html += `<option value="${e.id}">${e.name}</option>`
-		})
-		subTitle.html(html);
-		form.render();
-	})
 })
 form.on("select(subTitleId)", function(res) {
 	page();
@@ -123,16 +130,7 @@ function openWin(model) {
 		,maxmin: true
 		,skin: 'layer-ext-myskin'
 		,yes:function () {
-			$("textarea[name=context]").val(editor.getHtml());
-			$("#form").checkCommit({
-				url: "/daily/interview/save",
-				index: index,
-				dataBefore: function (data) {
-					if(data.subTitleId) {
-						data.titleId = data.subTitleId;
-					}
-				}
-			})
+			commitForm();
 		}
 		,full: function(layero, index, that) {
 			$("#editor-text-area").css("height", Math.max(layero.height()-267-$("#editor-toolbar").height(), 200));
@@ -144,13 +142,18 @@ function openWin(model) {
 		}
 	});
 	if(model.subTitleId) {
-		getSubTitle(model.titleId, data=>{
-			if(data && data.length>0) {
-				$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
-				form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
-			}
-			form.render();
-		})
+		var children = titleList.filter(e=>e.id==model.titleId)?.[0]?.children;
+		if(children) {
+			$("#form_titleId").after(sub_titleId_html.replace("%s", children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+			form.render(null, "form");
+		}
+		// getSubTitle(model.titleId, data=>{
+		// 	if(data && data.length>0) {
+		// 		$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+		// 		form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
+		// 	}
+		// 	form.render();
+		// })
 	} else {
 		form.val("form", {"titleId": model.titleId})
 		form.render();
@@ -183,14 +186,48 @@ function openWin(model) {
 	$("#editor-text-area").css("height", "200px")
 
 	form.on("select(tpl_titleId)", function (obj){
-		getSubTitle(obj.value, data=>{
-			$("#form_sub_titleId").remove();
-			if(data && data.length>0) {
-				$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
-				form.render();
+		$("#form_sub_titleId").remove();
+		var children = titleList.filter(e=>e.id==obj.value)?.[0]?.children;
+		if(children) {
+			$("#form_titleId").after(sub_titleId_html.replace("%s", children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+			form.render(null, "form");
+		}
+	});
+
+	function commitForm() {
+		$("textarea[name=context]").val(editor.getHtml());
+		$("#form").checkCommit({
+			url: "/daily/interview/save",
+			index: index,
+			dataBefore: function (data) {
+				if(data.subTitleId) {
+					data.titleId = data.subTitleId;
+				}
 			}
 		})
-	});
+	}
+
+
+	var keyControl=false, keyEnter=false;
+	$(".w-e-text-container").keydown(function(event) {
+		if(event.key=="Control") {
+			keyControl=true;
+		}
+		if(event.key=="Enter") {
+			keyEnter=true;
+		}
+		if(keyControl&&keyEnter) {
+			commitForm();
+		}
+	})
+	$(".w-e-text-container").keyup(function(event) {
+		if(event.key=="Control") {
+			keyControl=false;
+		}
+		if(event.key=="Enter") {
+			keyEnter=false;
+		}
+	})
 }
 
 function getSubTitle(id, callback) {
@@ -222,3 +259,9 @@ function addBackgroundColor(html, pattern) {
 	}
 	return returnHtml;
 }
+
+$(document).on("keydown", "#searchForm #name", (event)=>{
+	if(event.keyCode==13) {
+		page();
+	}
+});

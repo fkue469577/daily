@@ -20,16 +20,19 @@
         </div>
     </div>
     <div class="p-b">
-        <form class="layui-form flex demoTable" id="searchForm">
-            <input name="name" class="layui-input" style="width: 200px;" placeholder="标题" id="name" />
-            <select name="titleId" lay-filter="titleId">
-                <option value="">--面试标题--</option>
-                <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
-            </select>
-            <select name="subTitleId" lay-filter="subTitleId">
-                <option value="">--子标题--</option>
-            </select>
-            <button type="button"  class="layui-btn" onclick="page()">搜索</button>
+        <form class="layui-form flex demoTable" id="searchForm" lay-filter="searchForm">
+            <div>
+                <input name="name" class="layui-input" style="width: 200px;" placeholder="标题" id="name" />
+            </div>
+            <div class="searchForm_titleId">
+                <select name="titleId" lay-filter="titleId">
+                    <option value="">--面试标题--</option>
+                    <option th:each="book: ${titles}" th:value="${book.id}" th:text="${book.name}"></option>
+                </select>
+            </div>
+            <div>
+                <button type="button"  class="layui-btn" onclick="page()">搜索</button>
+            </div>
         </form>
         <table class="layui-hide" id="test" lay-filter="test"></table>
     </div>
