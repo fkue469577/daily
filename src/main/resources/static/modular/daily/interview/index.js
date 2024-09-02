@@ -240,7 +240,9 @@ function getSubTitle(id, callback) {
 
 
 function addBackgroundColor(html, pattern) {
-	var reg = new RegExp(`(?<!<\\/[^>]*>)\\b${pattern}\\b(?![^<]*>)`, 'gi')
+	window.html = html;
+	window.pattern=pattern
+	var reg = new RegExp(`(?<!<\\/[^>]*>)${pattern}(?![^<]*>)`, 'gi')
 
 // 使用正则表达式在文本中查找匹配项
 	var matches = [];
