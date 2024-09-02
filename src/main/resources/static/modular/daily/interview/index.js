@@ -195,24 +195,9 @@ function openWin(model) {
 	}
 
 
-	var keyControl=false, keyEnter=false;
-	$(".w-e-text-container").keydown(function(event) {
-		if(event.key=="Control") {
-			keyControl=true;
-		}
-		if(event.key=="Enter") {
-			keyEnter=true;
-		}
-		if(keyControl&&keyEnter) {
+	document.getElementsByClassName("w-e-text-container")?.[0].addEventListener("keydown", function(event) {
+		if(event.metaKey&&event.key=="Enter") {
 			commitForm();
-		}
-	})
-	$(".w-e-text-container").keyup(function(event) {
-		if(event.key=="Control") {
-			keyControl=false;
-		}
-		if(event.key=="Enter") {
-			keyEnter=false;
 		}
 	})
 }
