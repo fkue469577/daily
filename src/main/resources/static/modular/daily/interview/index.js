@@ -58,42 +58,37 @@ function page() {
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
-		, done: function (res, curr, count) {
-			$(".p-b-c").click(function() {
-				var _this = $(this);
-				var id = res.data[_this.attr("data-index")].id;
-				$.get(`/daily/interview/get/${id}`, function(res) {
-					var data = res.data;
-					if($("#searchForm #name").val()) {
-						data.context = addBackgroundColor(data.context, $("#searchForm #name").val())
-					}
-					layer.open({
-						type: 1,
-						title: data.name,
-						content: `<div class="editor-content-view">${data.context}</div>`,
-						area: ["700px", "500px"],
-						maxmin: true,
-						shadeClose: true,
-						success: function (layero, index, that) {
-							layero.find("img").css("width", "100%")
-						},
-						full: function (){
-							window.parent.fullScreen()
-						},
-						restore: function () {
-							window.parent.smallScreen();
-						}
-					})
-					layer.photos({
-						photos: ".editor-content-view"
-						,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-					});
-
-				})
+	});
+	table.on('rowDouble(test)', (obj)=>{
+		$.get(`/daily/interview/get/${obj.data.id}`, function(res) {
+			var data = res.data;
+			if($("#searchForm #name").val()) {
+				data.context = addBackgroundColor(data.context, $("#searchForm #name").val())
+			}
+			layer.open({
+				type: 1,
+				title: data.name,
+				content: `<div class="editor-content-view">${data.context}</div>`,
+				area: ["700px", "500px"],
+				maxmin: true,
+				shadeClose: true,
+				success: function (layero, index, that) {
+					layero.find("img").css("width", "100%")
+				},
+				full: function (){
+					window.parent.fullScreen()
+				},
+				restore: function () {
+					window.parent.smallScreen();
+				}
+			})
+			layer.photos({
+				photos: ".editor-content-view"
+				,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
 			});
 
-		}
-	});
+		})
+	})
 }
 
 table.on('tool(test)', function (obj) {
@@ -118,7 +113,6 @@ table.on('toolbar(test)', function(obj){
 	};
 });
 function openWin(model) {
-	var searchName = $("#searchForm #name").val();
 	var index = layer.open({
 		type: 1,
 		area: ['700px', '585px'],
@@ -147,13 +141,6 @@ function openWin(model) {
 			$("#form_titleId").after(sub_titleId_html.replace("%s", children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
 			form.render(null, "form");
 		}
-		// getSubTitle(model.titleId, data=>{
-		// 	if(data && data.length>0) {
-		// 		$("#form_titleId").after(sub_titleId_html.replace("%s", data.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
-		// 		form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
-		// 	}
-		// 	form.render();
-		// })
 	} else {
 		form.val("form", {"titleId": model.titleId})
 		form.render();
