@@ -2,6 +2,7 @@ package com.bc.finance.modular.daily.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class DailyBook implements Serializable {
     private LocalDateTime crtTime;
 
     @ApiModelProperty("出版时间")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private LocalDate publishedDate;
 
     private String remark;

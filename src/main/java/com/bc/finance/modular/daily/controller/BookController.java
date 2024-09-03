@@ -13,6 +13,7 @@ import com.bc.finance.modular.daily.entity.DailyBookChapter;
 import com.bc.finance.modular.daily.pojo.BookCatchZHIHUPojo;
 import com.bc.finance.modular.daily.service.IDailyBookChapterService;
 import com.bc.finance.modular.daily.service.IDailyBookService;
+import com.bc.finance.modular.daily.vo.BookPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,8 +54,9 @@ public class BookController {
         Page page = PageHelper.defaultPage();
 
         List list = bookService.paging(page, param);
+        List<BookPageVO> vos = BookPageVO.from(list);
 
-        return new TableResponse(page.getTotal(), list);
+        return new TableResponse(page.getTotal(), vos);
     }
 
     @GetMapping("/get/{id}")

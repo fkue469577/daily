@@ -3,8 +3,7 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyBookMapper">
 
     <select id="paging" resultType="java.util.Map">
-        select id, name, published_date publishedDate, end
-             , t.lastUpdateTime
+        select id, name, published_date publishedDate, `end`, t.lastUpdateTime
         from daily_book db
         left join (
             select book_id, max(crt_time) lastUpdateTime from (

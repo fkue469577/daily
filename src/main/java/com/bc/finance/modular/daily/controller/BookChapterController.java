@@ -9,6 +9,7 @@ import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyBookChapter;
 import com.bc.finance.modular.daily.service.IDailyBookChapterService;
 import com.bc.finance.modular.daily.service.IDailyBookService;
+import com.bc.finance.modular.daily.vo.BookChapter_TreeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,7 +93,8 @@ public class BookChapterController {
     public ObjectResponse tree(@RequestParam("bookId") String bookId ) {
 
         List<DailyBookChapter> chapterList = chapterService.listByBookIdDepend(bookId);
+        List<BookChapter_TreeVO> vos = BookChapter_TreeVO.from(chapterList);
 
-        return new ObjectResponse(chapterList);
+        return new ObjectResponse(vos);
     }
 }

@@ -23,27 +23,12 @@ function page() {
 				return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.title}</div>`
 				}}
 			, {title: "堆叠顺序", templet: (obj)=>{
-					return `<input class="p-b-z-index layui-input" type="number" min="0" value="${obj.zIndex}" data-index="${obj.LAY_TABLE_INDEX}"/>`
+					return `<input class="p-b-z-index layui-input" lay-unrow type="number" min="0" value="${obj.zIndex}" data-index="${obj.LAY_TABLE_INDEX}"/>`
 				}}
 			,{title: "操作", width: 180, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
 		, done: function (res, curr, count) {
-			$(".p-b-c").click(function() {
-				var _this = $(this);
-				var data = res.data[_this.attr("data-index")]
-				var context = data.context
-				layer.open({
-					type: 1,
-					content: `<div class="editor-content-view">${context}</div>`,
-					area: ["700px", "500px"],
-					shadeClose: true
-				})
-				layer.photos({
-					photos: ".editor-content-view"
-					,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-				});
-			});
 			$(".p-b-z-index").change(function() {
 				var _this = $(this);
 				var id = res.data[_this.attr("data-index")].id;
@@ -52,6 +37,20 @@ function page() {
 			});
 		}
 	});
+	table.on("row(test)", function(obj) {
+		$.get(`/daily/notes/get/${obj.data.id}`, function(result) {
+			layer.open({
+				type: 1,
+				content: `<div class="editor-content-view">${result.data.context}</div>`,
+				area: ["700px", "500px"],
+				shadeClose: true
+			})
+			layer.photos({
+				photos: ".editor-content-view"
+				,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+			});
+		})
+	})
 }
 
 table.on('tool(test)', function (obj) {
