@@ -182,7 +182,7 @@ function openWin(model) {
 		}
 	});
 
-	function commitForm() {
+	function commitForm(callback) {
 		$("textarea[name=context]").val(editor.getHtml());
 		$("#form").checkCommit({
 			url: "/daily/interview/save",
@@ -193,6 +193,11 @@ function openWin(model) {
 				}
 			}
 		})
+		$(document).on("keydown", (event)=>{
+			if(!event.metaKey&&event.keyCode==13) {
+				$(".layui-layer-dialog .layui-layer-btn0").click();
+			}
+		});
 	}
 
 
