@@ -54,7 +54,9 @@ function page() {
 			,{title:'标题', templet: (obj)=>{
 					return `<div class="p-b-c" data-index="${obj.LAY_TABLE_INDEX}">${obj.name}</div>`
 				}}
-			,{title: '内容', field: 'substr_context'}
+			,{title: '内容', templet:(obj)=>{
+				return obj.substr_context;
+				}}
 			,{title: "操作", width: 60, align: 'center', toolbar: '#barDemo' }
 		]]
 		,page: true
@@ -62,9 +64,16 @@ function page() {
 	table.on('row(test)', (obj)=>{
 		$.get(`/daily/interview/get/${obj.data.id}`, function(res) {
 			var data = res.data;
+
+			if(isMobile()) {
+				location.href=`/daily/interview/mobile/detail/${data.id}`
+				return ;
+			}
+
 			if($("#searchForm #name").val()) {
 				data.context = addBackgroundColor(data.context, $("#searchForm #name").val())
 			}
+
 			layer.open({
 				type: 1,
 				title: data.name,
@@ -73,19 +82,27 @@ function page() {
 				maxmin: true,
 				shadeClose: true,
 				success: function (layero, index, that) {
-					layero.find("img").css("width", "100%")
+					layero.find("img").css("width", "100%");
+					// if(isMobile()) {
+					// 	setTimeout(()=>{
+					// 		$(".layui-layer-max").click();
+					// 		$(".layui-layer-title").css("font-size", "32px");
+					// 		$(".layui-layer-content").css("font-size", "32px");
+					// 	}, 100)
+					// }
 				},
 				full: function (){
-					window.parent.fullScreen()
+					window.parent.fullScreen?.()
 				},
 				restore: function () {
-					window.parent.smallScreen();
+					window.parent.smallScreen?.();
 				}
 			})
 			layer.photos({
 				photos: ".editor-content-view"
 				,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
 			});
+
 
 		})
 		window._obj = obj;
@@ -139,12 +156,13 @@ function openWin(model) {
 	if(model.subTitleId) {
 		var children = titleList.filter(e=>e.id==model.titleId)?.[0]?.children;
 		if(children) {
-			$("#form_titleId").after(sub_titleId_html.replace("%s", children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+			$("#form_titleId").after(sub_titleId_html.replace("%s", `<option value="">--子标题--</option>`+children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
 			form.render(null, "form");
 		}
+		form.val("form", {"titleId": model.titleId, "subTitleId": model.subTitleId})
 	} else {
 		form.val("form", {"titleId": model.titleId})
-		form.render();
+		form.render(null, "form");
 	}
 
 	const E = window.wangEditor
@@ -177,35 +195,49 @@ function openWin(model) {
 		$("#form_sub_titleId").remove();
 		var children = titleList.filter(e=>e.id==obj.value)?.[0]?.children;
 		if(children) {
-			$("#form_titleId").after(sub_titleId_html.replace("%s", children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
+			$("#form_titleId").after(sub_titleId_html.replace("%s", `<option value="">--子标题--</option>`+children.map(e=>`<option value="${e.id}">${e.name}</option>`)), );
 			form.render(null, "form");
 		}
 	});
 
+	function submit(callback) {
+		$.postJson("/daily/interview/save", $("#form").serializeObject(), callback)
+	}
 	function commitForm(callback) {
 		$("textarea[name=context]").val(editor.getHtml());
-		$("#form").checkCommit({
-			url: "/daily/interview/save",
-			index: index,
-			dataBefore: function (data) {
+		$("#form").check(()=>{
+			submit((data)=>{
 				if(data.subTitleId) {
 					data.titleId = data.subTitleId;
 				}
-			}
-		})
-		$(document).on("keydown", (event)=>{
-			if(!event.metaKey&&event.keyCode==13) {
-				$(".layui-layer-dialog .layui-layer-btn0").click();
-			}
+				history.go(0);
+			})
 		});
+		// $("#form").checkCommit({
+		// 	url: "/daily/interview/save",
+		// 	index: index,
+		// 	dataBefore: function (data) {
+		// 		if(data.subTitleId) {
+		// 			data.titleId = data.subTitleId;
+		// 		}
+		// 	}
+		// })
 	}
 
 
-	document.getElementsByClassName("w-e-text-container")?.[0].addEventListener("keydown", function(event) {
-		if(event.metaKey&&event.key=="Enter") {
+	$(document).off("keydown");
+	$(document).on("keydown", (event)=>{
+		if(event.metaKey && event.key=="Enter") {
 			commitForm();
 		}
-	})
+		if(event.metaKey && event.key=="s") {
+			submit();
+			event.preventDefault()
+		}
+		if(!event.metaKey&&event.keyCode==13) {
+			$(".layui-layer-dialog .layui-layer-btn0").click();
+		}
+	});
 }
 
 

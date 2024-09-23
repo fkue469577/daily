@@ -1,0 +1,25 @@
+body {
+    padding: 10px;
+}
+.title {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-bottom: grey solid 1px;
+    overflow: hidden;
+    margin-left: 10px;
+}
+.content {
+    padding-top: 10px;
+}
+
+.triangle-facing-right {
+    display: block;
+    position: fixed;
+    margin-top: 17px;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+    width: 7px;
+    height: 7px;
+    transform: rotate(135deg);
+}

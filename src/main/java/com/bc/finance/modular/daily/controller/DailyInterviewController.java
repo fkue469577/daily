@@ -6,6 +6,7 @@ import com.bc.finance.common.helper.PageHelper;
 import com.bc.finance.common.msg.BaseResponse;
 import com.bc.finance.common.msg.ObjectResponse;
 import com.bc.finance.common.msg.TableResponse;
+import com.bc.finance.common.utils.ObjectUtils;
 import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.bo.InterviewTitleTreeVO;
 import com.bc.finance.modular.daily.entity.DailyInterview;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * <p>
@@ -91,5 +93,15 @@ public class DailyInterviewController {
             }
         });
         return new ObjectResponse(vo);
+    }
+
+
+    @GetMapping("/mobile/detail/{id}")
+    public String mobileDetail(@PathVariable String id, Model model) {
+        DailyInterview interview = interviewService.getById(id);
+        interview = ObjectUtils.nullSupplier(interview, DailyInterview::new);
+        model.addAttribute("interview", interview);
+        model.addAttribute("aa", "aa-1");
+        return "daily/interview/mobileDetail";
     }
 }
