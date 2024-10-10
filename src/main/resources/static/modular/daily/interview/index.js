@@ -201,7 +201,12 @@ function openWin(model) {
 	});
 
 	function submit(callback) {
-		$.postJson("/daily/interview/save", $("#form").serializeObject(), callback)
+		var data = $("#form").serializeObject()
+		if(data.subTitleId) {
+			data.titleId = data.subTitleId;
+		}
+		$.postJson("/daily/interview/save", data, callback)
+		$(".layui-table-page .layui-laypage-btn").click();
 	}
 	function commitForm(callback) {
 		$("textarea[name=context]").val(editor.getHtml());
@@ -210,18 +215,8 @@ function openWin(model) {
 				if(data.subTitleId) {
 					data.titleId = data.subTitleId;
 				}
-				history.go(0);
 			})
 		});
-		// $("#form").checkCommit({
-		// 	url: "/daily/interview/save",
-		// 	index: index,
-		// 	dataBefore: function (data) {
-		// 		if(data.subTitleId) {
-		// 			data.titleId = data.subTitleId;
-		// 		}
-		// 	}
-		// })
 	}
 
 
