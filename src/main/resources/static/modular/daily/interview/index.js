@@ -206,6 +206,7 @@ function openWin(model) {
 			data.titleId = data.subTitleId;
 		}
 		$.postJson("/daily/interview/save", data, callback)
+		layer.closeAll()
 		$(".layui-table-page .layui-laypage-btn").click();
 	}
 	function commitForm(callback) {
