@@ -35,4 +35,6 @@ public interface IJWTInfo {
      * @return
      */
     String getUserId();
+
+    Integer getExp();
 }

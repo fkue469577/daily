@@ -1,7 +1,7 @@
 package com.bc.finance.common.config;
 
-import com.bc.finance.common.exception.interceptor.UserAuthRestInterceptor;
 import com.bc.finance.common.handler.GlobalExceptionHandler;
+import com.bc.finance.common.interceptor.UserAuthRestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

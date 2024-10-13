@@ -1,11 +1,9 @@
-package com.bc.finance.common.exception.interceptor;
+package com.bc.finance.common.interceptor;
 
 import com.bc.finance.common.config.UserConfiguration;
 import com.bc.finance.common.exception.auth.UserTokenException;
-import com.bc.finance.common.exception.jwt.IJWTInfo;
 import com.bc.finance.common.exception.jwt.JwtTokenUtil;
 import com.bc.finance.common.exception.jwt.TokenUserHelper;
-import com.bc.finance.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
