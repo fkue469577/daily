@@ -23,4 +23,8 @@ public class JwtTokenUtil {
 
         return JWTHelper.getInfoFromToken(token, UserConstant.userPubKey);
     }
+
+    public int getExpire() {
+        return this.expire;
+    }
 }

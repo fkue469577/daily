@@ -58,6 +58,11 @@ function initAjax() {
         },
         complete: function (xhr, status) {//完成请求后触发。即在success或er    ror触发后触发
             lyhide();
+            var obj = JSON.parse(xhr.responseText);
+            if(obj.authorization) {
+                localStorage.setItem("Authorization", obj.authorization)
+            }
+
         },
         beforeSend: function (xhr) {//发送请求前触发
             xhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"))

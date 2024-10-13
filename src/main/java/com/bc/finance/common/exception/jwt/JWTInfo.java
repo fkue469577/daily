@@ -16,6 +16,7 @@ public class JWTInfo implements Serializable, IJWTInfo {
     private String name;
     private String userId;
     private String tokenId;
+    private Integer exp;
     private List<String> role;
     private List<String> permission;
 
