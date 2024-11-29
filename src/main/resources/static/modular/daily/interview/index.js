@@ -229,7 +229,10 @@ function openWin(model) {
 			commitForm();
 		}
 		if(event.metaKey && event.key=="s") {
-			submit(()=>{});
+			submit((res)=>{
+				$("#form input[name=id]").val(res.data)
+				console.log(data)
+			});
 			event.preventDefault()
 		}
 		if(!event.metaKey&&event.keyCode==13) {

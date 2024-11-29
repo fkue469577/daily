@@ -76,7 +76,7 @@ public class DailyInterviewController {
         } else {
             interviewService.update(interview);
         }
-        return BaseResponse.success();
+        return new ObjectResponse<>(interview.getId());
     }
 
 
