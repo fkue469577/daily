@@ -201,13 +201,12 @@ function openWin(model) {
 	});
 
 	function submit(callback) {
+		$("textarea[name=context]").val(editor.getHtml());
 		var data = $("#form").serializeObject()
 		if(data.subTitleId) {
 			data.titleId = data.subTitleId;
 		}
 		$.postJson("/daily/interview/save", data, callback)
-		layer.closeAll()
-		$(".layui-table-page .layui-laypage-btn").click();
 	}
 	function commitForm(callback) {
 		$("textarea[name=context]").val(editor.getHtml());
@@ -216,6 +215,9 @@ function openWin(model) {
 				if(data.subTitleId) {
 					data.titleId = data.subTitleId;
 				}
+
+				layer.closeAll()
+				$(".layui-table-page .layui-laypage-btn").click();
 			})
 		});
 	}
@@ -227,7 +229,7 @@ function openWin(model) {
 			commitForm();
 		}
 		if(event.metaKey && event.key=="s") {
-			submit();
+			submit(()=>{});
 			event.preventDefault()
 		}
 		if(!event.metaKey&&event.keyCode==13) {
