@@ -38,7 +38,7 @@ public class DailyInterviewServiceImpl extends ServiceImpl<DailyInterviewMapper,
     @Override
     public List paging(Page page, Map param) {
         List<Map<String, String>> list = mapper.paging(page, param);
-        String name = param.get("name").toString().toLowerCase();
+        String name = StringUtils.notBlankDefault(param.get("name"), "").toLowerCase();
         list.forEach(e->{
             e.put("substr_context", e.get("substr_context").replaceAll("(\\<.*?\\>)|(\\<.*)", ""));
             e.put("name", addBackgroundColor(e.get("name"), name));

@@ -16,10 +16,13 @@ import com.bc.finance.modular.daily.service.IDailyInterviewTitleService;
 import com.bc.finance.modular.daily.vo.InterviewGetSubTitleVO;
 import com.bc.finance.modular.daily.vo.InterviewGetVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +49,12 @@ public class DailyInterviewController {
 
 
     @GetMapping("")
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
+        String userAgent = request.getHeader("user-agent");
         model.addAttribute("titles", interviewTitleService.listRoot());
+        if(userAgent.indexOf("Mobile")>-1) {
+            return "daily/interview/mobile";
+        }
         return "daily/interview/index";
     }
 

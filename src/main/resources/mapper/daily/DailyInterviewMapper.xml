@@ -4,7 +4,7 @@
 
     <select id="paging" resultType="java.util.Map">
         select id, name,
-                ifnull(substring(simplify_context, locate(#{param.name}, simplify_context), 100), '') substr_context,
+                ifnull(substring(simplify_context, locate(ifnull(#{param.name}, ''), simplify_context), 100), '') substr_context,
                (select name from daily_interview_title dit where dit.id=di.title_id) title
         from daily_interview di
         <where>

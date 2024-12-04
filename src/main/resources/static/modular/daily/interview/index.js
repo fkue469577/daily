@@ -231,7 +231,6 @@ function openWin(model) {
 		if(event.metaKey && event.key=="s") {
 			submit((res)=>{
 				$("#form input[name=id]").val(res.data)
-				console.log(data)
 			});
 			event.preventDefault()
 		}

@@ -1,0 +1,16 @@
+.item {
+    padding: 10px;
+    border-bottom: 1px solid grey;
+}
+
+.term {
+    display: flex;
+}
+
+.term span {
+    display: flex;
+}
+
+.title {
+    width: 120px;
+}

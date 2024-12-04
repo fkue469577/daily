@@ -133,4 +133,18 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return null;
     }
 
+    public static String notBlankDefault(String ch, String defaultStr) {
+        if(isNotBlank(ch)) {
+            return ch;
+        }
+        return defaultStr;
+    }
+
+    public static String notBlankDefault(Object ch, String defaultStr) {
+        if(isNotBlank(ch)) {
+            return ch.toString();
+        }
+        return defaultStr;
+    }
+
 }
