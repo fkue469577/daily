@@ -7,19 +7,37 @@ body {
     text-align: center;
     border-bottom: grey solid 1px;
     overflow: hidden;
-    margin-left: 10px;
+    margin-left: 70px;
 }
 .content {
     padding-top: 10px;
 }
 
 .triangle-facing-right {
-    display: block;
-    position: fixed;
-    margin-top: 17px;
     border-right: 2px solid;
     border-bottom: 2px solid;
     width: 7px;
     height: 7px;
     transform: rotate(135deg);
+    margin-top: 6px;
+}
+.audio-play {
+    background-image: url("/static/img/audio.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    width: 20px;
+    height: 20px;
+}
+.tools {
+    display: flex;
+    position: fixed;
+    background-color: white;
+    padding: 10px;
+}
+.tools>div {
+    margin-left: 10px;
+}
+.reading_back {
+    background-color: blanchedalmond;
 }

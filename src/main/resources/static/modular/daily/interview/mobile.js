@@ -49,9 +49,10 @@ $("select[name=titleId]").change(function(){
 					</select>`;
 
         $("select[name=titleId]").after(html);
-        form.render(null, 'searchForm');
     }
+    $(".thelist").html("")
     page();
+    $("#list").css("top", $("#searchForm").height()+10)
 });
 
 
@@ -73,7 +74,6 @@ $(function (){
         }
     })
     page();
-    window.parent.fullScreen?.();
 })
 
 
@@ -189,6 +189,6 @@ function loaded() {
     //setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
 }
 
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
 document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);

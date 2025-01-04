@@ -65,11 +65,6 @@ function page() {
 		$.get(`/daily/interview/get/${obj.data.id}`, function(res) {
 			var data = res.data;
 
-			if(isMobile()) {
-				location.href=`/daily/interview/mobile/detail/${data.id}`
-				return ;
-			}
-
 			if($("#searchForm #name").val()) {
 				data.context = addBackgroundColor(data.context, $("#searchForm #name").val())
 			}

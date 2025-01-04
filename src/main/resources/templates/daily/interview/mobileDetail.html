@@ -2,6 +2,8 @@
 <html lang="en">
 <title>面试题管理</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="/static/modular/daily/interview/mobile.css" rel="stylesheet" >
+<head th:include="common/common :: common_common"></head>
 <link href="/static/modular/daily/interview/mobileDetail.css" rel="stylesheet" >
 <style>
     ol, ul {
@@ -11,7 +13,10 @@
 <script src="/static/js/jquery.min.js"></script>
 
 <body>
-<div class="triangle-facing-right"></div>
+<div class="tools">
+    <div class="triangle-facing-right"></div>
+    <div class="audio-play"></div>
+</div>
 <div class="title">
     <th th:text="${interview.name}"></th>
 </div>

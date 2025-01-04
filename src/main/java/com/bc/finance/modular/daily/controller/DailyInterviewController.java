@@ -49,13 +49,16 @@ public class DailyInterviewController {
 
 
     @GetMapping("")
-    public String index(Model model, HttpServletRequest request) {
-        String userAgent = request.getHeader("user-agent");
+    public String index(Model model) {
         model.addAttribute("titles", interviewTitleService.listRoot());
-        if(userAgent.indexOf("Mobile")>-1) {
-            return "daily/interview/mobile";
-        }
         return "daily/interview/index";
+    }
+
+
+    @GetMapping("mobile")
+    public String mobile(Model model) {
+        model.addAttribute("titles", interviewTitleService.listRoot());
+        return "daily/interview/mobile";
     }
 
     @GetMapping("/condition")
