@@ -252,10 +252,17 @@ function addBackgroundColor(html, pattern) {
 	if(matches.length==0) {
 		return html;
 	}
-	returnHtml+=html.substring(0, matches[0]);
-	for (let i = 0; i < matches.length; i++) {
-		returnHtml += `<span style="background-color: yellow;">${pattern}</span>` + html.substring(matches[i]+pattern.length, i<matches.length-1? matches[i+1]: html.length)
-	}
+	// returnHtml+=html.substring(0, matches[0]);
+	// var matchesStart = 0,matchesEnd = 0, matchesLength = matches.length;
+	// for (let i = 0; i < matches.length; i++) {
+	// 	matchesStart = matches[i];
+	// 	matchesEnd = matches[i]+matchesLength;
+	// 	returnHtml += `<span style="background-color: yellow;">${html.substring(matchesStart, matchesEnd)}</span>` + html.substring(matchesEnd, i<matchesLength-1? matches[i+1]: matchesLength)
+	// }
+
+	var patternLength = pattern.length;
+	var htmlRegs = html.split(reg);
+	returnHtml = htmlRegs.map((e, i)=>e + `<span style="background-color: yellow;">${html.substring(matches[i], matches[i]+patternLength)}</span>`).join("")
 	return returnHtml;
 }
 

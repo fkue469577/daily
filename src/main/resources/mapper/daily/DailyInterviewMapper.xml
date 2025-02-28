@@ -9,7 +9,20 @@
         from daily_interview di
         <where>
             <if test="param.name!=null and param.name!=''">
-                and (name like concat('%', #{param.name}, '%') or simplify_context like concat('%', #{param.name}, '%'))
+                <choose>
+                    <when test="param.onlyTitle='on' and param.onlyTitle='on'">
+                        and (name like concat('%', #{param.name}, '%') or simplify_context like concat('%', #{param.name}, '%'))
+                    </when>
+                    <when test="param.onlyTitle='on'">
+                        and name like concat('%', #{param.name}, '%')
+                    </when>
+                    <when test="param.onlyTitle='on'">
+                        and simplify_context like concat('%', #{param.name}, '%')
+                    </when>
+                    <otherwise>
+                        and (name like concat('%', #{param.name}, '%') or simplify_context like concat('%', #{param.name}, '%'))
+                    </otherwise>
+                </choose>
             </if>
             <if test="param.titleId!=null and param.titleId!=''">
                 and (title_id=#{param.titleId}

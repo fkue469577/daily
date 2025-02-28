@@ -3,11 +3,13 @@ package generator;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collections;
 import java.util.Scanner;
 
 // 代码生成器
+@SpringBootTest
 public class CodeGenerator {
     public static void main(String[] args) {
         String modular = "daily";

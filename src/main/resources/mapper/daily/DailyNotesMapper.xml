@@ -8,6 +8,6 @@
         <where>
             <if test="param.name!=null and param.name!=''">and dn.title like concat('%', #{param.name}, '%')</if>
         </where>
-        order by z_index desc
+        order by z_index desc, id asc
     </select>
 </mapper>
