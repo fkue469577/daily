@@ -3,20 +3,19 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyInterviewMapper">
 
     <select id="paging" resultType="java.util.Map">
-        select id, name,
-                ifnull(substring(simplify_context, locate(ifnull(#{param.name}, ''), simplify_context), 100), '') substr_context,
+        select id, name, simplify_context substr_context,
                (select name from daily_interview_title dit where dit.id=di.title_id) title
         from daily_interview di
         <where>
             <if test="param.name!=null and param.name!=''">
                 <choose>
-                    <when test="param.onlyTitle='on' and param.onlyTitle='on'">
+                    <when test="param.onlyTitle=='on' and param.onlyContext=='on'">
                         and (name like concat('%', #{param.name}, '%') or simplify_context like concat('%', #{param.name}, '%'))
                     </when>
-                    <when test="param.onlyTitle='on'">
-                        and name like concat('%', #{param.name}, '%')
+                    <when test="param.onlyTitle=='on'">
+                        and `name` like concat('%', #{param.name}, '%')
                     </when>
-                    <when test="param.onlyTitle='on'">
+                    <when test="param.onlyContext=='on'">
                         and simplify_context like concat('%', #{param.name}, '%')
                     </when>
                     <otherwise>

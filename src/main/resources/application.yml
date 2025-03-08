@@ -17,10 +17,15 @@ spring:
       spring.devtools.restart.exclude: WEB-INF/**
   mvc:
     static-path-pattern: /static/**
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mysql://mysql.sqlpub.com:3306/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
-    username: fkue469577
-    password: nduS2GZhX1YT98wx
+    #    url: jdbc:mysql://mysql.sqlpub.com:3306/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
+    #    username: fkue469577
+    #    password: nduS2GZhX1YT98wx
+    url: jdbc:mysql://pengcc.top:3306/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
+    username: root
+    password: fkue469577278.
     driver-class-name: com.mysql.cj.jdbc.Driver
     debug: false
     #Druid#
