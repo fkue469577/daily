@@ -37,20 +37,14 @@ public class JwtResponseBody implements ResponseBodyAdvice<Object> {
         HttpServletRequest httpServletRequest =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-<<<<<<< HEAD
-=======
         System.out.println(body);
 
->>>>>>> f499c2f74ac886142e207a86a8a9398ee1f94f9e
         if(body instanceof BaseResponse) {
             try {
                 TokenUserHelper tokenUser = SpringContextHolder.getBean(TokenUserHelper.class);
                 IJWTInfo jwtInfo = tokenUser.getTokenUser();
-<<<<<<< HEAD
-=======
                 System.out.println(jwtInfo.getExp());
                 System.out.println(System.currentTimeMillis() / 1000);
->>>>>>> f499c2f74ac886142e207a86a8a9398ee1f94f9e
 
                 JwtTokenUtil jwtTokenUtil = SpringContextHolder.getBean(JwtTokenUtil.class);
                 if (jwtInfo.getExp() - System.currentTimeMillis() / 1000 < jwtTokenUtil.getExpire() / 2) {
