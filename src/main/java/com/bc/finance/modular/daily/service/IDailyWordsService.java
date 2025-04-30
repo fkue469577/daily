@@ -30,4 +30,6 @@ public interface IDailyWordsService extends IService<DailyWords> {
     void imports(List<DailyWords> words);
 
     void insertBatch(List<DailyWords> insertList);
+
+    void placementById(String id);
 }

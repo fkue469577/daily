@@ -99,4 +99,12 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
         }
         super.saveBatch(insertList);
     }
+
+    @Override
+    public void placementById(String id) {
+        DailyWords words = new DailyWords();
+        words.setId(id);
+        words.setPlacement(true);
+        this.updateById(words);
+    }
 }

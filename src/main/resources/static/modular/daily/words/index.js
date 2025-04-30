@@ -39,6 +39,10 @@ function page() {
             $.get("/daily/words/get/"+obj.data.id, function(result) {
                 openWin(result.data)
             });
+        } else if(layEvent === "placement") {
+            $.get("/daily/words/placement/"+obj.data.id, (res)=>{
+                refresh(res, ()=>$(".layui-laypage-btn").click())
+            })
         } else if(layEvent === "complete") {
             $.get("/daily/words/complete/"+obj.data.id, function(result) {
                 refresh(result, ()=>$(".layui-laypage-btn").click())

@@ -103,4 +103,12 @@ public class DailyWordsController {
         wordsService.imports(words);
         return BaseResponse.success();
     }
+
+
+    @GetMapping("/placement/{id}")
+    @ResponseBody
+    public BaseResponse placement(@PathVariable String id) {
+        wordsService.placementById(id);
+        return BaseResponse.success();
+    }
 }
