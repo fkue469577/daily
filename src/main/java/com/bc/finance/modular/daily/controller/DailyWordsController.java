@@ -6,12 +6,15 @@ import com.bc.finance.common.helper.PageHelper;
 import com.bc.finance.common.msg.BaseResponse;
 import com.bc.finance.common.msg.ObjectResponse;
 import com.bc.finance.common.msg.TableResponse;
+import com.bc.finance.common.utils.FileUtils;
 import com.bc.finance.modular.daily.entity.DailyWords;
 import com.bc.finance.modular.daily.service.IDailyWordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -111,4 +114,16 @@ public class DailyWordsController {
         wordsService.placementById(id);
         return BaseResponse.success();
     }
+
+
+    @GetMapping("/audio/{word}")
+    @ResponseBody
+    public void autio(@PathVariable String word, HttpServletResponse response) throws IOException {
+        String urlStr = String.format("https://fanyi.baidu.com/gettts?lan=en&text=%s&spd=3&source=web", word);
+        URL url = new URL(urlStr);
+        BufferedInputStream bis = new BufferedInputStream(url.openStream());
+
+        FileUtils.exportByteFile(bis, "repository.mp3", "audio/mpeg", response);
+    }
+
 }

@@ -49,13 +49,14 @@ function page() {
             });
         } else if(layEvent === 'wordFilter'){
             $.get("/daily/words/getWordDetail", {"word": encodeURIComponent(obj.data.word)}, function(res) {
-                var xmls = res.data.match(/(?<=(\<translation\>\<content\>\<\!\[CDATA\[)).*(?=(\]\]\>\<\/content\>\<\/translation\>))/g);
+                var xmls = res.data.match(/(?<=(\<translation\>\<content\>\<\!\[CDATA\[)).*(?=(\]\]\>\<\/content\>\<\/translation\>))/g)?.[0];
+                var symbol = res.data.match(/(?<=(\<us\-phonetic\-symbol\>)).*(?=(\<\/us\-phonetic\-symbol\>))/g)?.[0]
                 layer.open({
                     type: 1,
                     area: ['500px', '300'],
-                    title: obj.data.word,
+                    title: `${obj.data.word}`,
                     shadeClose: true, //点击遮罩关闭
-                    content: xmls.map(e=>`<div>${e}</div>`).join("")
+                    content: `<i class="voice-player" lay-event="voicePlayerFilter" style="display: inline-block; cursor: pointer;"></i><span>[${symbol}]</span></br>${xmls}`
                     ,btn: ['提交','取消']
                     ,btnAlign: 'r'
                     ,skin: 'layer-ext-myskin'
@@ -66,31 +67,13 @@ function page() {
                         })
                     }
                 });
+                $(".layui-layer .voice-player").click(function() {
+                    baiduVoicePlay($(this), obj.data.word)
+                })
             })
         } else if(layEvent === "voicePlayerFilter") {
-            var audioSrc = "http://dict.youdao.com/dictvoice?type=0&audio="+obj.data.word
-            var _obj = $(obj.tr).find(".voice-player");
-            if(audio && audio.src===audioSrc) {
-                if(!audio.paused) {
-                    audio.pause();
-                    $(".voice-playing").removeClass("voice-playing");
-                } else {
-                    audio.play();
-                    _obj.addClass("voice-playing");
-                }
-
-                return;
-            }
-
-            if(audio && audio.src!=audioSrc) {
-                audio.pause();
-            }
-
-            $(".voice-playing").removeClass("voice-playing");
-            audio = new Audio(audioSrc);
-            audio.loop = true;
-            audio.play();
-            _obj.addClass("voice-playing")
+            // youdaoVoicePlay(obj);
+            baiduVoicePlay($(obj.tr).find(".voice-player"), obj.data.word);
         }
     })
 }
@@ -155,4 +138,65 @@ function openImports() {
             // $.post("/daily/words/imports", words, (res)=>{refresh(res)})
         }
     });
+}
+
+
+function youdaoVoicePlay(obj) {
+    var audioSrc = "http://dict.youdao.com/dictvoice?type=0&audio="+obj.data.word
+    var _obj = $(obj.tr).find(".voice-player");
+    if(audio && audio.src===audioSrc) {
+        if(!audio.paused) {
+            audio.pause();
+            $(".voice-playing").removeClass("voice-playing");
+        } else {
+            audio.play();
+            _obj.addClass("voice-playing");
+        }
+
+        return;
+    }
+
+    if(audio && audio.src!=audioSrc) {
+        audio.pause();
+    }
+
+    $(".voice-playing").removeClass("voice-playing");
+    audio = new Audio(audioSrc);
+    audio.loop = true;
+    audio.play();
+    _obj.addClass("voice-playing")
+}
+
+
+function baiduVoicePlay(voice_player, word) {
+    var audioSrc = "/daily/words/audio/"+word
+    if(voice_player.hasClass("voice-playing")) {
+        audio.pause();
+        $(".voice-playing").removeClass("voice-playing");
+        return;
+    }
+
+    var request = new XMLHttpRequest();
+    request.open("get", audioSrc, true);
+    request.responseType = "blob";
+    request.onload = () => {
+        if (request.status === 200) {
+            // 获取文件blob数据并保存
+            let blob = request.response;
+            let srcUrl = window.URL.createObjectURL(blob);
+
+
+            if(audio && audio.src!=audioSrc) {
+                audio.pause();
+            }
+
+            $(".voice-playing").removeClass("voice-playing");
+            audio = new Audio(srcUrl);
+            audio.loop = true;
+            audio.play();
+            window.voice_play = voice_player
+            voice_player.addClass("voice-playing")
+        }
+    };
+    request.send();
 }
