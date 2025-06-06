@@ -36,5 +36,5 @@ public class DailyWords implements Serializable {
 
     private LocalDateTime crtTime;
 
-    private Boolean placement;
+    private Integer level;
 }

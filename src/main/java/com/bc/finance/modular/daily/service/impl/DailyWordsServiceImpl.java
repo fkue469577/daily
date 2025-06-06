@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.common.exception.business.BusinessException;
+import com.bc.finance.common.utils.IntegerUtils;
 import com.bc.finance.common.utils.ObjectId;
 import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.daily.entity.DailyWords;
@@ -102,9 +103,10 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
 
     @Override
     public void placementById(String id) {
+        DailyWords dailyWords = this.getById(id);
         DailyWords words = new DailyWords();
         words.setId(id);
-        words.setPlacement(true);
+        words.setLevel(IntegerUtils.notNullDefault(dailyWords.getLevel(), 0)+1);
         this.updateById(words);
     }
 }

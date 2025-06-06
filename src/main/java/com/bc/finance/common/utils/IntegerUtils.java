@@ -6,4 +6,10 @@ public class IntegerUtils {
         return StringUtils.isNotBlank(obj)? Integer.parseInt(String.valueOf(obj)): null;
     }
 
+    public static Integer notNullDefault(Integer integer, int defaultInt) {
+        if(integer==null) {
+            return integer;
+        }
+        return defaultInt;
+    }
 }
