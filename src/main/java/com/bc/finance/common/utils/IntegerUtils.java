@@ -7,7 +7,7 @@ public class IntegerUtils {
     }
 
     public static Integer notNullDefault(Integer integer, int defaultInt) {
-        if(integer==null) {
+        if(integer!=null) {
             return integer;
         }
         return defaultInt;
