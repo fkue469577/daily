@@ -53,7 +53,8 @@ public class WebConfiguration implements WebMvcConfigurer {
                 "/upload/**",
                 "/error",
                 "classpath:/static/",
-                "classpath:/META-INF/resources/"
+                "classpath:/META-INF/resources/",
+                "/order/**"
                 );
     }
 
