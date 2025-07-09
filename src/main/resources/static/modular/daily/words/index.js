@@ -90,6 +90,9 @@ table.on('toolbar(test)', function(obj){
             openImports()
 
             break;
+        case 'oneClickPlacement':
+            $.get("/daily/words/oneClickPlacement")
+            break;
     };
 });
 

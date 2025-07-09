@@ -2,8 +2,10 @@ package com.bc.finance.modular.daily.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.common.exception.business.BusinessException;
+import com.bc.finance.common.helper.PageHelper;
 import com.bc.finance.common.utils.IntegerUtils;
 import com.bc.finance.common.utils.ObjectId;
 import com.bc.finance.common.utils.StringUtils;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -108,5 +111,18 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
         words.setId(id);
         words.setLevel(IntegerUtils.notNullDefault(dailyWords.getLevel(), 0)+1);
         this.updateById(words);
+    }
+
+    @Override
+    public void oneClickPlacement() {
+        Page page = PageHelper.defaultPage();
+        List<Map> list = this.page(page, new HashMap());
+        List<DailyWords> collect = list.stream().map(e -> {
+            DailyWords dailyWords = new DailyWords();
+            dailyWords.setId(e.get("id").toString());
+            dailyWords.setLevel(dailyWords.getLevel()==null? 10: dailyWords.getLevel()+10);
+            return dailyWords;
+        }).collect(Collectors.toList());
+        this.updateBatchById(collect);
     }
 }

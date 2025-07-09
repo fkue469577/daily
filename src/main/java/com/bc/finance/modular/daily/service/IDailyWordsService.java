@@ -32,4 +32,6 @@ public interface IDailyWordsService extends IService<DailyWords> {
     void insertBatch(List<DailyWords> insertList);
 
     void placementById(String id);
+
+    void oneClickPlacement();
 }

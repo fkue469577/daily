@@ -9,6 +9,7 @@ import com.bc.finance.common.msg.TableResponse;
 import com.bc.finance.common.utils.FileUtils;
 import com.bc.finance.modular.daily.entity.DailyWords;
 import com.bc.finance.modular.daily.service.IDailyWordsService;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -126,4 +127,12 @@ public class DailyWordsController {
         FileUtils.exportByteFile(bis, "repository.mp3", "audio/mpeg", response);
     }
 
+
+    @GetMapping("/oneClickPlacement")
+    @ApiModelProperty("一键置顶")
+    @ResponseBody
+    public BaseResponse oneClickPlacement() {
+        wordsService.oneClickPlacement();
+        return BaseResponse.success();
+    }
 }
