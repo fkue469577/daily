@@ -43,4 +43,19 @@ public class IndexController {
 
         return new ObjectResponse(map);
     }
+
+    @GetMapping("/userInfo")
+    @ResponseBody
+    public ObjectResponse userInfo() {
+        IJWTInfo user = userHelper.getTokenUser();
+        Map map = new HashMap();
+        map.put("name", user.getName());
+        map.put("artCount", (int)(Math.random() * 100));
+        map.put("followCount", (int)(Math.random() * 100));
+        map.put("fansCount", (int)(Math.random() * 100));
+        map.put("likeCount", (int)(Math.random() * 100));
+        map.put("avatar", "/static/img/R-C.gif");
+        return new ObjectResponse(map);
+    }
+
 }
