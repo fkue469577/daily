@@ -111,6 +111,7 @@ function openWin(model) {
             $("#form").checkCommit({
                 url: "/daily/words/save"
                 , index: index
+                , unalert: true
             })
         }
     });
