@@ -64,6 +64,7 @@ function page() {
                         $("#form").checkCommit({
                             url: "/daily/words/save"
                             , index: index
+                            , unalert: true
                         })
                     }
                 });
