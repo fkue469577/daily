@@ -1,8 +1,11 @@
 package com.bc.finance.common.msg;
 
+import lombok.Data;
+
 /**
  * Created by Ace on 2017/6/11.
  */
+@Data
 public class ObjectResponse<T> extends BaseResponse {
 
     T data;
@@ -11,18 +14,13 @@ public class ObjectResponse<T> extends BaseResponse {
     public ObjectResponse(T data) {
         this.data = data;
     }
-    public ObjectResponse data(T data) {
-        this.setData(data);
-        return this;
+    public static <T> ObjectResponse data(T data) {
+        ObjectResponse<T> response = new ObjectResponse();
+        response.setData(data);
+        return response;
     }
     public T getData() {
         return data;
     }
-
-    public ObjectResponse setData(T data) {
-        this.data = data;
-        return this;
-    }
-
 
 }

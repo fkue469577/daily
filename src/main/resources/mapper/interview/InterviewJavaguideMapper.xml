@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bc.finance.modular.interview.mapper.InterviewJavaguideMapper">
+
+
+    <select id="articles" resultType="com.bc.finance.modular.interview.entity.InterviewJavaguide">
+        select id, title, prefix, crt_time, leaf
+        from interview_javaguide ij
+        where parent_id = #{map.parentId}
+    </select>
+</mapper>

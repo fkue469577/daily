@@ -2,9 +2,9 @@ package com.bc.finance.common.advice;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.bc.finance.common.result.BaseResponse;
-import com.bc.finance.common.result.ObjectResponse;
-import com.bc.finance.common.result.TableResponse;
+import com.bc.finance.common.msg.BaseResponse;
+import com.bc.finance.common.msg.ObjectResponse;
+import com.bc.finance.common.msg.TableResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -21,14 +21,14 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public BaseResponse beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if(body instanceof IPage) {
             IPage page = (IPage) body;
             return new TableResponse(page.getTotal(), page.getRecords());
         }
 
         if(body instanceof String) {
-            return JSON.toJSONString(new ObjectResponse(body));
+            return new ObjectResponse(body);
         }
 
         if(body != null) {
