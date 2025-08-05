@@ -47,6 +47,10 @@ function page() {
             $.get("/daily/words/complete/"+obj.data.id, function(result) {
                 refresh(result, ()=>$(".layui-laypage-btn").click())
             });
+        } else if(layEvent === "delete") {
+            $.get("/daily/words/delete/"+obj.data.id, function(result) {
+                refresh(result, ()=>$(".layui-laypage-btn").click())
+            });
         } else if(layEvent === 'wordFilter'){
             $.get("/daily/words/getWordDetail", {"word": encodeURIComponent(obj.data.word)}, function(res) {
                 var xmls = res.data.match(/(?<=(\<translation\>\<content\>\<\!\[CDATA\[)).*(?=(\]\]\>\<\/content\>\<\/translation\>))/g)?.[0];

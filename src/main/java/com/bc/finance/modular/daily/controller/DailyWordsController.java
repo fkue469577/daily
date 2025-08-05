@@ -135,4 +135,13 @@ public class DailyWordsController {
         wordsService.oneClickPlacement();
         return BaseResponse.success();
     }
+
+
+    @ApiModelProperty("一键置顶")
+    @ResponseBody
+    @GetMapping("/delete/{id}")
+    public BaseResponse delete(@PathVariable("id") String id) {
+        wordsService.removeById(id);
+        return BaseResponse.success();
+    }
 }
