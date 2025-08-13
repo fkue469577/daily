@@ -1,5 +1,6 @@
 package com.bc.finance.modular.daily.service.impl;
 
+import cn.hutool.core.util.XmlUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,8 +14,15 @@ import com.bc.finance.modular.daily.entity.DailyWords;
 import com.bc.finance.modular.daily.mapper.DailyWordsMapper;
 import com.bc.finance.modular.daily.service.IDailyWordsService;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +53,35 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
 
     @Override
     public boolean save(DailyWords words) {
+
+        try {
+            URL url = new URL("http://dict.youdao.com/fsearch?client=deskdict&keyfrom=chrome.extension&q=" + words.getWord() + "&pos=-1&doctype=xml&xmlVersion=3.2&dogVersion=1.0&vendor=unknown&appVer=3.1.17.4208&le=eng");
+            InputStreamReader reader = new InputStreamReader(url.openStream(), "utf-8");
+            StringBuilder builder = new StringBuilder();
+            char[] chars = new char[1024];
+            int bytesRead;
+            while ((bytesRead = reader.read(chars)) > -1) {
+                builder.append(chars, 0, bytesRead);
+            }
+            reader.close();
+            Document document = XmlUtil.parseXml(builder.toString());
+            Element root = document.getDocumentElement();
+            System.out.println("================================================================================");
+            System.out.println("xml String: \n"+builder.toString());
+            String symbol = XmlUtil.elementText(root, "us-phonetic-symbol");
+            System.out.println("us-phonetic-symbol: "+symbol);
+            words.setPronounce(symbol);
+            Element ele = XmlUtil.getElementByXPath("/yodaodict/custom-translation/translation/content", document);
+            words.setExplain(ele.getTextContent());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         if(StringUtils.isBlank(words.getId())) {
             this.insert(words);
         } else {
@@ -64,6 +101,7 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
 
         words.setId(ObjectId.getString());
         words.setCrtTime(LocalDateTime.now());
+
         super.save(words);
     }
 

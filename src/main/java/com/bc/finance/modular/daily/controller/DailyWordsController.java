@@ -19,6 +19,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,9 @@ public class DailyWordsController {
     public TableResponse page(@RequestParam Map param) {
 
         Page page = PageHelper.defaultPage();
+        if (page.getCurrent() > 4) {
+            return new TableResponse(0, new ArrayList());
+        }
         List list = wordsService.page(page, param);
 
         return new TableResponse(page.getTotal(), list);

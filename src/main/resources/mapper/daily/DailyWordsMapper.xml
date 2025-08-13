@@ -3,7 +3,7 @@
 <mapper namespace="com.bc.finance.modular.daily.mapper.DailyWordsMapper">
 
     <select id="page" resultType="java.util.Map">
-        select `id`, `word`, `explain`, `completed`
+        select `id`, `word`, `explain`, `completed`, `pronounce`
         from daily_words dw
         <where>
             <if test="param.word!=null and param.word!=''">
