@@ -98,6 +98,9 @@ table.on('toolbar(test)', function(obj){
         case 'oneClickPlacement':
             $.get("/daily/words/oneClickPlacement")
             break;
+        case 'oneClickComplete':
+            $.get("/daily/words/oneClickComplete")
+            break;
     };
 });
 

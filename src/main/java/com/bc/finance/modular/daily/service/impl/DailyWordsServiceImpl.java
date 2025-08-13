@@ -163,4 +163,18 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
         }).collect(Collectors.toList());
         this.updateBatchById(collect);
     }
+
+
+    @Override
+    public void oneClickComplete() {
+        Page page = PageHelper.defaultPage();
+        List<Map> list = this.page(page, new HashMap());
+        List<DailyWords> collect = list.stream().map(e -> {
+            DailyWords dailyWords = new DailyWords();
+            dailyWords.setId(e.get("id").toString());
+            dailyWords.setCompleted(true);
+            return dailyWords;
+        }).collect(Collectors.toList());
+        this.updateBatchById(collect);
+    }
 }

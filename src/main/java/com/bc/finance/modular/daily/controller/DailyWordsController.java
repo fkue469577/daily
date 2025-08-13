@@ -140,8 +140,16 @@ public class DailyWordsController {
         return BaseResponse.success();
     }
 
+    @GetMapping("/oneClickComplete")
+    @ApiModelProperty("一键完成")
+    @ResponseBody
+    public BaseResponse oneClickComplete() {
+        wordsService.oneClickComplete();
+        return BaseResponse.success();
+    }
 
-    @ApiModelProperty("一键置顶")
+
+    @ApiModelProperty("删除")
     @ResponseBody
     @GetMapping("/delete/{id}")
     public BaseResponse delete(@PathVariable("id") String id) {
