@@ -32,19 +32,10 @@ public class JwtResponseBody implements ResponseBodyAdvice<Object> {
     @SuppressWarnings("rawtypes")
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, org.springframework.http.MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-
-        //通过RequestContextHolder获取request
-        HttpServletRequest httpServletRequest =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
-        System.out.println(body);
-
         if(body instanceof BaseResponse) {
             try {
                 TokenUserHelper tokenUser = SpringContextHolder.getBean(TokenUserHelper.class);
                 IJWTInfo jwtInfo = tokenUser.getTokenUser();
-                System.out.println(jwtInfo.getExp());
-                System.out.println(System.currentTimeMillis() / 1000);
 
                 JwtTokenUtil jwtTokenUtil = SpringContextHolder.getBean(JwtTokenUtil.class);
                 if (jwtInfo.getExp() - System.currentTimeMillis() / 1000 < jwtTokenUtil.getExpire() / 2) {

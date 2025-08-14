@@ -66,10 +66,7 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
             reader.close();
             Document document = XmlUtil.parseXml(builder.toString());
             Element root = document.getDocumentElement();
-            System.out.println("================================================================================");
-            System.out.println("xml String: \n"+builder.toString());
             String symbol = XmlUtil.elementText(root, "us-phonetic-symbol");
-            System.out.println("us-phonetic-symbol: "+symbol);
             words.setPronounce(symbol);
             Element ele = XmlUtil.getElementByXPath("/yodaodict/custom-translation/translation/content", document);
             words.setExplain(ele.getTextContent());

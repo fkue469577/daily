@@ -165,42 +165,4 @@ public class ConvertUpMoney {
         }
     }
 
-
-    // Test
-    public static void main(String[] args) {
-        String number = "12.56";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "1234567890563886.123";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "1600";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "156,0";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "-156,0";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "0.12";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "0.0";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "01.12";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "0125";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "-0125";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        number = "sdw5655";
-        System.out.println(number+": "+ConvertUpMoney.toChinese(number));
-
-        System.out.println(null+": "+ConvertUpMoney.toChinese(null));
-    }
 }
