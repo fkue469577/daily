@@ -69,7 +69,7 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
             String symbol = XmlUtil.elementText(root, "us-phonetic-symbol");
             words.setPronounce(symbol);
             Element ele = XmlUtil.getElementByXPath("/yodaodict/custom-translation/translation/content", document);
-            words.setExplain(ele.getTextContent());
+            words.setAutoExplain(ele.getTextContent());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {

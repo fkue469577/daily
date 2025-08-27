@@ -1,5 +1,7 @@
 package com.bc.finance.modular.vant.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bc.finance.common.helper.PageHelper;
 import com.bc.finance.common.msg.BaseResponse;
 import com.bc.finance.common.msg.ObjectResponse;
 import com.bc.finance.modular.vant.entity.VantInterview;
@@ -50,6 +52,18 @@ public class VantInterviewController {
     }
 
 //    @ApiModelProperty("删除我的文章类型")
-//    @ApiModelProperty("获取全部标题 type=doc")
+    @ApiModelProperty("获取文章列表 type=doc")
+    @GetMapping("/articles")
+    public ObjectResponse articles(@RequestParam("channelId") String channelId) {
+        Page page = PageHelper.defaultPage();
+        List<VantInterview> list = vantInterviewService.articles(channelId, page);
+        return ObjectResponse.data(list);
+    }
 
+    @ApiModelProperty("获取文章详细")
+    @GetMapping("/article/{articleId}")
+    public ObjectResponse article(@PathVariable("articleId") String articleId) {
+        VantInterview vantInterview = vantInterviewService.getById(articleId);
+        return ObjectResponse.data(vantInterview);
+    }
 }

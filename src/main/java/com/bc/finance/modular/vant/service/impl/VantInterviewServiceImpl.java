@@ -1,5 +1,6 @@
 package com.bc.finance.modular.vant.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bc.finance.common.exception.jwt.TokenUserHelper;
 import com.bc.finance.modular.vant.entity.VantInterview;
@@ -36,5 +37,11 @@ public class VantInterviewServiceImpl extends ServiceImpl<VantInterviewMapper, V
     public List<VantInterview> myChannels() {
         List<VantInterview> channels = vantInterviewMapper.myChannels(tokenUserHelper.getUserId());
         return channels;
+    }
+
+    @Override
+    public List<VantInterview> articles(String channelId, Page page) {
+        List<VantInterview> articles = vantInterviewMapper.articles(channelId, page);
+        return articles;
     }
 }
