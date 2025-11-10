@@ -51,9 +51,6 @@ public class DailyWordsController {
     public TableResponse page(@RequestParam Map param) {
 
         Page page = PageHelper.defaultPage();
-        if (page.getCurrent() > 4) {
-            return new TableResponse(0, new ArrayList());
-        }
         List list = wordsService.page(page, param);
 
         return new TableResponse(page.getTotal(), list);
@@ -154,6 +151,15 @@ public class DailyWordsController {
     @GetMapping("/delete/{id}")
     public BaseResponse delete(@PathVariable("id") String id) {
         wordsService.removeById(id);
+        return BaseResponse.success();
+    }
+
+
+    @ApiModelProperty("取消完成")
+    @ResponseBody
+    @GetMapping("/uncomplete/{id}")
+    public BaseResponse reset(@PathVariable("id") String id) {
+        wordsService.uncomplete(id);
         return BaseResponse.success();
     }
 }

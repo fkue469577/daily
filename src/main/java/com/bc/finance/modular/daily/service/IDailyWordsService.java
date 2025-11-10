@@ -36,4 +36,6 @@ public interface IDailyWordsService extends IService<DailyWords> {
     void oneClickPlacement();
 
     void oneClickComplete();
+
+    void uncomplete(String id);
 }

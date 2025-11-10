@@ -105,14 +105,13 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
 
     @Override
     public void update(DailyWords words) {
-
+        words.setUpdateTime(LocalDateTime.now());
         super.updateById(words);
     }
 
 
     @Override
     public DailyWords getByWord(String word) {
-
         return mapper.getByWord(word);
     }
 
@@ -174,4 +173,15 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
         }).collect(Collectors.toList());
         this.updateBatchById(collect);
     }
+
+
+    @Override
+    public void uncomplete(String id) {
+        DailyWords words = new DailyWords();
+        words.setId(id);
+        words.setCompleted(false);
+        words.setLevel(20);
+        this.update(words);
+    }
+
 }
