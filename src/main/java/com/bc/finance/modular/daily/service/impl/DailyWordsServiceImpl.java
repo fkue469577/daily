@@ -180,7 +180,7 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
         DailyWords words = new DailyWords();
         words.setId(id);
         words.setCompleted(false);
-        words.setLevel(20);
+        words.setLevel(5);
         this.update(words);
     }
 
