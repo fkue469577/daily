@@ -45,7 +45,10 @@ function page() {
         var layEvent = obj.event
         if (layEvent === 'edit') { //编辑
             $.get("/daily/words/get/" + obj.data.id, function (result) {
-                openWin(result.data, () => $(".layui-laypage-btn").click())
+                openWin(result.data, () => {
+                    layer.closeAll();
+                    $(".layui-laypage-btn").click()
+                })
             });
         } else if (layEvent === "placement") {
             $.get("/daily/words/placement/" + obj.data.id, (res) => {
