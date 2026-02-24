@@ -81,8 +81,8 @@ mybatis-plus:
 
 jwt:
   token-header: Authorization
-#  expire: 604800
-  expire: 60
+  expire: 604800
+#  expire: 60
   rsa-secret: xx1WET12^%3^(WE45
   # 超级管理员的关键字
   administrator: administrator
