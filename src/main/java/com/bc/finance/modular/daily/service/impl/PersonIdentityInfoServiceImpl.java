@@ -8,4 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonIdentityInfoServiceImpl extends ServiceImpl<PersonIdentityInfoMapper, PersonIdentityInfo> implements IPersonIdentityInfoService {
+
+
+    
 }
