@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IBaseDictService extends IService<BaseDict> {
 
+    List<BaseDict> listByTypeCode(String typeCode);
 }

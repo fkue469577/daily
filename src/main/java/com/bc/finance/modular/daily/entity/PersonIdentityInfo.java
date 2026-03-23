@@ -1,4 +1,5 @@
 package com.bc.finance.modular.daily.entity;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,9 +15,9 @@ import java.util.Date;
 @ApiModel(value = "PersonIdentityInfo对象", description = "个人身份信息实体类")
 public class PersonIdentityInfo {
 
-    @TableId(value = "id", type = IdType.INPUT)
-    @ApiModelProperty(value = "主键ID（手动输入）", required = true, example = "100001")
-    private Long id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @ApiModelProperty(value = "主键ID（手动输入）", required = true)
+    private String id;
 
     @TableField("person_no")
     @ApiModelProperty(value = "个人唯一编号", example = "PER20260314001")

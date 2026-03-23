@@ -7,6 +7,8 @@ import com.bc.finance.modular.base.service.IBaseDictService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class BaseDictServiceImpl extends ServiceImpl<BaseDictMapper, BaseDict> implements IBaseDictService {
@@ -14,4 +16,9 @@ public class BaseDictServiceImpl extends ServiceImpl<BaseDictMapper, BaseDict> i
     @Resource
     BaseDictMapper mapper;
 
+    @Override
+    public List<BaseDict> listByTypeCode(String typeCode) {
+        List<BaseDict> list = this.lambdaQuery().eq(BaseDict::getTypeCode, typeCode).list();
+        return list;
+    }
 }

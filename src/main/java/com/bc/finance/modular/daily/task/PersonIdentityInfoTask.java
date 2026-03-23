@@ -1,8 +1,5 @@
 package com.bc.finance.modular.daily.task;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.bc.finance.modular.base.entity.BaseDict;
 import com.bc.finance.modular.base.service.IBaseDictService;
 import com.bc.finance.modular.daily.entity.PersonIdentityInfo;
@@ -13,14 +10,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Component
@@ -29,25 +26,49 @@ public class PersonIdentityInfoTask {
     @Autowired
     private IPersonIdentityInfoService personIdentityInfoService;
 
+    @Autowired
+    private IBaseDictService baseDictService;
+
+
+    private List<BaseDict> ethnicity;
+    private Map<String, BaseDict> ethnicityMap;
+    private List<BaseDict> administrativeDivision;
+    private Map<String, BaseDict> administrativeDivisionMap;
+    private Map<Integer, BaseDict> administrativeDivisionSort;
+
+    @PostConstruct
+    public void init() {
+        ethnicity = baseDictService.listByTypeCode("ethnicity");
+        ethnicityMap = ethnicity.stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
+        administrativeDivision = baseDictService.listByTypeCode("administrative_division");
+        administrativeDivisionMap = administrativeDivision.stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
+        administrativeDivisionSort = administrativeDivision.stream().collect(Collectors.toMap(BaseDict::getSort, e->e));
+
+        run();
+    }
+
+
     @Scheduled(cron="20 */5 * * * ?")
-    public void run() throws InterruptedException {
+    public void run() {
         // 1. 构造测试数据
         List<PersonIdentityInfo> dataList = new ArrayList<>();
         for (long i = 100001; i <= 100100; i++) { // 生成100条测试数据
+            BaseDict ad = getAdministrativeDivision();
+            String birthday = getBirthday();
             PersonIdentityInfo info = new PersonIdentityInfo();
-            info.setId(i); // 手动指定主键ID
             info.setPersonNo("PER" + System.currentTimeMillis() + i);
-            info.setIdCardNo("11010119900101" + String.format("%04d", i)); // 模拟身份证号
+            info.setIdCardNo(String.format("%s%s%s", ad.getDictCode(), birthday.replaceAll("-", ""), String.valueOf(Math.random()*100000000).substring(3, 7))); // 模拟身份证号
             info.setName("测试用户" + i);
             info.setNamePinyin("Ce Shi Yong Hu" + i);
             info.setNameAbbr("CSYH" + i);
             info.setGender(1); // 男
             info.setBirthday(new Date(90, 0, 1)); // 1990-01-01
             info.setAge(34);
-            info.setNation("汉族");
-            info.setNativePlace("北京市海淀区");
-            info.setHouseholdAddress("北京市海淀区XX街道XX小区");
-            info.setResidenceAddress("北京市海淀区XX街道XX小区");
+            info.setNation(getEthnicity().getDictName());
+            info.setNativePlace(ad.getDictName());
+            info.setNativePlaceCode(ad.getDictCode());
+            info.setHouseholdAddress(ad.getDictName());
+            info.setResidenceAddress(ad.getDictName());
             info.setIdCardStartDate(new Date(2020, 0, 1));
             info.setCreateBy("admin");
             info.setCreateTime(new Date());
@@ -66,4 +87,47 @@ public class PersonIdentityInfoTask {
         }
     }
 
+
+    /**
+     * 获取民族
+     * @return
+     */
+    public BaseDict getEthnicity() {
+        String random = String.format("%02d", (int) (Math.random() * 300));
+        BaseDict baseDict = ethnicityMap.get(random);
+        if(baseDict == null){
+            baseDict = ethnicityMap.get("01");
+        }
+        return baseDict;
+    }
+
+
+    /**
+     * 获取辖区
+     * @return
+     */
+    public BaseDict getAdministrativeDivision() {
+        int random = (int) (Math.random() * 34002);
+        BaseDict baseDict = administrativeDivisionSort.get(random);
+        if(baseDict == null || baseDict.getLevel()!=2){
+            return getAdministrativeDivision();
+        }
+        return baseDict;
+    }
+
+    /**
+     * 获取出生日期
+     */
+    public String getBirthday() {
+        int startYear = 1950;
+        int endYear = 2006;
+        LocalDate startDate = LocalDate.of(startYear, 1, 1);
+        LocalDate endDate = LocalDate.of(endYear, 12, 31);
+
+        long startEpochDay = startDate.toEpochDay();
+        long endEpochDay = endDate.toEpochDay();
+        long randomEpochDay = ThreadLocalRandom.current().nextLong(startEpochDay, endEpochDay + 1);
+
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.ofEpochDay(randomEpochDay));
+    }
 }
