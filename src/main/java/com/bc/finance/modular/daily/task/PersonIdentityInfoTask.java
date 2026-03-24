@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -35,6 +32,11 @@ public class PersonIdentityInfoTask {
     private List<BaseDict> administrativeDivision;
     private Map<String, BaseDict> administrativeDivisionMap;
     private Map<Integer, BaseDict> administrativeDivisionSort;
+    private Map<String, BaseDict> surnameMap;
+    private Map<String, BaseDict> nameMap;
+    List<BaseDict> surnames;
+    int start = 0;
+
 
     @PostConstruct
     public void init() {
@@ -43,7 +45,15 @@ public class PersonIdentityInfoTask {
         administrativeDivision = baseDictService.listByTypeCode("administrative_division");
         administrativeDivisionMap = administrativeDivision.stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
         administrativeDivisionSort = administrativeDivision.stream().collect(Collectors.toMap(BaseDict::getSort, e->e));
+        surnames = baseDictService.listByTypeCode("surname");
+        surnameMap = baseDictService.listByTypeCode("surname").stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
+        for (BaseDict baseDict : surnames) {
+            baseDict.setExtendFile2(String.valueOf(start));
+            baseDict.setExtendFile3(String.valueOf(start+Integer.parseInt(baseDict.getExtendFile1())));
+            start += Integer.parseInt(baseDict.getExtendFile1());
+        }
 
+        nameMap = baseDictService.listByTypeCode("name").stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
         run();
     }
 
@@ -54,6 +64,7 @@ public class PersonIdentityInfoTask {
         List<PersonIdentityInfo> dataList = new ArrayList<>();
         for (long i = 100001; i <= 100100; i++) { // 生成100条测试数据
             BaseDict ad = getAdministrativeDivision();
+            BaseDict nowAd = getAdministrativeDivision();
             String birthday = getBirthday();
             PersonIdentityInfo info = new PersonIdentityInfo();
             info.setPersonNo("PER" + System.currentTimeMillis() + i);
@@ -65,14 +76,17 @@ public class PersonIdentityInfoTask {
             info.setBirthday(new Date(90, 0, 1)); // 1990-01-01
             info.setAge(34);
             info.setNation(getEthnicity().getDictName());
+            info.setNationCode(getEthnicity().getDictCode());
             info.setNativePlace(ad.getDictName());
             info.setNativePlaceCode(ad.getDictCode());
-            info.setHouseholdAddress(ad.getDictName());
-            info.setResidenceAddress(ad.getDictName());
+            info.setHouseholdAddress(ad.getExtendFile3());
+            info.setResidenceAddress(nowAd.getExtendFile3());
             info.setIdCardStartDate(new Date(2020, 0, 1));
             info.setCreateBy("admin");
             info.setCreateTime(new Date());
             info.setIsDelete(0);
+
+            log.info(getSurname());
 
             dataList.add(info);
         }
@@ -129,5 +143,18 @@ public class PersonIdentityInfoTask {
         long randomEpochDay = ThreadLocalRandom.current().nextLong(startEpochDay, endEpochDay + 1);
 
         return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.ofEpochDay(randomEpochDay));
+    }
+
+    /**
+     * 获取姓
+     */
+    public String getSurname() {
+        int random = new Random().nextInt(start);
+        for (BaseDict baseDict: surnames) {
+            if(random >= Integer.parseInt(baseDict.getExtendFile2()) && random < Integer.parseInt(baseDict.getExtendFile3())){
+                return baseDict.getDictName();
+            }
+        }
+        return "李";
     }
 }
