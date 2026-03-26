@@ -15,7 +15,7 @@ import java.util.Date;
 @ApiModel(value = "PersonIdentityInfo对象", description = "个人身份信息实体类")
 public class PersonIdentityInfo {
 
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "主键ID（手动输入）", required = true)
     private String id;
 

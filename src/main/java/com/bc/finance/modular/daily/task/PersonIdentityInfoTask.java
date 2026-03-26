@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,27 +74,27 @@ public class PersonIdentityInfoTask {
     @PostConstruct
     public void init() throws Exception {
 
-        File file = new File("/Users/chunchengpeng/Downloads/area_format_user.json");
-        FileInputStream fis = new FileInputStream(file);
-        byte[] bytes = new byte[10240];
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int length;
-        while((length=fis.read(bytes))>-1) {
-            baos.write(bytes, 0, length);
-        }
-        JSONArray jsonArray = JSON.parseArray(baos.toString("utf-8"));
-        List<BaseDict> list = getChildren(jsonArray, "");
-
-        int page = list.size() / 500;
-        for (int i = 0; i < page; i++) {
-            List<BaseDict> insertList = list.subList(i * 500, Math.min((i + 1) * 500, list.size()));
-            baseDictService.saveBatch(insertList);
-        }
-
-        System.out.println(new Date());
-        if(true) {
-            return;
-        }
+//        File file = new File("/Users/chunchengpeng/Downloads/area_format_user.json");
+//        FileInputStream fis = new FileInputStream(file);
+//        byte[] bytes = new byte[10240];
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        int length;
+//        while((length=fis.read(bytes))>-1) {
+//            baos.write(bytes, 0, length);
+//        }
+//        JSONArray jsonArray = JSON.parseArray(baos.toString("utf-8"));
+//        List<BaseDict> list = getChildren(jsonArray, "");
+//
+//        int page = list.size() / 500;
+//        for (int i = 0; i < page; i++) {
+//            List<BaseDict> insertList = list.subList(i * 500, Math.min((i + 1) * 500, list.size()));
+//            baseDictService.saveBatch(insertList);
+//        }
+//
+//        System.out.println(new Date());
+//        if(true) {
+//            return;
+//        }
 
         ethnicity = baseDictService.listByTypeCode("ethnicity");
         ethnicityMap = ethnicity.stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
@@ -112,9 +114,10 @@ public class PersonIdentityInfoTask {
     }
 
 
-    @Scheduled(cron="20 */5 * * * ?")
-    public void run() {
+    @Scheduled(cron="20 * * * * ?")
+    public void run() throws ParseException {
         // 1. 构造测试数据
+        int year = LocalDate.now().getYear();
         List<PersonIdentityInfo> dataList = new ArrayList<>();
         for (long i = 100001; i <= 100100; i++) { // 生成100条测试数据
             BaseDict ad = getAdministrativeDivision();
@@ -125,13 +128,13 @@ public class PersonIdentityInfoTask {
 
             PersonIdentityInfo info = new PersonIdentityInfo();
             info.setPersonNo("PER" + System.currentTimeMillis() + i);
-            info.setIdCardNo(String.format("%s%s%s", ad.getDictCode(), birthday.replaceAll("-", ""), String.valueOf(Math.random()*100000000).substring(3, 7))); // 模拟身份证号
+            info.setIdCardNo(String.format("%s%s%s", ad.getDictCode(), birthday.replaceAll("-", ""), String.valueOf(Math.random()).substring(3, 7))); // 模拟身份证号
             info.setName(surname+name);
             info.setNamePinyin(PinyinUtil.getPinyin(name) + " " + PinyinUtil.getPinyin(surname));
             info.setNameAbbr(PinyinUtil.getFirstLetter(info.getName(), "").toUpperCase());
-            info.setGender(1); // 男
-            info.setBirthday(new Date(90, 0, 1)); // 1990-01-01
-            info.setAge(34);
+            info.setGender(Integer.parseInt(info.getIdCardNo().substring(info.getIdCardNo().length()-2, info.getIdCardNo().length()-1))/2==0? 2:1); // 男
+            info.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(birthday)); // 1990-01-01
+            info.setAge(year - Integer.parseInt(birthday.split("-")[0]));
             info.setNation(getEthnicity().getDictName());
             info.setNationCode(getEthnicity().getDictCode());
             info.setNativePlace(ad.getDictName());
@@ -177,7 +180,7 @@ public class PersonIdentityInfoTask {
      */
     public BaseDict getAdministrativeDivision() {
         BaseDict baseDict = null;
-        while(baseDict==null && baseDict.getLevel()!=2) {
+        while(baseDict==null || baseDict.getDictCode().length()!=6) {
             int random = (int) (Math.random() * 34002);
             baseDict = administrativeDivisionSort.get(random);
         }
@@ -214,20 +217,31 @@ public class PersonIdentityInfoTask {
     }
 
     public String getName() {
-        int size = nameMap.size();
         if(Math.random()>0.1) {
-            String name = nameMap.get(String.format("%04d", new Random().nextInt(size))).getDictName();
-            if(name.length()==2) {
-                return name;
+            BaseDict firstDict = getRandomName();
+            while(firstDict==null) {
+                firstDict = getRandomName();
             }
-            String name1 = "";
-            while(name1.length()!=1) {
-                name1 = nameMap.get(String.format("%04d", new Random().nextInt(size))).getDictName();
+            if(firstDict.getDictName().length()==2) {
+                return firstDict.getDictName();
             }
-            return name+name1;
+            BaseDict secondDict = getRandomName();
+            while(secondDict==null || secondDict.getDictName().length()!=1) {
+                secondDict = getRandomName();
+            }
+            return firstDict.getDictName()+secondDict.getDictName();
         }
 
-        String name = nameMap.get(String.format("%04d", new Random().nextInt(size))).getDictName();
-        return name;
+//        String name = nameMap.get(String.format("%04d", new Random().nextInt(size))).getDictName();
+        BaseDict baseDict = getRandomName();
+        while(baseDict==null || baseDict.getDictName().length()==2) {
+            baseDict = getRandomName();
+        }
+        return baseDict.getDictName();
+    }
+
+    public BaseDict getRandomName() {
+        int size = nameMap.size();
+        return nameMap.get(String.format("%04d", new Random().nextInt(size)));
     }
 }
