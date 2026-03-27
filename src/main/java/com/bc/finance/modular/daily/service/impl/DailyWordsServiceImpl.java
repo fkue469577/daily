@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +55,20 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
     @Override
     public boolean save(DailyWords words) {
 
+        if(StringUtils.isBlank(words.getId())) {
+            this.insert(words);
+        } else {
+          this.update(words);
+        }
+
+        CompletableFuture.runAsync(()->syncWordInfo(words)).exceptionally(e->{
+            e.printStackTrace();
+            return null;
+        });
+        return true;
+    }
+
+    private void syncWordInfo(DailyWords words) {
         try {
             URL url = new URL("http://dict.youdao.com/fsearch?client=deskdict&keyfrom=chrome.extension&q=" + words.getWord() + "&pos=-1&doctype=xml&xmlVersion=3.2&dogVersion=1.0&vendor=unknown&appVer=3.1.17.4208&le=eng");
             InputStreamReader reader = new InputStreamReader(url.openStream(), "utf-8");
@@ -70,21 +85,10 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
             words.setPronounce(symbol);
             Element ele = XmlUtil.getElementByXPath("/yodaodict/custom-translation/translation/content", document);
             words.setAutoExplain(ele.getTextContent());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-        if(StringUtils.isBlank(words.getId())) {
-            this.insert(words);
-        } else {
-          this.update(words);
-        }
-        return true;
+        this.updateById(words);
     }
 
 
