@@ -1,9 +1,9 @@
 package com.bc.finance.modular.daily.task;
 
 import cn.hutool.extra.pinyin.PinyinUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bc.finance.common.utils.StringUtils;
 import com.bc.finance.modular.base.entity.BaseDict;
 import com.bc.finance.modular.base.service.IBaseDictService;
 import com.bc.finance.modular.daily.entity.PersonIdentityInfo;
@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -40,6 +39,7 @@ public class PersonIdentityInfoTask {
     private List<BaseDict> administrativeDivision;
     private Map<String, BaseDict> administrativeDivisionMap;
     private Map<Integer, BaseDict> administrativeDivisionSort;
+    private Map<String, List<BaseDict>> administrativeDivisionParentIdGroup;
     private Map<String, BaseDict> surnameMap;
     private Map<String, BaseDict> nameMap;
     List<BaseDict> surnames;
@@ -101,6 +101,7 @@ public class PersonIdentityInfoTask {
         administrativeDivision = baseDictService.listByTypeCode("administrative_division");
         administrativeDivisionMap = administrativeDivision.stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
         administrativeDivisionSort = administrativeDivision.stream().collect(Collectors.toMap(BaseDict::getSort, e->e));
+        administrativeDivisionParentIdGroup = administrativeDivision.stream().collect(Collectors.groupingBy(BaseDict::getParentCode));
         surnames = baseDictService.listByTypeCode("surname");
         surnameMap = baseDictService.listByTypeCode("surname").stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
         for (BaseDict baseDict : surnames) {
@@ -119,15 +120,21 @@ public class PersonIdentityInfoTask {
         // 1. 构造测试数据
         int year = LocalDate.now().getYear();
         List<PersonIdentityInfo> dataList = new ArrayList<>();
-        for (long i = 100001; i <= 100100; i++) { // 生成100条测试数据
+
+        int length = 0;
+        while (!(length>60 && length < 200)) {
+            length = new Random().nextInt(1000);
+        }
+
+        for (long i = 0; i <= length; i++) { // 生成100条测试数据
             BaseDict ad = getAdministrativeDivision();
-            BaseDict nowAd = getAdministrativeDivision();
+            BaseDict subAd = getSubAdministrativeDivision(ad);
             String birthday = getBirthday();
             String surname = getSurname();
             String name = getName();
 
             PersonIdentityInfo info = new PersonIdentityInfo();
-            info.setPersonNo("PER" + System.currentTimeMillis() + i);
+            info.setPersonNo("PER" + System.currentTimeMillis() + String.format("%6d", new Random().nextInt(1000001)));
             info.setIdCardNo(String.format("%s%s%s", ad.getDictCode(), birthday.replaceAll("-", ""), String.valueOf(Math.random()).substring(3, 7))); // 模拟身份证号
             info.setName(surname+name);
             info.setNamePinyin(PinyinUtil.getPinyin(name) + " " + PinyinUtil.getPinyin(surname));
@@ -139,8 +146,10 @@ public class PersonIdentityInfoTask {
             info.setNationCode(getEthnicity().getDictCode());
             info.setNativePlace(ad.getDictName());
             info.setNativePlaceCode(ad.getDictCode());
-            info.setHouseholdAddress(ad.getExtendFile3());
-            info.setResidenceAddress(nowAd.getExtendFile3());
+            info.setHouseholdAddress(ad.getExtendFile3()+subAd.getDictName());
+            info.setHouseholdAddressCode(ad.getDictCode());
+            info.setResidenceAddress(info.getHouseholdAddress());
+            info.setResidenceAddressCode(StringUtils.notBlankDefault(subAd.getDictCode(), ad.getDictCode()));
             info.setIdCardStartDate(new Date(2020, 0, 1));
             info.setCreateBy("admin");
             info.setCreateTime(new Date());
@@ -157,6 +166,15 @@ public class PersonIdentityInfoTask {
             e.printStackTrace();
             System.out.println("批量插入失败：" + e.getMessage());
         }
+    }
+
+    private BaseDict getSubAdministrativeDivision(BaseDict ad) {
+        List<BaseDict> subs = administrativeDivisionParentIdGroup.get(ad.getDictCode());
+        BaseDict sub = null;
+        while(sub==null) {
+            sub = subs.get(new Random().nextInt(subs.size()));
+        }
+        return sub;
     }
 
 
@@ -242,6 +260,10 @@ public class PersonIdentityInfoTask {
 
     public BaseDict getRandomName() {
         int size = nameMap.size();
-        return nameMap.get(String.format("%04d", new Random().nextInt(size)));
+        BaseDict baseDict = nameMap.get(String.format("%04d", new Random().nextInt(size)));
+        while(baseDict==null || StringUtils.isBlank(baseDict.getDictName())) {
+            baseDict = nameMap.get(String.format("%04d", new Random().nextInt(size)));
+        }
+        return baseDict;
     }
 }
