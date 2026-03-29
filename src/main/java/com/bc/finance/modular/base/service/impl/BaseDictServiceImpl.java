@@ -21,4 +21,11 @@ public class BaseDictServiceImpl extends ServiceImpl<BaseDictMapper, BaseDict> i
         List<BaseDict> list = this.lambdaQuery().eq(BaseDict::getTypeCode, typeCode).list();
         return list;
     }
+
+    @Override
+    public BaseDict getTypeCodeAndDictCode(String typeCode, String dictCode) {
+        BaseDict baseDict = this.lambdaQuery().eq(BaseDict::getTypeCode, typeCode).eq(BaseDict::getDictCode, dictCode)
+                .one();
+        return baseDict;
+    }
 }

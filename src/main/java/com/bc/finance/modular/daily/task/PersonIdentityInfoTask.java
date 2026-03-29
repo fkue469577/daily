@@ -122,7 +122,9 @@ public class PersonIdentityInfoTask {
         List<PersonIdentityInfo> dataList = new ArrayList<>();
 
         int length = 0;
-        while (!(length>60 && length < 200)) {
+        BaseDict rangeDict = baseDictService.getTypeCodeAndDictCode("setting_information", "0001");
+        String[] rangeDicts = rangeDict.getDictName().split(",");
+        while (!(length>Integer.parseInt(rangeDicts[0]) && length < Integer.parseInt(rangeDicts[1]))) {
             length = new Random().nextInt(1000);
         }
 

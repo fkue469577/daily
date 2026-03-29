@@ -8,4 +8,6 @@ import java.util.List;
 public interface IBaseDictService extends IService<BaseDict> {
 
     List<BaseDict> listByTypeCode(String typeCode);
+
+    BaseDict getTypeCodeAndDictCode(String typeCode, String dictCode);
 }
