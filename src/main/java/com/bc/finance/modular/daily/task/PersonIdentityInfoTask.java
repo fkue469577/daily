@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Component
+//@Component
 public class PersonIdentityInfoTask {
 
     @Autowired
@@ -117,12 +117,16 @@ public class PersonIdentityInfoTask {
 
     @Scheduled(cron="20 * * * * ?")
     public void run() throws ParseException {
+        BaseDict cpe = baseDictService.getTypeCodeAndDictCode("setting_information", "cron_personinfo_enable");
+        if(!"1".equals(cpe.getDictName())) {
+            return;
+        }
         // 1. 构造测试数据
         int year = LocalDate.now().getYear();
         List<PersonIdentityInfo> dataList = new ArrayList<>();
 
         int length = 0;
-        BaseDict rangeDict = baseDictService.getTypeCodeAndDictCode("setting_information", "0001");
+        BaseDict rangeDict = baseDictService.getTypeCodeAndDictCode("setting_information", "cron_personinfo_renge");
         String[] rangeDicts = rangeDict.getDictName().split(",");
         while (!(length>Integer.parseInt(rangeDicts[0]) && length < Integer.parseInt(rangeDicts[1]))) {
             length = new Random().nextInt(1000);
