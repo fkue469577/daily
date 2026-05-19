@@ -3,6 +3,7 @@ package com.bc.finance.modular.daily.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,9 @@ public class DailyWords implements Serializable {
     private String explain;
 
     private Boolean completed;
+
+    @ApiModelProperty("完成时间")
+    private LocalDateTime completedTime;
 
     private LocalDateTime crtTime;
 

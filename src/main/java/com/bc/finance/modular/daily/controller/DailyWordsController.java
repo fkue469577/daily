@@ -19,7 +19,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -77,11 +79,7 @@ public class DailyWordsController {
     @GetMapping("/complete/{id}")
     @ResponseBody
     public BaseResponse complete(@PathVariable String id) {
-        DailyWords word = new DailyWords();
-        word.setId(id);
-        word.setCompleted(true);
-        wordsService.update(word);
-
+        wordsService.completed(id);
         return BaseResponse.success();
     }
 

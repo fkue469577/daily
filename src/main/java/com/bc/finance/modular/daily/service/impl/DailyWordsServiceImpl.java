@@ -47,7 +47,6 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
 
     @Override
     public List<Map> page(IPage page, Map param) {
-
         return mapper.page(page, param);
     }
 
@@ -169,13 +168,9 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
     public void oneClickComplete() {
         Page page = PageHelper.defaultPage();
         List<Map> list = this.page(page, new HashMap());
-        List<DailyWords> collect = list.stream().map(e -> {
-            DailyWords dailyWords = new DailyWords();
-            dailyWords.setId(e.get("id").toString());
-            dailyWords.setCompleted(true);
-            return dailyWords;
-        }).collect(Collectors.toList());
-        this.updateBatchById(collect);
+        for (Map map : list) {
+            completed(String.valueOf(map.get("id")));
+        }
     }
 
 
@@ -186,6 +181,15 @@ public class DailyWordsServiceImpl extends ServiceImpl<DailyWordsMapper, DailyWo
         words.setCompleted(false);
         words.setLevel(5);
         this.update(words);
+    }
+
+    @Override
+    public void completed(String id) {
+        DailyWords word = new DailyWords();
+        word.setId(id);
+        word.setCompleted(true);
+        word.setCompletedTime(LocalDateTime.now());
+        this.update(word);
     }
 
 }
