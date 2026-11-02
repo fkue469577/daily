@@ -44,6 +44,7 @@ public class PersonIdentityInfoTask {
     private Map<String, BaseDict> nameMap;
     List<BaseDict> surnames;
     int start = 0;
+    boolean isInitial = false;
 
 
     AtomicInteger ai = new AtomicInteger(0);
@@ -71,8 +72,9 @@ public class PersonIdentityInfoTask {
         }
         return list;
     }
-    @PostConstruct
+
     public void init() throws Exception {
+        if(isInitial) return;
 
 //        File file = new File("/Users/chunchengpeng/Downloads/area_format_user.json");
 //        FileInputStream fis = new FileInputStream(file);
@@ -111,16 +113,19 @@ public class PersonIdentityInfoTask {
         }
 
         nameMap = baseDictService.listByTypeCode("name").stream().collect(Collectors.toMap(BaseDict::getDictCode, e->e));
-        run();
+
+        isInitial = true;
     }
 
 
     @Scheduled(cron="20 * * * * ?")
-    public void run() throws ParseException {
+    public void run() throws Exception {
         BaseDict cpe = baseDictService.getTypeCodeAndDictCode("setting_information", "cron_personinfo_enable");
         if(!"1".equals(cpe.getDictName())) {
             return;
         }
+        init();
+
         // 1. 构造测试数据
         int year = LocalDate.now().getYear();
         List<PersonIdentityInfo> dataList = new ArrayList<>();

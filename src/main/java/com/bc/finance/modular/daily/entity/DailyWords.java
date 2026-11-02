@@ -47,4 +47,6 @@ public class DailyWords implements Serializable {
     private String pronounce;
 
     private String autoExplain;
+
+    private Integer days;
 }

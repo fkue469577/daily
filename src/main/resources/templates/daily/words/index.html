@@ -16,10 +16,17 @@
         <form class="layui-form flex demoTable" id="searchForm">
             <input name="word" class="layui-input" style="width: 200px;" placeholder="单词"/>
             <input name="explain" class="layui-input" style="width: 200px;" placeholder="词义"/>
+            <select name="dayType">
+                <option value=""></option>
+                <option value="1">一天</option>
+                <option value="3">三天</option>
+                <option value="7">七天</option>
+            </select>
             <button type="button"  class="layui-btn" onclick="page()">搜索</button>
         </form>
         <table class="layui-hide" id="test" lay-filter="test"></table>
     </div>
+
 </div>
 </body>
 

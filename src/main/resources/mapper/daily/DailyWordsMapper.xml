@@ -15,6 +15,15 @@
             <if test="param.disabled!=null and param.disabled!=''">
                 and dw.disabled=#{param.disabled}
             </if>
+            <if test='"1".equals(param.dayType)'>
+                and days = 0
+            </if>
+            <if test='"3".equals(param.dayType)'>
+                and days &gt; 0 and days &lt;= 3
+            </if>
+            <if test='"7".equals(param.dayType)'>
+                and days &gt; 3 and days &lt;= 7
+            </if>
         </where>
         order by completed asc, level desc, id desc
     </select>
