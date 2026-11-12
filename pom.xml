@@ -66,6 +66,11 @@
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>3.5.1</version>
             <scope>test</scope>
@@ -182,6 +187,7 @@
             <artifactId>jaxen</artifactId>
             <version>1.2.0</version>
         </dependency>
+
     </dependencies>
 
     <distributionManagement>

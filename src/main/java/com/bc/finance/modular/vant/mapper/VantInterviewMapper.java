@@ -1,5 +1,6 @@
 package com.bc.finance.modular.vant.mapper;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bc.finance.modular.vant.entity.VantInterview;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@DS("myvant")
 public interface VantInterviewMapper extends BaseMapper<VantInterview> {
 
     @Select("select * from vant_interview where type='TITLE' and `show`=1")

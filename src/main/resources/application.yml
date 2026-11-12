@@ -20,13 +20,30 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
+    dynamic:
+      primary: master
+      strict: false
+      datasource:
+        master:
+          url: jdbc:mysql://mysql6.sqlpub.com:3311/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
+          username: mydaily
+          password: 0Td6e9WgvAOx5Mzn
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        myvant:
+          url: jdbc:mysql://mysql6.sqlpub.com:3311/myvant?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
+          username: myvant
+          password: nP9QrTWGyhIvBMh8
+          driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://mysql.sqlpub.com:3306/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
     #    username: fkue469577
     #    password: nduS2GZhX1YT98wx
-    url: jdbc:mysql://47.121.193.101:3306/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
-    username: root
-    password: fkue469577278.
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://47.121.193.101:3306/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
+    #    username: root
+    #    password: fkue469577278.
+#    url: jdbc:mysql://mysql6.sqlpub.com:3311/mydaily?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
+#    username: mydaily
+#    password: 0Td6e9WgvAOx5Mzn
+#    driver-class-name: com.mysql.cj.jdbc.Driver
     debug: false
     #Druid#
     name: dm_ding_application
